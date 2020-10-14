@@ -39,61 +39,76 @@ namespace MathForGames
                 }
                 else
                 {
-                    entityRemoved = true;
+                    entityRemoved = true;            //says that the entity was succesfully removed
                 }
             }
-            _entities = appenedArray;
-            return entityRemoved;
+            _entities = appenedArray;              //sets old array equal to new array
+            return entityRemoved;                  // returns true or false
         }
-        public bool RemoveEntity(Entity entity)
+        public bool RemoveEntity(Entity entity)         //Takes in an entity returns a bool
         {
-            if (entity == null)
+            if (entity == null)                        //if the entity is null
             {
-                return false;
+                return false;                          //return false since the slot is already empty
             }
-            bool entityRemoved = false;
-            Entity[] appendedArray = new Entity[_entities.Length - 1];
-            int j = 0;
-            for(int i = 0; i <_entities.Length; i++)
+            bool entityRemoved = false;                //bool to test if an entity has been removed
+            Entity[] appendedArray = new Entity[_entities.Length - 1];  //creates a temp [] thats one postion shorter
+            int j = 0;                                         //placeholder var to help set old [] to new []
+            for(int i = 0; i <_entities.Length; i++)       // For each slot in the _entites []
             {
-                if (entity != _entities[i])
+                if (entity != _entities[i])                 //check to see if the entity you want to remove is not in this slot
                 {
-                    appendedArray[j] = _entities[i];
-                    j++;
+                    appendedArray[j] = _entities[i];          //if it isnt, copy the entity and paste it into the new []
+                    j++;                                 //increment the placeholder val since an entity was added
                 }
                 else
                 {
-                    entityRemoved = true;
+                    entityRemoved = true;                    //if it is in the slot, ignore it and set the entity removed true
                 }
             }
-            return entityRemoved;
+            return entityRemoved;                           //if an entity was removed returns true else false
+        }
+        public bool CheckPositionAvailable(Entity ReferenceEntity) //takes in an entity to see if they will land on an available slot
+        {
+            for (int i = 0; i < _entities.Length; i++)  //each entity in the entity []
+            {
+                if (_entities[i].Position.X == ReferenceEntity.Position.X && _entities[i].Position.Y == ReferenceEntity.Position.Y) // if they share the same postion as the referenceentity
+                {
+                    return false; //returns false for the Position is not available
+                }
+            }
+            return true; //if it never returns false it will say the position is available.
         }
         public virtual void Start()
         {
-            for (int i = 0; i < _entities.Length; i++)
+            for (int i = 0; i < _entities.Length; i++)      //for each entity in the entities[]
             {
-                _entities[i].Start();
+                _entities[i].Start();                      //call their start function
             }
         }
         public virtual void Update()
         {
-            for (int i = 0; i < _entities.Length; i++)
+            for (int i = 0; i < _entities.Length; i++)         //for each entity in the entites []
             {
-                _entities[i].Update();
+                _entities[i].Update();                          //call their update function
+                if (CheckPositionAvailable(_entities[i]) == false)  //if theyve landed in an unavailable spot
+                {
+                    _entities[i].HitObject();                     //call the hitobject function to change trajectory
+                }
             }
         }
         public virtual void Draw()
         {
-            for (int i = 0; i < _entities.Length; i++)
+            for (int i = 0; i < _entities.Length; i++)   //for each entity in the entites[]
             {
-                _entities[i].Draw();
+                _entities[i].Draw();                       //call their draw function
             }
         }
         public virtual void End()
         {
-            for (int i = 0; i < _entities.Length; i++)
+            for (int i = 0; i < _entities.Length; i++)   //for each entity in the entites[]
             {
-                _entities[i].End();
+                _entities[i].End();                     //call their end functions
             }
         }
     }
