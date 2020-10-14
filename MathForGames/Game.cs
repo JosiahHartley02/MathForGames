@@ -17,20 +17,33 @@ namespace MathForGames
             _gameOver = value;
         }
 
-        public static bool CheckKey(ConsoleKey key)
+        //public static bool CheckKey(ConsoleKey key) //return whether specified key is pressed
+        // {
+        //    if (Console.KeyAvailable)  //if the user has pressed a key
+        //    {
+        //       if (Console.ReadKey(true).Key == key) //Checks to see if the key if the key pressed matched the argument given
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
+        public static ConsoleKey GetNextKey()
         {
-            if (Console.ReadKey(true).Key == key)
+            if(!Console.KeyAvailable) //if the user has not press a key
             {
-                return true;
+                return 0;             //do nothing
             }
-            return false;
+            return Console.ReadKey(true).Key;  //since the function would have aborted if not true- returns the key pressed
         }
+        public
 
         //Called when the game begins. Use this for initialization.
-        public void Start()
+        void Start()
         {
+            Console.CursorVisible = false;
             _scene = new Scene();
-            Entity entity = new Entity();
+            Entity entity = new Entity(0,0,'@');
             _scene.AddEntity(entity);
         }
 
@@ -65,7 +78,9 @@ namespace MathForGames
             {
                 Update();
                 Draw();
-                Thread.Sleep(50);
+                while (Console.KeyAvailable)
+                    Console.ReadKey(true);
+                Thread.Sleep(200);
             }
 
             End();
