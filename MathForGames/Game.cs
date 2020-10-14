@@ -45,11 +45,19 @@ namespace MathForGames
         {
             Console.CursorVisible = false;
             _scene = new Scene();
+            BouncyBall ball1 = new BouncyBall(0, 10, 'o', ConsoleColor.DarkBlue);
+            BouncyBall ball2 = new BouncyBall(10, 0, 'o', ConsoleColor.DarkBlue);
+            BouncyBall ball3 = new BouncyBall(10, 10, 'o', ConsoleColor.DarkBlue);
+            BouncyBall ball4 = new BouncyBall(0, 0, 'o', ConsoleColor.DarkBlue);
             Entity entity = new Entity(0,0,'■',ConsoleColor.Green);
             entity.Veloctity.X = 1;
             Player player = new Player(0, 1, '@', ConsoleColor.Red);
             _scene.AddEntity(entity);
             _scene.AddEntity(player);
+            _scene.AddEntity(ball1);
+            _scene.AddEntity(ball2);
+            _scene.AddEntity(ball3);
+            _scene.AddEntity(ball4);
         }
 
 
