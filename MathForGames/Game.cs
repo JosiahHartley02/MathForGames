@@ -43,7 +43,7 @@ namespace MathForGames
         {
             Console.CursorVisible = false;
             _scene = new Scene();
-            Entity entity = new Entity(0,0,'@');
+            Entity entity = new Entity(0,0,'@',ConsoleColor.Green);
             _scene.AddEntity(entity);
         }
 

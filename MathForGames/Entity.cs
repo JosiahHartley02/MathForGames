@@ -56,8 +56,10 @@ namespace MathForGames
         }
         public void Draw()
         {
+            Console.ForegroundColor = _color;
             Console.SetCursorPosition((int)_position.X, (int)_position.Y);
             Console.Write(_icon);
+            Console.ForegroundColor = ConsoleColor.White;
         }
         public void End()
         {
