@@ -42,6 +42,11 @@ namespace MathForGames
             _velocity = new Vector2();
             _color = color;
         }
+        public virtual void HitObject()
+        {
+            Veloctity.X = -Veloctity.X;
+            Veloctity.Y = -Veloctity.Y;
+        }
         public virtual void Start()
         {
 
@@ -49,7 +54,6 @@ namespace MathForGames
 
         public virtual void Update()
         {
-         
             _position.X += _velocity.X;
             _position.Y += _velocity.Y;
             _position.X = Math.Clamp(_position.X, 0, Console.WindowWidth - 1);
