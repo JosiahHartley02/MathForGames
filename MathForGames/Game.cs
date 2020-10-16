@@ -40,6 +40,24 @@ namespace MathForGames
             }
             return Console.ReadKey(true).Key;  //since the function would have aborted if not true- returns the key pressed
         }
+        public static void HitGolfBall( )
+        {
+            switch (player1.direction)
+            {
+                case 1:
+                    ball.Veloctity.X += player1._power;
+                    break;
+                case 2:
+                    ball.Veloctity.Y += player1._power;
+                    break;
+                case 3:
+                    ball.Veloctity.X -= player1._power;
+                    break;
+                case 4:
+                    ball.Veloctity.Y -= player1._power;
+                    break;
+            }
+        }
         public static void PlaceGolfBall(Player player)
         {
             ball._visible = true;

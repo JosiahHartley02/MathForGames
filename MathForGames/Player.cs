@@ -8,7 +8,7 @@ namespace MathForGames
     class Player : Entity
     {
         public int direction { get; set; }
-        float _power = 1;
+        public float _power = 1;
         public Player(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White) : base(x, y, icon,color)
         {
             direction = 1;
@@ -81,7 +81,9 @@ namespace MathForGames
                 case ConsoleKey.D5:
                     _power = 16;
                     break;
-
+                case ConsoleKey.V:
+                    Game.HitGolfBall();
+                    break;
                 default:
                     _velocity.X = 0;
                     _velocity.Y = 0;
