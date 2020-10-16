@@ -68,11 +68,11 @@ namespace MathForGames
             }
             return entityRemoved;                           //if an entity was removed returns true else false
         }
-        public bool CheckPositionAvailable(Entity ReferenceEntity) //takes in an entity to see if they will land on an available slot
+        public bool CheckPositionAvailable(float x, float y) //takes in an x and y to see if they will land on an available slot
         {
             for (int i = 0; i < _entities.Length; i++)  //each entity in the entity []
             {
-                if (_entities[i].Position.X == ReferenceEntity.Position.X && _entities[i].Position.Y == ReferenceEntity.Position.Y) // if they share the same postion as the referenceentity
+                if ( x == _entities[i].Position.X &&  y == _entities[i].Position.Y) // if they share the same postion as the x and y
                 {
                     return false; //returns false for the Position is not available
                 }
@@ -91,10 +91,7 @@ namespace MathForGames
             for (int i = 0; i < _entities.Length; i++)         //for each entity in the entites []
             {
                 _entities[i].Update();                          //call their update function
-                if (CheckPositionAvailable(_entities[i]) == false)  //if theyve landed in an unavailable spot
-                {
-                    _entities[i].HitObject();                     //call the hitobject function to change trajectory
-                }
+                
             }
         }
         public virtual void Draw()

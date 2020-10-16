@@ -10,7 +10,9 @@ namespace MathForGames
     class Game
     {
         private static bool _gameOver = false;
-        private Scene _scene;
+        private static Scene _scene;
+        public static Player player1;
+        public static GolfBall ball;
 
         public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
         //Static function used to set game over without an instance of game.
@@ -32,23 +34,54 @@ namespace MathForGames
         //}
         public static ConsoleKey GetNextKey()
         {
-            if(!Console.KeyAvailable) //if the user has not press a key
+            if (!Console.KeyAvailable) //if the user has not press a key
             {
                 return 0;             //do nothing
             }
             return Console.ReadKey(true).Key;  //since the function would have aborted if not true- returns the key pressed
         }
-        public
-
+        public static void PlaceGolfBall(Player player)
+        {
+            ball._visible = true;
+            float x = player.Position.X;
+            float y = player.Position.Y;
+            if (player.direction == 1)
+            {
+                if (_scene.CheckPositionAvailable(x += 1, y))
+                { MoveBall(player, 1, 0); }  
+            }
+            if (player.direction == 2)
+            {
+                if (_scene.CheckPositionAvailable(x, y += 1))
+                { MoveBall(player,0,1);}                
+            }
+            if (player.direction == 3)
+            {
+                if (_scene.CheckPositionAvailable(x -= 1, y))
+                { MoveBall(player,-1,0);}
+            }
+            if (player.direction == 4)
+            {
+                if (_scene.CheckPositionAvailable(x, y - 1))
+                { MoveBall(player,0,-1);}
+            }
+        }
+        static void MoveBall(Player player, float xValIncrease, float yValIncrease)
+        {
+            ball.Position.X = player.Position.X + xValIncrease;
+            ball.Position.Y = player.Position.Y + yValIncrease;
+        }
         //Called when the game begins. Use this for initialization.
         void Start()
         {
             Console.CursorVisible = false;
             _scene = new Scene();
-            Entity entity = new Entity(30,30,'■',ConsoleColor.Green);
-            Player player = new Player(0, 0, '@', ConsoleColor.Red);
-            _scene.AddEntity(entity);
-            _scene.AddEntity(player);
+            Entity goal = new Entity(30, 30, '■', ConsoleColor.Green);
+            player1 = new Player(0, 0, '►', ConsoleColor.Red);
+            ball = new GolfBall(0, 0, '∙', ConsoleColor.Black);
+            _scene.AddEntity(player1);
+            _scene.AddEntity(goal);
+            _scene.AddEntity(ball);
         }
 
 
@@ -78,13 +111,13 @@ namespace MathForGames
         {
             Start();
 
-            while(!_gameOver)
+            while (!_gameOver)
             {
                 Update();
                 Draw();
                 while (Console.KeyAvailable)
                     Console.ReadKey(true);
-                Thread.Sleep(200);
+                Thread.Sleep(250);
             }
 
             End();
