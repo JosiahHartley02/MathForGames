@@ -20,6 +20,7 @@ namespace MathForGames
             switch (keyPressed)
             {
                 case ConsoleKey.A:
+                    /*if(Scene.CheckPositionAvailable(Position.X-1f,Position.Y))*/
                     if (direction != 3)
                     {
                         _icon = '◄';
@@ -64,7 +65,7 @@ namespace MathForGames
                     }  
                     break;
                 case ConsoleKey.B:
-                    Game.PlaceGolfBall(Game.player1);
+                    /*GolfBall.PlaceGolfBall(Game.player1, Game.scene1);*/
                     break;
                 case ConsoleKey.D1:
                     _power = 1;
@@ -82,7 +83,7 @@ namespace MathForGames
                     _power = 16;
                     break;
                 case ConsoleKey.V:
-                    Game.HitGolfBall();
+                    /*GolfBall.HitGolfBall(Game._ball);*/
                     break;
                 default:
                     _velocity.X = 0;

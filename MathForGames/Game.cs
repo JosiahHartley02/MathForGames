@@ -4,13 +4,14 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using MathLib;
+using Raylib_cs;
 
 namespace MathForGames
 {
     class Game
     {
         private static bool _gameOver = false;
-        private static Scene _scene;
+        public static Scene scene1;
         public static Player player1;
         public static GolfBall ball;
 
@@ -40,80 +41,33 @@ namespace MathForGames
             }
             return Console.ReadKey(true).Key;  //since the function would have aborted if not true- returns the key pressed
         }
-        public static void HitGolfBall( )
-        {
-            switch (player1.direction)
-            {
-                case 1:
-                    ball.Veloctity.X += player1._power;
-                    break;
-                case 2:
-                    ball.Veloctity.Y += player1._power;
-                    break;
-                case 3:
-                    ball.Veloctity.X -= player1._power;
-                    break;
-                case 4:
-                    ball.Veloctity.Y -= player1._power;
-                    break;
-            }
-        }
-        public static void PlaceGolfBall(Player player)
-        {
-            ball._visible = true;
-            float x = player.Position.X;
-            float y = player.Position.Y;
-            if (player.direction == 1)
-            {
-                if (_scene.CheckPositionAvailable(x += 1, y))
-                { MoveBall(player, 1, 0); }  
-            }
-            if (player.direction == 2)
-            {
-                if (_scene.CheckPositionAvailable(x, y += 1))
-                { MoveBall(player,0,1);}                
-            }
-            if (player.direction == 3)
-            {
-                if (_scene.CheckPositionAvailable(x -= 1, y))
-                { MoveBall(player,-1,0);}
-            }
-            if (player.direction == 4)
-            {
-                if (_scene.CheckPositionAvailable(x, y - 1))
-                { MoveBall(player,0,-1);}
-            }
-        }
-        static void MoveBall(Player player, float xValIncrease, float yValIncrease)
-        {
-            ball.Position.X = player.Position.X + xValIncrease;
-            ball.Position.Y = player.Position.Y + yValIncrease;
-        }
+
         //Called when the game begins. Use this for initialization.
         void Start()
         {
+            Raylib.InitWindow(1024, 760, "Math for games");
             Console.CursorVisible = false;
-            _scene = new Scene();
+            scene1 = new Scene();
             Entity goal = new Entity(30, 30, '■', ConsoleColor.Green);
             player1 = new Player(0, 0, '►', ConsoleColor.Red);
             ball = new GolfBall(0, 0, '∙', ConsoleColor.Black);
-            _scene.AddEntity(player1);
-            _scene.AddEntity(goal);
-            _scene.AddEntity(ball);
+            scene1.AddEntity(player1);
+            scene1.AddEntity(goal);
+            scene1.AddEntity(ball);
         }
 
 
         //Called every frame.
         public void Update()
         {
-            _scene.Update();
+            scene1.Update();
         }
 
         //Used to display objects and other info on the screen.
         public void Draw()
         {
             Console.Clear();
-            _scene.Draw();
+            scene1.Draw();
         }
 
 
@@ -140,5 +94,6 @@ namespace MathForGames
 
             End();
         }
+        
     }
 }
