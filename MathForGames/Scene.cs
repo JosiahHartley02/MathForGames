@@ -6,107 +6,135 @@ namespace MathForGames
 {
     class Scene
     {
-        private Entity[] _entities;
+        private Actor[] _actors;
+
+        public bool Started { get; private set; }
+
         public Scene()
         {
-            _entities = new Entity[0];
+            _actors = new Actor[0];
         }
-        public void AddEntity(Entity entity)
+
+        public void AddActor(Actor actor)
         {
-            Entity[] appendedArray = new Entity[_entities.Length + 1]; // creates new array thats 1 postions longer than entites[]
-            for (int i = 0; i < _entities.Length; i++)
+            //Create a new array with a size one greater than our old array
+            Actor[] appendedArray = new Actor[_actors.Length + 1];
+            //Copy the values from the old array to the new array
+            for (int i = 0; i < _actors.Length; i++)
             {
-                appendedArray[i] = _entities[i];  //copies all positions from entites to appended array
+                 appendedArray[i] = _actors[i];
             }
-            appendedArray[_entities.Length] = entity; //creates new entity at end of the appended array
-            _entities = appendedArray;                //replaces _entites array value as appended arrays array;
+            //Set the last value in the new array to be the actor we want to add
+            appendedArray[_actors.Length] = actor;
+            //Set old array to hold the values of the new array
+            _actors = appendedArray;
         }
-        public bool RemoveEntity(int index)
+
+        public bool RemoveActor(int index)
         {
-            if (index < 0 || index >= _entities.Length) //checks to see if the index is outside the bounds of our array
+            //Check to see if the index is outside the bounds of our array
+            if(index < 0 || index >= _actors.Length)
             {
                 return false;
             }
-            bool entityRemoved = false;
-            Entity[] appenedArray = new Entity[_entities.Length - 1]; //creates new [] that is 1 position shorter than entities[]
-            int j = 0; //create a var to access app array index
-            for (int i = 0; i < index; i++) //copy values from old array to new one
+
+            bool actorRemoved = false;
+
+            //Create a new array with a size one less than our old array 
+            Actor[] newArray = new Actor[_actors.Length - 1];
+            //Create variable to access tempArray index
+            int j = 0;
+            //Copy values from the old array to the new array
+            for(int i = 0; i < _actors.Length; i++)
             {
-                if (i != index)           //if the current index is not the index that needs to be removed
+                //If the current index is not the index that needs to be removed,
+                //add the value into the old array and increment j
+                if(i != index)
                 {
-                    appenedArray[i] = _entities[i];  //add value into the old array and increment j
+                    newArray[j] = _actors[i];
                     j++;
                 }
                 else
                 {
-                    entityRemoved = true;            //says that the entity was succesfully removed
+                    actorRemoved = true;
+                    if (_actors[i].Started)
+                        _actors[i].End();
                 }
             }
-            _entities = appenedArray;              //sets old array equal to new array
-            return entityRemoved;                  // returns true or false
+
+            //Set the old array to be the tempArray
+            _actors = newArray;
+            return actorRemoved;
         }
-        public bool RemoveEntity(Entity entity)         //Takes in an entity returns a bool
+
+        public bool RemoveActor(Actor actor)
         {
-            if (entity == null)                        //if the entity is null
+            //Check to see if the actor was null
+            if (actor == null)
             {
-                return false;                          //return false since the slot is already empty
+                return false;
             }
-            bool entityRemoved = false;                //bool to test if an entity has been removed
-            Entity[] appendedArray = new Entity[_entities.Length - 1];  //creates a temp [] thats one postion shorter
-            int j = 0;                                         //placeholder var to help set old [] to new []
-            for(int i = 0; i <_entities.Length; i++)       // For each slot in the _entites []
+
+            bool actorRemoved = false;
+            //Create a new array with a size one less than our old array
+            Actor[] newArray = new Actor[_actors.Length - 1];
+            //Create variable to access tempArray index
+            int j = 0;
+            //Copy values from the old array to the new array
+            for (int i = 0; i < _actors.Length; i++)
             {
-                if (entity != _entities[i])                 //check to see if the entity you want to remove is not in this slot
+                if (actor != _actors[i])
                 {
-                    appendedArray[j] = _entities[i];          //if it isnt, copy the entity and paste it into the new []
-                    j++;                                 //increment the placeholder val since an entity was added
+                    newArray[j] = _actors[i];
+                    j++;
                 }
                 else
                 {
-                    entityRemoved = true;                    //if it is in the slot, ignore it and set the entity removed true
+                    actorRemoved = true;
+                    if (actor.Started)
+                        actor.End();
                 }
             }
-            return entityRemoved;                           //if an entity was removed returns true else false
+
+            //Set the old array to the new array
+            _actors = newArray;
+            //Return whether or not the removal was successful
+            return actorRemoved;
         }
-        public bool CheckPositionAvailable(float x, float y) //takes in an x and y to see if they will land on an available slot
-        {
-            for (int i = 0; i < _entities.Length; i++)  //each entity in the entity []
-            {
-                if ( x == _entities[i].Position.X &&  y == _entities[i].Position.Y) // if they share the same postion as the x and y
-                {
-                    return false; //returns false for the Position is not available
-                }
-            }
-            return true; //if it never returns false it will say the position is available.
-        }
+
         public virtual void Start()
         {
-            for (int i = 0; i < _entities.Length; i++)      //for each entity in the entities[]
-            {
-                _entities[i].Start();                      //call their start function
-            }
+            Started = true;
         }
-        public virtual void Update()
+
+        public virtual void Update(float deltaTime)
         {
-            for (int i = 0; i < _entities.Length; i++)         //for each entity in the entites []
+            for (int i = 0; i < _actors.Length; i++)
             {
-                _entities[i].Update();                          //call their update function
-                
+                if (!_actors[i].Started)
+                    _actors[i].Start();
+
+                _actors[i].Update(deltaTime);
             }
         }
+
         public virtual void Draw()
         {
-            for (int i = 0; i < _entities.Length; i++)   //for each entity in the entites[]
+            for (int i = 0; i < _actors.Length; i++)
             {
-                _entities[i].Draw();                       //call their draw function
+                _actors[i].Draw();
             }
         }
+
         public virtual void End()
         {
-            for (int i = 0; i < _entities.Length; i++)   //for each entity in the entites[]
+            for (int i = 0; i < _actors.Length; i++)
             {
-                _entities[i].End();                     //call their end functions
+                if (_actors[i].Started)
+                    _actors[i].End();
             }
+
+            Started = false;
         }
     }
 }

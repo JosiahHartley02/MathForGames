@@ -1,96 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MathLib;
+using Raylib_cs;
+using MathLibrary;
 
 namespace MathForGames
 {
-    class Player : Entity
+    class Player : Actor
     {
-        public int direction { get; set; }
-        public float _power = 1;
-        public Player(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White) : base(x, y, icon,color)
+        private float _speed = 1;
+
+        public float Speed
         {
-            direction = 1;
+            get
+            {
+                return _speed;
+            }
+            set
+            {
+                _speed = value;
+            }
         }
 
-        public override void Update()
-        {            
-            ConsoleKey keyPressed = Game.GetNextKey();
-            switch (keyPressed)
-            {
-                case ConsoleKey.A:
-                    /*if(Scene.CheckPositionAvailable(Position.X-1f,Position.Y))*/
-                    if (direction != 3)
-                    {
-                        _icon = '◄';
-                        direction = 3;
-                    }
-                    else if (direction == 3)
-                    {
-                        _velocity.X = -1;
-                    }
-                    break;
-                case ConsoleKey.D:
-                    if (direction != 1)
-                    {
-                        direction = 1;
-                        _icon = '►';
-                    }
-                    else if (direction == 1)
-                    {
-                        _velocity.X = 1;
-                    }  
-                    break;
-                case ConsoleKey.W:
-                    if (direction != 4)
-                    {
-                        direction = 4;
-                        _icon = '▲';
-                    }
-                    else if ( direction == 4)
-                    {
-                        _velocity.Y = -1;
-                    }                            
-                    break;
-                case ConsoleKey.S:
-                    if (direction != 2)
-                    {
-                        direction = 2;
-                            _icon = '▼';
-                    }
-                    else if (direction == 2)
-                    {
-                        _velocity.Y = 1;
-                    }  
-                    break;
-                case ConsoleKey.B:
-                    /*GolfBall.PlaceGolfBall(Game.player1, Game.scene1);*/
-                    break;
-                case ConsoleKey.D1:
-                    _power = 1;
-                    break;
-                case ConsoleKey.D2:
-                    _power = 2;
-                    break;
-                case ConsoleKey.D3:
-                    _power = 4;
-                    break;
-                case ConsoleKey.D4:
-                    _power = 8;
-                    break;
-                case ConsoleKey.D5:
-                    _power = 16;
-                    break;
-                case ConsoleKey.V:
-                    /*GolfBall.HitGolfBall(Game._ball);*/
-                    break;
-                default:
-                    _velocity.X = 0;
-                    _velocity.Y = 0;
-                    break;
-            }
-            base.Update();
+
+        public Player(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
+            : base(x, y, icon, color)
+        {
+            
+        }
+
+        public Player(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
+            : base(x, y, rayColor, icon, color)
+        {
+
+        }
+
+        public override void Update(float deltaTime)
+        {
+            int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A))
+                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
+
+            int yVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W))
+                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
+
+            Velocity = new Vector2(xVelocity, yVelocity);
+            Velocity = Velocity.Normalized * Speed;
+            
+            base.Update(deltaTime);
         }
     }
 }
