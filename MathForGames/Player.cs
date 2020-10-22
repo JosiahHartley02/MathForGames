@@ -34,17 +34,17 @@ namespace MathForGames
         {
 
         }
-
+        
         public override void Update(float deltaTime)
-        {
-            int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A))
-                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
+        {            
+            int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) //sets xVelocity value by converting two truefalse statements, "KeyADown" and "KeyDDown" which will either return [0] or [1] by converting the bool |GetKeyDown| testing for 'A' or 'D' key to be down
+                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));  //if 'A' key is down then the value is [(-)1], if the 'D' key is down the value is [1], so A adds [(-)1] speed which converts speed the other way, and 'D' key adds [1] which makes the actor move right, pressing both will result in a value of [0] or not moving 
 
-            int yVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W))
+            int yVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) //yVelocity value is equal to the value of (-)key 'W' isTrue and the value of key 'S' is true
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
 
-            Velocity = new Vector2(xVelocity, yVelocity);
-            Velocity = Velocity.Normalized * Speed;
+            Velocity = new Vector2(xVelocity, yVelocity);                             //sets the new velocity based on the keys being pressed
+            Velocity = Velocity.Normalized * Speed;                                  //Normalizes the speed as to prevent superspeed
             
             base.Update(deltaTime);
         }

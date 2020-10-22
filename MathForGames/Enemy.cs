@@ -25,7 +25,7 @@ namespace MathForGames
         public Enemy(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
-            _alertColor = Color.RED;
+            _alertColor = Color.RED;            
         }
 
         public bool CheckTargetInSight()

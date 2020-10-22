@@ -96,15 +96,19 @@ namespace MathForGames
 
             _currentSceneIndex = index;
         }
-
+        /// <summary>
+        /// Returns true if "key" is down else returns false
+        /// </summary>
+        /// <param name="key">not case sensitive</param>
+        /// <returns></returns>
         public static bool GetKeyDown(int key)
         {
-            return Raylib.IsKeyDown((KeyboardKey)key);
+            return Raylib.IsKeyDown((KeyboardKey)key); //returns true or false through raylib testing to see if the key char is currently down or not
         }
 
         public static bool GetKeyPressed(int key)
         {
-            return Raylib.IsKeyPressed((KeyboardKey)key);
+            return Raylib.IsKeyPressed((KeyboardKey)key); //returns true or false through ralib testing to see if the key has been pressed or not
         }
 
         public Game()
@@ -133,6 +137,7 @@ namespace MathForGames
 
             Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
             Player player = new Player(0, 1,Color.BLUE, '@', ConsoleColor.Red);
+            enemy.Target = player;
             scene1.AddActor(player);
             scene1.AddActor(actor);
             scene1.AddActor(enemy);
