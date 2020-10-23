@@ -135,7 +135,7 @@ namespace MathForGames
             Actor actor = new Actor(0,0,Color.GREEN,'■',ConsoleColor.Green);
             actor.Velocity.X = 1;
 
-            Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
+            Enemy enemy = new Enemy(10, Console.WindowHeight - 9f, Color.GREEN, '■', ConsoleColor.Green);
             Player player = new Player(0, 0,Color.BLUE, '@', ConsoleColor.Red);
             enemy.Target = player;
             scene1.AddActor(player);

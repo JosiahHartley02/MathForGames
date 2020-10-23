@@ -28,14 +28,15 @@ namespace MathForGames
             _alertColor = Color.RED;            
         }
 
-        public bool CheckTargetInSight()
+        public bool CheckTargetInSight(float maxViewingAngle, float maxViewingDistance)
         {
             if (Target == null)
                 return false;
 
-            Vector2 direction = Vector2.Normalize(Position - Target.Position);
-
-            if (Vector2.DotProduct(Forward, direction) > 0)
+            Vector2 direction = Target.Position - Position;
+            float distance = (direction.Magnitude);
+            float angle = (float)Math.Acos(Vector2.DotProduct(Forward, direction.Normalized));
+            if (angle <= maxViewingAngle && distance <= maxViewingDistance)
                 return true;
 
             return false;
@@ -43,7 +44,7 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
-            if(CheckTargetInSight())
+            if(CheckTargetInSight(0.261799f,7))
             {
                 _rayColor = Color.RED;
             }
@@ -52,6 +53,24 @@ namespace MathForGames
                 _rayColor = Color.BLUE;
             }
             base.Update(deltaTime);
+        }
+        public override void Draw()
+        {
+            Raylib.DrawLine(
+                (int)(Position.X * 32 + 16),
+                (int)(Position.Y * 32 + 16),
+                (int)(Position.X * 32 + 1000000),
+                (int)(Position.Y *32 - 261799),
+                Color.PINK
+                );
+            Raylib.DrawLine(
+                (int)(Position.X * 32 + 16),
+                (int)(Position.Y * 32 + 16),
+                (int)(Position.X * 32 + 1000000),
+                (int)(Position.Y * 32 + 261799),
+                Color.PINK
+                );
+            base.Draw();
         }
     }
 }
