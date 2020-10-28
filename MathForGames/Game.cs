@@ -133,7 +133,7 @@ namespace MathForGames
 
             //Creates two actors to add to our scene
             Actor actor = new Actor(0,0,Color.GREEN,'■',ConsoleColor.Green);
-            actor.Velocity.X = 1;
+            actor.Direction.X = 1;
 
             Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
             Player player = new Player(0, 0,Color.BLUE, '@', ConsoleColor.Red);

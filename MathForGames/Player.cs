@@ -39,7 +39,7 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
-            int yVelocity = (int)Velocity.Y;
+            int yVelocity = (int)Direction.Y;
             if (Game.GetKeyPressed((int)KeyboardKey.KEY_W) == true && _jumping == false && _jumpUpdateCounter == 0 && Position.Y == Console.WindowHeight - 7.2f)
             {
                 yVelocity = -1;
@@ -52,8 +52,8 @@ namespace MathForGames
             else if (_jumping == false && Position.Y < Console.WindowHeight - 7.2f)
             { yVelocity = 1; }
             else if (Position.Y > Console.WindowHeight - 7.2f) { yVelocity = 0; Position.Y = Console.WindowHeight - 7.2f; }
-            Velocity = new Vector2(xVelocity, yVelocity);
-            Velocity = Velocity.Normalized * Speed;
+            Direction = new Vector2(xVelocity, yVelocity);
+            Direction = Direction.Normalized * Speed;
             base.Update(deltaTime);
         }
         /*public override void Update(float deltaTime)
