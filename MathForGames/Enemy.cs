@@ -33,7 +33,7 @@ namespace MathForGames
             if (Target == null)
                 return false;
 
-            Vector2 direction = Vector2.Normalize(Position - Target.Position);
+            Vector3 direction = Vector3.Normalize(Transform.Position - Target.Transform.Position);
 
             if (Vector2.DotProduct(Forward, direction) > 0)
                 return true;

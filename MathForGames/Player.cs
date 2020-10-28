@@ -40,7 +40,7 @@ namespace MathForGames
         {
             int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
             int yVelocity = (int)Velocity.Y;
-            if (Game.GetKeyPressed((int)KeyboardKey.KEY_W) == true && _jumping == false && _jumpUpdateCounter == 0 && Position.Y == Console.WindowHeight - 7.2f)
+            if (Game.GetKeyPressed((int)KeyboardKey.KEY_W) == true && _jumping == false && _jumpUpdateCounter == 0 && Transform.Position.Y == Console.WindowHeight - 7.2f)
             {
                 yVelocity = -1;
                 _jumping = true;
@@ -49,9 +49,9 @@ namespace MathForGames
             if (_jumpUpdateCounter > 0)
             { _jumpUpdateCounter -= 1; yVelocity = -1; }
             else if (_jumpUpdateCounter == 0 && _jumping == true) { _jumping = false; yVelocity = 0; }
-            else if (_jumping == false && Position.Y < Console.WindowHeight - 7.2f)
+            else if (_jumping == false && Transform.Position.Y < Console.WindowHeight - 7.2f)
             { yVelocity = 1; }
-            else if (Position.Y > Console.WindowHeight - 7.2f) { yVelocity = 0; Position.Y = Console.WindowHeight - 7.2f; }
+            else if (Transform.Position.Y > Console.WindowHeight - 7.2f) { yVelocity = 0; Transform.Position.Y = Console.WindowHeight - 7.2f; }
             Velocity = new Vector2(xVelocity, yVelocity);
             Velocity = Velocity.Normalized * Speed;
             base.Update(deltaTime);
