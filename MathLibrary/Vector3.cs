@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MathLibrary
 {
-    public class Vector2
+    public class Vector3
     {
         private float _x;
         private float _y;
+        private float _z;
 
         public float X
         {
@@ -31,15 +34,27 @@ namespace MathLibrary
             }
         }
 
+        public float Z
+        {
+            get
+            {
+                return _z;
+            }
+            set
+            {
+                _z = value;
+            }
+        }
+
         public float Magnitude
         {
             get
             {
-                return (float)Math.Sqrt(X * X + Y * Y);
+                return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
             }
         }
 
-        public Vector2 Normalized
+        public Vector3 Normalized
         {
             get
             {
@@ -47,18 +62,20 @@ namespace MathLibrary
             }
         }
 
-        
 
-        public Vector2()
+
+        public Vector3()
         {
             _x = 0;
             _y = 0;
+            _z = 0;
         }
 
-        public Vector2(float x, float y)
+        public Vector3(float x, float y, float z)
         {
             _x = x;
             _y = y;
+            _z = z;
         }
 
         /// <summary>
@@ -66,10 +83,10 @@ namespace MathLibrary
         /// </summary>
         /// <param name="vector">The vector that will be normalized</param>
         /// <returns></returns>
-        public static Vector2 Normalize(Vector2 vector)
+        public static Vector3 Normalize(Vector3 vector)
         {
             if (vector.Magnitude == 0)
-                return new Vector2();
+                return new Vector3();
 
             return vector / vector.Magnitude;
         }
@@ -85,27 +102,24 @@ namespace MathLibrary
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y);
         }
 
-        public static Vector2 operator +(Vector2 lhs, Vector2 rhs)
+        public static Vector3 operator +(Vector3 lhs, Vector3 rhs)
         {
-            return new Vector2(lhs.X + rhs.X, lhs.Y + rhs.Y);
+            return new Vector3(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z);
         }
 
-        public static Vector2 operator -(Vector2 lhs, Vector2 rhs)
+        public static Vector3 operator -(Vector3 lhs, Vector3 rhs)
         {
-            return new Vector2(lhs.X - rhs.X, lhs.Y - rhs.Y);
+            return new Vector3(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z);
         }
 
-        public static Vector2 operator *(Vector2 lhs, float scalar)
+        public static Vector3 operator *(Vector3 lhs, float scalar)
         {
-            return new Vector2(lhs.X * scalar, lhs.Y * scalar);
+            return new Vector3(lhs.X * scalar, lhs.Y * scalar, lhs.Z * scalar);
         }
 
-        public static Vector2 operator /(Vector2 lhs, float scalar)
+        public static Vector3 operator /(Vector3 lhs, float scalar)
         {
-            return new Vector2(lhs.X / scalar, lhs.Y / scalar);
+            return new Vector3(lhs.X / scalar, lhs.Y / scalar, lhs.Z / scalar);
         }
-
-
-
     }
 }
