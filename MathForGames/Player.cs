@@ -33,7 +33,7 @@ namespace MathForGames
         public Player(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, icon, color)
         {
-            
+
         }
 
         /// <param name="x">Position on the x axis</param>
@@ -45,7 +45,7 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/player.png");
-            _transform = new Matrix3(1,0,x,0,1,y,0,0,1);
+            
         }
 
         public override void Update(float deltaTime)
@@ -74,10 +74,8 @@ namespace MathForGames
         {
             if(_sprite != null)
             {
-                _sprite.Draw(_transform);
+                _sprite.Draw(_localTransform);
             }
-                
-            
             base.Draw();
         }
     }

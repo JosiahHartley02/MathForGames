@@ -29,7 +29,7 @@ namespace MathForGames
         public Enemy(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, icon, color)
         {
-
+            _sprite = new Sprite("sprites/enemy.png");
         }
 
         /// <param name="x">Position on the x axis</param>
@@ -40,7 +40,6 @@ namespace MathForGames
         public Enemy(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
-            _alertColor = Color.RED;
             _sprite = new Sprite("sprites/enemy.png");
         }
 
@@ -60,7 +59,7 @@ namespace MathForGames
                 return false;
 
             //Find the vector representing the distance between the actor and its target
-            Vector2 direction = Target.Position - Position;
+            Vector2 direction = Target.LocalPosition - LocalPosition;
             //Get the magnitude of the distance vector
             float distance = direction.Magnitude;
             //Use the inverse cosine to find the angle of the dot product in radians
@@ -77,20 +76,24 @@ namespace MathForGames
         {
             //If the target can be seen change the color to red
             //If the target can't be seen change the color to blue
-            if(CheckTargetInSight(1.5f, 5))
+            /*if(CheckTargetInSight(1.5f, 5))
             {
                 _rayColor = Color.RED;
             }
             else
             {
                 _rayColor = Color.BLUE;
-            }
+            }*/
+            LocalPosition = _parent.WorldPosition * LocalPosition;
+            
             base.Update(deltaTime);
         }
         public override void Draw()
         {
             if (_sprite != null)
-                _sprite.Draw(_transform);
+            {
+                _sprite.Draw(_localTransform);
+            }
             base.Draw();
         }
     }

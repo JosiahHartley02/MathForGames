@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MathLibrary;
 
 namespace MathForGames
 {
     class Scene
     {
         private Actor[] _actors;
+        private Matrix3 _transform;
 
         public bool Started { get; private set; }
 
@@ -14,7 +16,14 @@ namespace MathForGames
         {
             _actors = new Actor[0];
         }
-
+        Matrix3 World
+        {
+            get
+            {
+                return _transform;
+            }
+        }
+        
         public void AddActor(Actor actor)
         {
             //Create a new array with a size one greater than our old array

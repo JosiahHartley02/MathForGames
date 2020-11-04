@@ -193,7 +193,7 @@ namespace MathForGames
 
             //Create the actors to add to our scene
             Actor actor = new Actor(0,0,Color.GREEN,'■',ConsoleColor.Green);
-            Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
+            Enemy enemy = new Enemy(10, 10, Color.GREEN, ' ', ConsoleColor.Green);
             Player player = new Player(0, 1,Color.BLUE, ' ', ConsoleColor.Red);
             actor.Velocity.X = 1;
             enemy.Target = player;
@@ -201,6 +201,10 @@ namespace MathForGames
             player.SetTranslation(new Vector2(10, 10));
             player.SetRotation(0);
             player.SetScale(1, 1);
+            player.AddChild(enemy);
+            enemy.SetTranslation(new Vector2(10, 8));
+            enemy.SetScale(1, 1);
+            enemy.SetRotation(0);
             //Add actors to the scenes
             scene1.AddActor(player);
             scene1.AddActor(actor);
