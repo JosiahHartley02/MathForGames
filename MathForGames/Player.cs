@@ -67,8 +67,9 @@ namespace MathForGames
             Rotation += counterclockwiseRotation * deltaTime;
             Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
             SetScale(_scale.m11 += scale, _scale.m22 += scale);
-            SetRotation(_currentRadianRotation + (rotation * .3f));
-            base.Update(deltaTime);            
+            SetRotation(_currentRadianRotation + (rotation * 4) * deltaTime);
+            base.Update(deltaTime);
+            _globalTransform = _localTransform;
         }
         public override void Draw()
         {

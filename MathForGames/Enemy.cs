@@ -84,9 +84,8 @@ namespace MathForGames
             {
                 _rayColor = Color.BLUE;
             }*/
-            WorldPosition.X = _parent.LocalPosition.X + LocalPosition.X;
-            WorldPosition.Y = _parent.LocalPosition.Y * LocalPosition.Y;
             base.Update(deltaTime);
+            _globalTransform = _parent.GlobalTransform * _localTransform;
         }
         public override void Draw()
         {
