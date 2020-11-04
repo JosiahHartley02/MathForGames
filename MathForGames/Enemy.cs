@@ -93,6 +93,13 @@ namespace MathForGames
             {
                 _sprite.Draw(_globalTransform);
             }
+            Raylib.DrawLine(
+                (int)(WorldPosition.X * 32),
+                (int)(WorldPosition.Y * 32),
+                (int)((_parent.WorldPosition.X) * 32),
+                (int)((_parent.WorldPosition.Y) * 32),
+                Color.YELLOW
+            );
             base.Draw();
         }
     }

@@ -36,6 +36,11 @@ namespace MathForGames
             {
                 return new Vector2(_localTransform.m11, _localTransform.m21);
             }
+            set
+            {
+                Vector2 lookPosition = LocalPosition + value.Normalized;
+                LookAt(lookPosition);
+            }
         }
 
         public Vector2 WorldPosition
@@ -69,6 +74,24 @@ namespace MathForGames
             {
                 _velocity = value;
             }
+        }
+        public void Rotate(float angle)
+        {
+            _currentRadianRotation += angle;
+            SetRotation(_currentRadianRotation);
+        }
+        public void LookAt(Vector2 position)
+        {
+            Vector2 direction = (position - LocalPosition).Normalized; // finds the vector facing towards point we want to look at
+            float dotProd = Vector2.DotProduct(Forward, direction);    //gets  Forward•Direction 
+            if (Math.Abs(dotProd) > 1)                             //sometimes dotprod math is bad due to double
+                return;
+            float angle = (float)Math.Acos(dotProd);               //gets the angle of the dotproduct
+            Vector2 perp = new Vector2(direction.Y, -direction.X);  //creats a vector perpendicular to direction we want to look
+            float perpDot = Vector2.DotProduct(perp, Forward);      // gets Perp•Forward
+            if (perpDot != 0)                                       //if 0 then already facing
+                angle *= -perpDot / Math.Abs(perpDot);              // multiply angle by the negative inverse of perpdot
+            Rotate(angle);                                          //Rotates by the angle needed to look at the target
         }
         public void AddChild(Actor child)
         {
@@ -211,15 +234,15 @@ namespace MathForGames
             Raylib.DrawLine(
                 (int)(WorldPosition.X * 32),
                 (int)(WorldPosition.Y * 32),
-                (int)((WorldPosition.X + _rotation.m11) * 32),
-                (int)((WorldPosition.Y + _rotation.m21) * 32),
+                (int)((WorldPosition.X + _globalTransform.m11) * 32),
+                (int)((WorldPosition.Y + _globalTransform.m21) * 32),
                 Color.BLUE
             );
             Raylib.DrawLine(
                 (int)(WorldPosition.X * 32),
                 (int)(WorldPosition.Y * 32),
-                (int)((WorldPosition.X - _rotation.m12) * 32),
-                (int)((WorldPosition.Y - _rotation.m22) * 32),
+                (int)((WorldPosition.X - _globalTransform.m12) * 32),
+                (int)((WorldPosition.Y - _globalTransform.m22) * 32),
                 Color.RED
                 );
 
