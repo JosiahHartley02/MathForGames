@@ -17,7 +17,7 @@ namespace MathForGames
     {
         protected char _icon = ' ';
         protected Vector2 _velocity;
-        protected Matrix3 _globalTransform;
+        protected Matrix3 _globalTransform = new Matrix3();
         protected Matrix3 _localTransform;
         protected Matrix3 _translation = new Matrix3();
         protected Matrix3 _rotation = new Matrix3();
