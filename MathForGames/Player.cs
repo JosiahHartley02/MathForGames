@@ -12,7 +12,7 @@ namespace MathForGames
     class Player : Actor
     {
         private float _speed = 1;
-
+        Sprite _sprite = new Sprite("sprites/player.png");
         public float Speed
         {
             get
@@ -43,10 +43,10 @@ namespace MathForGames
         public Player(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
-            _transform = new Matrix3(1, 0, x, 0, 1, y, 0, 0, 1);
-            _translate = new Matrix3(1,0,0,0,1,0,0,0,1);
-            _rotation = new Matrix3(1,0,0,0,1,0,0,0,1);
-            _scale = new Matrix3(1,0,0,0,1,0,0,0,1);
+            _transform = new Matrix3(1,0,x,0,1,y,0,0,1);
+            _translation = new Matrix3();
+            _rotation = new Matrix3();
+            _scale = new Matrix3();
         }
 
         public override void Update(float deltaTime)
@@ -56,34 +56,29 @@ namespace MathForGames
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
             int yDirection = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W))
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
-            int yScale = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_UP))
-                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_DOWN));
-            int xScale = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_RIGHT))
-                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_LEFT));
-            int rotation = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_APOSTROPHE))
+            int scale = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_COMMA))
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_PERIOD));
+            float counterclockwiseRotation = (-Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_LEFT))
+                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_RIGHT)) * .1f);
 
             //Set the actors current velocity to be the a vector with the direction found scaled by the speed
-            Translate = new Matrix3(0,0,(xDirection / (float)Math.Sqrt(Math.Pow(xDirection, 2)
-                + (float)Math.Pow(yDirection, 2)) * Speed),0,0, (yDirection
-                / (float)Math.Sqrt(Math.Pow(xDirection, 2)
-                + (float)Math.Pow(yDirection, 2))
-                * Speed), 0,0,0);
-            Scale = new Matrix3(xScale, 0, 0, 0, yScale, 0, 0, 0, 0);
-            Rotate = new Matrix3(Rotate.m11 + rotation, Rotate.m12 + rotation, 0, Rotate.m21 + rotation, Rotate.m22 + rotation, 0, 0, 0, 0);
-            _transform *= _translate * _rotation * _scale;
-            
             Velocity = new Vector2(xDirection, yDirection);
             Velocity = Velocity.Normalized * Speed;
+            Translate += _velocity * deltaTime;
+            Rotation += counterclockwiseRotation * deltaTime;
+            Scale = new Vector2(Scale.X += scale, Scale.Y += scale);
+            _transform =_scale * _rotation * _translation;
             Position = new Vector2(_transform.m13, _transform.m23);
-            base.Update(deltaTime);
-
-            
+            base.Update(deltaTime);            
         }
-        
         public override void Draw()
         {
-            Position = new Vector2(_transform.m13, _transform.m23);
+            if(_sprite != null)
+            {
+                _sprite.Draw(_transform);
+            }
+                
+            
             base.Draw();
         }
     }

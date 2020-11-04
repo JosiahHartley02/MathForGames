@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MathLibrary
 {
-    public class Vector3
+    class Vector3
     {
         private float _x;
         private float _y;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using MathLibrary;
 using Raylib_cs;
@@ -16,7 +17,7 @@ namespace MathForGames
         protected char _icon = ' ';
         protected Vector2 _velocity;
         protected Matrix3 _transform;
-        protected Matrix3 _translate;
+        protected Matrix3 _translation;
         protected Matrix3 _rotation;
         protected Matrix3 _scale;
         protected ConsoleColor _color;
@@ -29,12 +30,6 @@ namespace MathForGames
             {
                 return new Vector2(_transform.m11, _transform.m21);
             }
-            set
-            {
-                _transform.m11 = value.X;
-                _transform.m21 = value.Y;
-            }
-
         }
 
 
@@ -62,20 +57,23 @@ namespace MathForGames
                 _velocity = value;
             }
         }
-        public Matrix3 Translate
+        protected Vector2 Scale
         {
-            get { return new Matrix3(0,0,_translate.m13,0,0, _translate.m23, 0,0,0); }
-            set { _translate = new Matrix3(_translate.m11, _translate.m12, value.m13, _translate.m21, _translate.m22, value.m23, _translate.m31, _translate.m32, _translate.m33); }
+            get { return new Vector2(_scale.m11, _scale.m22); }
+            set { _scale.m11 = value.X; _scale.m22 = value.Y; }
         }
-        public Matrix3 Rotate
+        protected float Rotation
         {
-            get { return new Matrix3(_rotation.m11 - _scale.m11, _rotation.m12,0, _rotation.m21, _rotation.m22 - _scale.m22,0,0,0,0); }
-            set { _rotation =new Matrix3(value.m11, value.m12,_rotation.m13, value.m21, value.m22,_rotation.m23, _rotation.m31, _rotation.m32, _rotation.m33); }
+            get { return _rotation.m11; }
+            set { 
+                _rotation.m11 = (float)Math.Cos(value); _rotation.m12 = -(float)Math.Sin(value);
+                _rotation.m21 = (float)Math.Sin(value); _rotation.m22 = (float)Math.Cos(value); 
+                }
         }
-        public Matrix3 Scale
-        { 
-            get { return new Matrix3(_scale.m11,0,0,0, _scale.m22,0,0,0,0); }
-            set { _scale = new Matrix3(value.m11,_scale.m12, _scale.m13, _scale.m21, value.m22, _scale.m23, _scale.m31, _scale.m32, _scale.m33); }
+        protected Vector2 Translate
+        {
+            get { return new Vector2(_translation.m13, _translation.m23); }
+            set { _translation.m13 = value.X; _translation.m23 = value.Y; }
         }
 
 
@@ -90,8 +88,8 @@ namespace MathForGames
             _transform = new Matrix3();
             Position = new Vector2(x, y);
             _velocity = new Vector2();
-            _color = color;
-            Forward = new Vector2(1, 0);
+            _color = color;/*
+            Forward = new Vector2(1, 0);*/
         }
 
 
@@ -103,20 +101,23 @@ namespace MathForGames
         public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : this(x,y,icon,color)
         {
-            _transform = new Matrix3();
             _rayColor = rayColor;
+            _transform = new Matrix3(0, 0, x * 32, 0, 0, y * 32, 0, 0, 1);
+            _translation = new Matrix3();
+            _rotation = new Matrix3(0, 0, 0, 0, 0, 0, 0, 0, 1);
+            _scale = new Matrix3();
         }
 
         /// <summary>
         /// Updates the actors forward vector to be
         /// the last direction it moved in
         /// </summary>
-        protected void UpdateFacing()
+        private void UpdateFacing()
         {
             if (_velocity.Magnitude <= 0)
                 return;
-
-            Forward = Velocity.Normalized;
+/*
+            Forward = Velocity.Normalized;*/
         }
 
         public virtual void Start()
@@ -128,7 +129,7 @@ namespace MathForGames
         public virtual void Update(float deltaTime)
         {
             //Before the actor is moved, update the direction it's facing
-            UpdateFacing();
+           /* UpdateFacing();*/
 
             //Increase position by the current velocity
             Position += _velocity * deltaTime;
@@ -142,10 +143,17 @@ namespace MathForGames
             Raylib.DrawLine(
                 (int)(Position.X * 32),
                 (int)(Position.Y * 32),
-                (int)((Position.X + Forward.X) * 32),
-                (int)((Position.Y + Forward.Y) * 32),
-                Color.WHITE
+                (int)((Position.X + _rotation.m11) * 32),
+                (int)((Position.Y + _rotation.m21) * 32),
+                Color.BLUE
             );
+            Raylib.DrawLine(
+                (int)(Position.X * 32),
+                (int)(Position.Y * 32),
+                (int)((Position.X - _rotation.m12) * 32),
+                (int)((Position.Y - _rotation.m22) * 32),
+                Color.RED
+                );
 
             //Changes the color of the console text to be this actors color
             Console.ForegroundColor = _color;

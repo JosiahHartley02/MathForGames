@@ -194,7 +194,7 @@ namespace MathForGames
             //Create the actors to add to our scene
             Actor actor = new Actor(0,0,Color.GREEN,'■',ConsoleColor.Green);
             Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
-            Player player = new Player(0, 1,Color.BLUE, '@', ConsoleColor.Red);
+            Player player = new Player(0, 1,Color.BLUE, ' ', ConsoleColor.Red);
             actor.Velocity.X = 1;
             enemy.Target = player;
             player.Speed = 5;
