@@ -198,7 +198,9 @@ namespace MathForGames
             actor.Velocity.X = 1;
             enemy.Target = player;
             player.Speed = 5;
-
+            player.SetTranslation(new Vector2(10, 10));
+            player.SetRotation(0);
+            player.SetScale(1, 1);
             //Add actors to the scenes
             scene1.AddActor(player);
             scene1.AddActor(actor);

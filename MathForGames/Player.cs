@@ -10,9 +10,10 @@ namespace MathForGames
     /// An actor that moves based on input given by the user
     /// </summary>
     class Player : Actor
+
     {
         private float _speed = 1;
-        Sprite _sprite = new Sprite("sprites/player.png");
+        Sprite _sprite;
         public float Speed
         {
             get
@@ -43,10 +44,8 @@ namespace MathForGames
         public Player(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
+            _sprite = new Sprite("sprites/player.png");
             _transform = new Matrix3(1,0,x,0,1,y,0,0,1);
-            _translation = new Matrix3();
-            _rotation = new Matrix3();
-            _scale = new Matrix3();
         }
 
         public override void Update(float deltaTime)
@@ -58,17 +57,17 @@ namespace MathForGames
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
             int scale = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_COMMA))
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_PERIOD));
-            float counterclockwiseRotation = (-Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_LEFT))
-                + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_RIGHT)) * .1f);
+            float rotation = Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_LEFT))
+                - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_RIGHT));
 
             //Set the actors current velocity to be the a vector with the direction found scaled by the speed
             Velocity = new Vector2(xDirection, yDirection);
             Velocity = Velocity.Normalized * Speed;
-            Translate += _velocity * deltaTime;
+            /*Translate += _velocity * deltaTime;
             Rotation += counterclockwiseRotation * deltaTime;
-            Scale = new Vector2(Scale.X += scale, Scale.Y += scale);
-            _transform =_scale * _rotation * _translation;
-            Position = new Vector2(_transform.m13, _transform.m23);
+            Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
+            SetScale(_scale.m11 += scale, _scale.m22 += scale);
+            SetRotation(_currentRadianRotation + (rotation * .3f));
             base.Update(deltaTime);            
         }
         public override void Draw()

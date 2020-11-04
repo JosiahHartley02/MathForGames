@@ -15,6 +15,7 @@ namespace MathForGames
     {
         private Actor _target;
         private Color _alertColor;
+        private Sprite _sprite;
         public Actor Target
         {
             get { return _target; }
@@ -40,6 +41,7 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _alertColor = Color.RED;
+            _sprite = new Sprite("sprites/enemy.png");
         }
 
         /// <summary>
@@ -84,6 +86,12 @@ namespace MathForGames
                 _rayColor = Color.BLUE;
             }
             base.Update(deltaTime);
+        }
+        public override void Draw()
+        {
+            if (_sprite != null)
+                _sprite.Draw(_transform);
+            base.Draw();
         }
     }
 }
