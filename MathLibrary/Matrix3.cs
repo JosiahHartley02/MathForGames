@@ -23,7 +23,31 @@ namespace MathLibrary
             this.m21 = m21; this.m22 = m22; this.m23 = m23;
             this.m31 = m31; this.m32 = m32; this.m33 = m33;
         }
-
+        public static Matrix3 CreateRotation(float radians)
+        {
+            return new Matrix3(
+                (float)Math.Cos(radians), (float)Math.Sin(radians), 0,
+                -(float)Math.Sin(radians), (float)Math.Cos(radians), 0,
+                 0, 0, 1);
+        }
+        public static Matrix3 CreateTranslation(Vector2 Position)
+        {
+            return new Matrix3
+                (
+                   0, 0, Position.X,
+                   0, 0, Position.Y,
+                   0, 0, 1
+                );
+        }
+        public static Matrix3 CreateScale(float x, float y)
+        {
+            return new Matrix3
+                (
+                x, 0, 0,
+                0, y, 0,
+                0, 0, 1
+                );
+        }
         public static Matrix3 operator +(Matrix3 lhs, Matrix3 rhs)
         {
             return new Matrix3

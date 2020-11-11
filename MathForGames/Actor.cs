@@ -141,13 +141,11 @@ namespace MathForGames
         }
         public void SetTranslation(Vector2 position)
         {
-            _translation.m13 = position.X;
-            _translation.m23 = position.Y;
+            _translation = Matrix3.CreateTranslation(position);
         }
         public void SetRotation(float radians)
         {
-            _rotation.m11 = (float)Math.Cos(radians); _rotation.m12 = (float)Math.Sin(radians);
-            _rotation.m21 = -(float)Math.Sin(radians); _rotation.m22 = (float)Math.Cos(radians);
+            _rotation = Matrix3.CreateRotation(radians);
             _currentRadianRotation = radians;
         }
         public void SetRotationSpeed(float speed)
@@ -156,8 +154,7 @@ namespace MathForGames
         }
         public void SetScale(float x, float y)
         {
-            _scale.m11 = x;
-            _scale.m22 = y;
+            _scale = Matrix3.CreateScale(x, y);
         }
         private void UpdateTransform()
         {
