@@ -48,16 +48,15 @@ namespace MathForGames3D
             Actor venus = new Actor(2, 0, 0,Color.GRAY);
             Actor earth = new Actor(3, 0, 0, Color.GREEN);
             Actor moon = new Actor(1,0,0, Color.GRAY);
-            sun.AddChild(mercury);
-            sun.AddChild(venus);
-            sun.AddChild(earth);
-            earth.AddChild(moon);
             SolarSystem.AddActor(sun);
             SolarSystem.AddActor(mercury);
             SolarSystem.AddActor(venus);
             SolarSystem.AddActor(earth);
             SolarSystem.AddActor(moon);
-
+            sun.AddChild(mercury);
+            sun.AddChild(venus);
+            sun.AddChild(earth);
+            earth.AddChild(moon);
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(SolarSystem);
             SetCurrentScene(startingSceneIndex);
@@ -77,8 +76,8 @@ namespace MathForGames3D
             Raylib.BeginMode3D(_camera);
 
             Raylib.ClearBackground(Color.RAYWHITE);
-
             Raylib.DrawGrid(20, 1.0f);
+            _scenes[_currentSceneIndex].Draw();
 
             Raylib.EndMode3D();
             Raylib.EndDrawing();

@@ -12,7 +12,8 @@ namespace MathForGames3D
 
         public bool Started { get; private set; }
 
-        public Scene() { _actors = new Actor[0]; }
+        public Scene()
+        { _actors = new Actor[0]; }
 
         public Matrix4 World { get { return _transform; } }
 
