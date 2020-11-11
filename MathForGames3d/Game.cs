@@ -57,6 +57,12 @@ namespace MathForGames3D
             sun.AddChild(venus);
             sun.AddChild(earth);
             earth.AddChild(moon);
+            sun.SetScale(1.5f, 1.5f, 1.5f);
+            mercury.SetScale(0.3f, 0.3f, 0.3f);
+            venus.SetScale(0.4f, 0.4f, 0.4f);
+            earth.SetScale(0.5f, 0.5f, 0.5f);
+            moon.SetScale(0.2f, 0.2f, 0.2f);
+            moon.SetTranslation(new Vector3(2, 0, 0));
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(SolarSystem);
             SetCurrentScene(startingSceneIndex);
