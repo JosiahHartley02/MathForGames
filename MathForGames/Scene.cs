@@ -8,7 +8,7 @@ namespace MathForGames
     class Scene
     {
         private Actor[] _actors;
-        private Matrix3 _transform;
+        private Matrix3 _transform = new Matrix3();
 
         public bool Started { get; private set; }
 
@@ -16,7 +16,7 @@ namespace MathForGames
         {
             _actors = new Actor[0];
         }
-        Matrix3 World
+        public Matrix3 World
         {
             get
             {
@@ -110,7 +110,32 @@ namespace MathForGames
             //Return whether or not the removal was successful
             return actorRemoved;
         }
-
+        private void CheckCollision()
+        {
+            for(int i = 0; i < _actors.Length; i++)
+            {
+                _actors[i].isColliding = false;
+                for (int j = 0; j < _actors.Length; j++)
+                {
+                    float distance = (float)Math.Sqrt(Math.Pow((_actors[i].WorldPosition.X - _actors[j].WorldPosition.X),2) + Math.Pow((_actors[i].WorldPosition.Y - _actors[j].WorldPosition.Y),2));
+                    if (distance <= _actors[i].CollisionRadius)
+                    {
+                        _actors[i].isColliding = true;
+                        _actors[j].isColliding = true;
+                    }
+                    /*if(_actors[i].WorldPosition == _actors[j].WorldPosition)
+                    {
+                        _actors[i].isColliding = true;
+                        _actors[j].isColliding = true;
+                    }
+                    else
+                    {
+                        _actors[i].isColliding = false;
+                    }*/
+                }
+            }
+            
+        }
         public virtual void Start()
         {
             Started = true;
@@ -125,6 +150,7 @@ namespace MathForGames
 
                 _actors[i].Update(deltaTime);
             }
+            CheckCollision();
         }
 
         public virtual void Draw()

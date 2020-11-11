@@ -23,13 +23,23 @@ namespace MathForGames
         protected Matrix3 _rotation = new Matrix3();
         protected Matrix3 _scale = new Matrix3();
         protected float _currentRadianRotation;
+        protected float _rotationspeed = 0;
         protected ConsoleColor _color;
         protected Color _rayColor;
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         protected bool isChild = false;
+        protected bool _isColliding = false;
+        protected float _collisionRadius = 1;
         public bool Started { get; private set; }
 
+        public float CollisionRadius
+        { get { return _collisionRadius; } set { _collisionRadius = value; } }
+        public bool isColliding
+        {
+            get { return _isColliding; }
+            set { _isColliding = value; }
+        }
         public Vector2 Forward
         {
             get 
@@ -140,6 +150,10 @@ namespace MathForGames
             _rotation.m21 = -(float)Math.Sin(radians); _rotation.m22 = (float)Math.Cos(radians);
             _currentRadianRotation = radians;
         }
+        public void SetRotationSpeed(float speed)
+        {
+            _rotationspeed = speed;
+        }
         public void SetScale(float x, float y)
         {
             _scale.m11 = x;
@@ -147,8 +161,12 @@ namespace MathForGames
         }
         private void UpdateTransform()
         {
-
+            SetRotation(_rotationspeed + _currentRadianRotation);
             _localTransform = _translation *_rotation * _scale;
+            if (_parent != null)
+                _globalTransform = _parent._globalTransform * _localTransform;
+            else
+                _globalTransform = Game.GetCurrentScene().World * _localTransform;
         }
        /* protected Vector2 Scale
         {

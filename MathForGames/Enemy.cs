@@ -40,6 +40,11 @@ namespace MathForGames
         public Enemy(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
+            if (color == ConsoleColor.Black) 
+            {
+                _sprite = new Sprite("sprites/bullet.png");
+                return;
+            }
             _sprite = new Sprite("sprites/enemy.png");
         }
 
@@ -85,21 +90,23 @@ namespace MathForGames
                 _rayColor = Color.BLUE;
             }*/
             base.Update(deltaTime);
-            _globalTransform = _parent.GlobalTransform * _localTransform;
         }
         public override void Draw()
         {
-            if (_sprite != null)
+            if (_sprite != null && isColliding == false)
             {
                 _sprite.Draw(_globalTransform);
             }
-            Raylib.DrawLine(
+            if (_parent != null && isColliding == false)
+            {
+                Raylib.DrawLine(
                 (int)(WorldPosition.X * 32),
                 (int)(WorldPosition.Y * 32),
                 (int)((_parent.WorldPosition.X) * 32),
                 (int)((_parent.WorldPosition.Y) * 32),
                 Color.YELLOW
-            );
+                );
+            }
             base.Draw();
         }
     }

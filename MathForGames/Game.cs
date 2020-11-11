@@ -192,23 +192,34 @@ namespace MathForGames
             Scene scene2 = new Scene();
 
             //Create the actors to add to our scene
-            Actor actor = new Actor(0,0,Color.GREEN,'■',ConsoleColor.Green);
-            Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
+            
+            Enemy orbiter = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
             Player player = new Player(0, 1,Color.BLUE, ' ', ConsoleColor.Red);
-            actor.Velocity.X = 1;
-            enemy.Target = player;
+            Enemy orbitersmoon = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Black);
+            Enemy collisionTest = new Enemy(10, 10, Color.GREEN, ' ', ConsoleColor.Black);
+            orbiter.Target = player;
             player.Speed = 5;
             player.SetTranslation(new Vector2(10, 10));
             player.SetRotation(0);
             player.SetScale(1, 1);
-            player.AddChild(enemy);
-            enemy.SetTranslation(new Vector2(0, 5));
-            enemy.SetScale(1, 1);
-            enemy.SetRotation(0);
+            orbiter.SetTranslation(new Vector2(0, 5));
+            orbiter.SetScale(1, 1);
+            orbiter.SetRotation(0);
+            orbiter.SetRotationSpeed(.1f);
+            orbitersmoon.SetTranslation(new Vector2(0, 5));
+            orbitersmoon.SetScale(1, 1);
+            orbitersmoon.SetRotation(0);
+            collisionTest.SetTranslation(new Vector2(2, 0));
+            collisionTest.SetRotation(0);
+            collisionTest.SetScale(1,1);
             //Add actors to the scenes
             scene1.AddActor(player);
-            scene1.AddActor(actor);
-            scene1.AddActor(enemy);
+            scene1.AddActor(orbiter);
+            scene1.AddActor(orbitersmoon);
+            /*scene1.AddActor(collisionTest);*/
+            player.AddChild(orbiter);
+            orbiter.AddChild(orbitersmoon);
+            orbitersmoon.AddChild(collisionTest);
             scene2.AddActor(player);
             
             //Sets the starting scene index and adds the scenes to the scenes array

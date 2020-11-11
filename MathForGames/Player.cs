@@ -57,8 +57,8 @@ namespace MathForGames
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
             int scale = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_COMMA))
                 + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_PERIOD));
-            float rotation = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_LEFT))
-                - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_RIGHT))) * 4;
+            float rotation = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Z))
+                - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_X))) * 4;
 
             //Set the actors current velocity to be the a vector with the direction found scaled by the speed
             Velocity = new Vector2(xDirection, yDirection);
@@ -67,13 +67,13 @@ namespace MathForGames
             Rotation += counterclockwiseRotation * deltaTime;
             Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
             SetScale(_scale.m11 += scale, _scale.m22 += scale);
-            Rotate(4 * deltaTime);
+            Rotate(rotation * deltaTime);
             base.Update(deltaTime);
             _globalTransform = _localTransform;
         }
         public override void Draw()
         {
-            if(_sprite != null)
+            if(_sprite != null && isColliding == false)
             {
                 _sprite.Draw(_localTransform);
             }
