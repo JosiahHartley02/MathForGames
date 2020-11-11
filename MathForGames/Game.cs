@@ -205,7 +205,7 @@ namespace MathForGames
             orbiter.SetTranslation(new Vector2(0, 5));
             orbiter.SetScale(1, 1);
             orbiter.SetRotation(0);
-            orbiter.SetRotationSpeed(.1f);
+            orbiter.SetRotationSpeed(-.1f);
             orbitersmoon.SetTranslation(new Vector2(0, 5));
             orbitersmoon.SetScale(1, 1);
             orbitersmoon.SetRotation(0);

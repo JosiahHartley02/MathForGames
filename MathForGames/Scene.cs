@@ -120,8 +120,8 @@ namespace MathForGames
                     float distance = (float)Math.Sqrt(Math.Pow((_actors[i].WorldPosition.X - _actors[j].WorldPosition.X),2) + Math.Pow((_actors[i].WorldPosition.Y - _actors[j].WorldPosition.Y),2));
                     if (distance <= _actors[i].CollisionRadius)
                     {
-                        _actors[i].isColliding = true;
-                        _actors[j].isColliding = true;
+                        _actors[i].isColliding = false;
+                        _actors[j].isColliding = false;
                     }
                     /*if(_actors[i].WorldPosition == _actors[j].WorldPosition)
                     {

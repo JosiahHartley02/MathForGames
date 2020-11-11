@@ -154,7 +154,7 @@ namespace MathForGames
         }
         public void SetScale(float x, float y)
         {
-            _scale = Matrix3.CreateScale(x, y);
+            _scale = Matrix3.CreateScale(x,y);
         }
         private void UpdateTransform()
         {

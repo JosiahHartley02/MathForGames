@@ -66,7 +66,7 @@ namespace MathForGames
             /*Translate += _velocity * deltaTime;
             Rotation += counterclockwiseRotation * deltaTime;
             Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
-            SetScale(_scale.m11 += scale, _scale.m22 += scale);
+            SetScale(_scale.m11 += (scale * .1f), _scale.m22 += (scale *.1f));
             Rotate(rotation * deltaTime);
             base.Update(deltaTime);
             _globalTransform = _localTransform;

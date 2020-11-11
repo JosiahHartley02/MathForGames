@@ -34,8 +34,8 @@ namespace MathLibrary
         {
             return new Matrix3
                 (
-                   0, 0, Position.X,
-                   0, 0, Position.Y,
+                   1, 0, Position.X,
+                   0, 1, Position.Y,
                    0, 0, 1
                 );
         }
