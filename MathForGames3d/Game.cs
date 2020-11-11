@@ -8,6 +8,7 @@ namespace MathForGames3D
 {
     class Game
     {
+        //create scene, actor, matrix4, rotation should apply to x y and z, and vector 4
         private static bool _gameOver;
         private Camera3D _camera = new Camera3D();
         public static bool GameOver
@@ -36,8 +37,9 @@ namespace MathForGames3D
             Raylib.BeginMode3D(_camera);
 
             Raylib.ClearBackground(Color.RAYWHITE);
+            Raylib.DrawSphere(new System.Numerics.Vector3(), 1, Color.BLUE);
 
-            Raylib.DrawGrid(10, 1.0f);
+            Raylib.DrawGrid(20, 1.0f);
 
             Raylib.EndMode3D();
             Raylib.EndDrawing();
@@ -51,7 +53,7 @@ namespace MathForGames3D
         public void Run()
         {
             Start();
-            while (!_gameOver)
+            while (!_gameOver && !Raylib.WindowShouldClose())
             {
                 Update();
                 Draw();
