@@ -8,12 +8,25 @@ namespace MathForGames3D
 {
     class Game
     {
-        //create scene, actor, matrix4, rotation should apply to x y and z, and vector 4
+        //create scene, actor, matrix4, and vector 4
         private static bool _gameOver;
+        private static Scene[] _scenes;
         private Camera3D _camera = new Camera3D();
+        private static int _currentSceneIndex;
         public static bool GameOver
         {
             get { return _gameOver; } set { _gameOver = value; }
+        }
+        public static int CurrentSceneIndex
+        {
+            get
+            {
+                return _currentSceneIndex;
+            }
+        }
+        public static Scene GetCurrentScene()
+        {
+            return _scenes[_currentSceneIndex];
         }
         private void Start()
         {
