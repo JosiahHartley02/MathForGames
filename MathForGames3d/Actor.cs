@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames3D
 {
     class Actor
     {
         protected Matrix4 _globalTransform = new Matrix4();
-        protected Matrix4 _localTransform;
+        protected Matrix4 _localTransform = new Matrix4();
         protected Matrix4 _translation = new Matrix4();
         protected Matrix4 _rotation = new Matrix4();
         protected Matrix4 _scale = new Matrix4();
-        protected Vector3 _velocity;
+        protected Vector3 _velocity = new Vector3(0, 0, 0);
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         protected bool isChild = false;
         protected float _currentRadianRotation;
         protected float _rotationspeed = 0;
+        protected Color defaultColor = Color.WHITE;
         public bool Started { get; private set; }
-        public Actor(float x, float y, float z)
+        public Actor(float x, float y, float z, Color color)
         {
             _localTransform = new Matrix4();
             LocalPosition = new Vector3(x, y, z);
+            defaultColor = color;
         }
         public Vector3 Forward
         {
@@ -140,12 +143,7 @@ namespace MathForGames3D
         }
         public virtual void Draw()
         {
-            /*if (WorldPosition.X >= 0 && WorldPosition.X < Console.WindowWidth
-                && WorldPosition.Y >= 0 && WorldPosition.Y < Console.WindowHeight)
-            {
-                Console.SetCursorPosition((int)WorldPosition.X, (int)WorldPosition.Y);
-                Console.Write();
-            }*/
+            Raylib.DrawSphere(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), 1, defaultColor);
         }
         public virtual void End()
         {

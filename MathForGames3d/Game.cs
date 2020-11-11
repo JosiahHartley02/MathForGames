@@ -10,7 +10,7 @@ namespace MathForGames3D
     {
         //create scene, actor, matrix4, and vector 4
         private static bool _gameOver;
-        private static Scene[] _scenes;
+        private static Scene[] _scenes = new Scene[0];
         private Camera3D _camera = new Camera3D();
         private static int _currentSceneIndex;
         public static bool GameOver
@@ -42,12 +42,33 @@ namespace MathForGames3D
             _camera.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
             _camera.fovy = 45.0f;
             _camera.type = CameraType.CAMERA_PERSPECTIVE;
+            Scene SolarSystem = new Scene();
+            Actor sun = new Actor(0, 0, 0, Color.YELLOW);
+            Actor mercury = new Actor(1, 0, 0, Color.DARKGRAY);
+            Actor venus = new Actor(2, 0, 0,Color.GRAY);
+            Actor earth = new Actor(3, 0, 0, Color.GREEN);
+            Actor moon = new Actor(1,0,0, Color.GRAY);
+            sun.AddChild(mercury);
+            sun.AddChild(venus);
+            sun.AddChild(earth);
+            earth.AddChild(moon);
+            SolarSystem.AddActor(sun);
+            SolarSystem.AddActor(mercury);
+            SolarSystem.AddActor(venus);
+            SolarSystem.AddActor(earth);
+            SolarSystem.AddActor(moon);
 
+            int startingSceneIndex = 0;
+            startingSceneIndex = AddScene(SolarSystem);
+            SetCurrentScene(startingSceneIndex);
         }
 
-        private void Update()
+        public void Update(float deltaTime)
         {
+            if (!_scenes[_currentSceneIndex].Started)
+                _scenes[_currentSceneIndex].Start();
 
+            _scenes[_currentSceneIndex].Update(deltaTime);
         }
 
         private void Draw()
@@ -56,7 +77,6 @@ namespace MathForGames3D
             Raylib.BeginMode3D(_camera);
 
             Raylib.ClearBackground(Color.RAYWHITE);
-            Raylib.DrawSphere(new System.Numerics.Vector3(), 1, Color.BLUE);
 
             Raylib.DrawGrid(20, 1.0f);
 
@@ -64,9 +84,10 @@ namespace MathForGames3D
             Raylib.EndDrawing();
         }
 
-        private void End()
+        public void End()
         {
-
+            if (_scenes[_currentSceneIndex].Started)
+                _scenes[_currentSceneIndex].End();
         }
 
         public void Run()
@@ -74,7 +95,8 @@ namespace MathForGames3D
             Start();
             while (!_gameOver && !Raylib.WindowShouldClose())
             {
-                Update();
+                float deltaTime = Raylib.GetFrameTime();
+                Update(deltaTime);
                 Draw();
             }
             End();
