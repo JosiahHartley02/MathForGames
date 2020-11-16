@@ -49,9 +49,18 @@ namespace MathLibrary
 
             return vector / vector.Magnitude;
         }
-       public static float DotProduct(Vector3 lhs, Vector3 rhs)
+       public static float DotProduct(Vector4 lhs, Vector4 rhs)
         {
-            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z) + (lhs.W * rhs.W);
+        }
+        public static Vector4 CrossProduct(Vector4 lhs, Vector4 rhs)
+        {
+            return new Vector4(
+                (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
+                (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                (lhs.X * rhs.Y) - (lhs.Y * rhs.X),
+                0
+                );
         }
 
         public static Vector4 operator +(Vector4 lhs, Vector4 rhs)
@@ -68,7 +77,19 @@ namespace MathLibrary
         {
             return new Vector4(lhs.X * scalar, lhs.Y * scalar, lhs.Z * scalar, lhs.W * scalar);
         }
-
+        public static Vector4 operator *(float scalar, Vector4 lhs)
+        {
+            return new Vector4(lhs.X * scalar, lhs.Y * scalar, lhs.Z * scalar, lhs.W * scalar);
+        }
+        public static Vector4 operator *(Matrix4 lhs, Vector4 rhs)
+        {
+            return new Vector4(
+                (lhs.m11 * rhs.X) + (lhs.m12 * rhs.Y) + (lhs.m13 * rhs.Z) + (lhs.m14 * rhs.W),
+                (lhs.m21 * rhs.X) + (lhs.m22 * rhs.Y) + (lhs.m23 * rhs.Z) + (lhs.m24 * rhs.W),
+                (lhs.m31 * rhs.X) + (lhs.m32 * rhs.Y) + (lhs.m33 * rhs.Z) + (lhs.m34 * rhs.W),
+                (lhs.m41 * rhs.X) + (lhs.m42 * rhs.Y) + (lhs.m43 * rhs.Z) + (lhs.m44 * rhs.W)
+                );
+        }
         public static Vector4 operator /(Vector4 lhs, float scalar)
         {
             return new Vector4(lhs.X / scalar, lhs.Y / scalar, lhs.Z / scalar, lhs.W / scalar);
