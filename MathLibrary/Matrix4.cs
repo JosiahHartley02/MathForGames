@@ -19,33 +19,34 @@ namespace MathLibrary
                        float m31, float m32, float m33, float m34,
                        float m41, float m42, float m43, float m44)
         {
-            this.m11 = m11; this.m12 = m12; this.m13 = m13;
-            this.m21 = m21; this.m22 = m22; this.m23 = m23;
-            this.m31 = m31; this.m32 = m32; this.m33 = m33;
+            this.m11 = m11; this.m12 = m12; this.m13 = m13; this.m14 = m14;
+            this.m21 = m21; this.m22 = m22; this.m23 = m23; this.m24 = m24;
+            this.m31 = m31; this.m32 = m32; this.m33 = m33; this.m34 = m34;
+            this.m41 = m41; this.m42 = m42; this.m43 = m43; this.m44 = m44;
         }
         public static Matrix4 CreateRotationX(float radians)
         {
             return new Matrix4(
                 1, 0, 0, 0,
-                0, (float)Math.Cos(radians), (float)-Math.Sin(radians), 0,
-                0, (float)Math.Sin(radians), (float)Math.Cos(radians), 0,
+                0, (float)Math.Cos(radians), (float)Math.Sin(radians), 0,
+                0, (float)-Math.Sin(radians), (float)Math.Cos(radians), 0,
                 0, 0, 0, 1
                 );
         }
         public static Matrix4 CreateRotationY(float radians)
         {
             return new Matrix4(
-                 (float)Math.Cos(radians), 0, (float)Math.Sin(radians), 0,
+                 (float)Math.Cos(radians), 0, (float)-Math.Sin(radians), 0,
                  0, 1, 0, 0,
-                 (float)-Math.Sin(radians), 0, (float)Math.Cos(radians), 0,
+                 (float)Math.Sin(radians), 0, (float)Math.Cos(radians), 0,
                  0, 0, 0, 1
                  );
         }
         public static Matrix4 CreateRotationZ(float radians)
         {
             return new Matrix4(
-                  (float)Math.Cos(radians), (float)-Math.Sin(radians), 0, 0,
-                  (float)Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
+                  (float)Math.Cos(radians), (float)Math.Sin(radians), 0, 0,
+                  (float)-Math.Sin(radians), (float)Math.Cos(radians), 0, 0,
                   0, 0, 1, 0,
                   0, 0, 0, 1
                   );
@@ -101,7 +102,7 @@ namespace MathLibrary
                     //Row1, Column3
                     lhs.m11 * rhs.m13 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m33 + lhs.m14 * rhs.m43,
                     //Row 1 Colum 4
-                    lhs.m11 * rhs.m14 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m34 + lhs.m44 * rhs.m44,
+                    lhs.m11 * rhs.m14 + lhs.m12 * rhs.m23 + lhs.m13 * rhs.m34 + lhs.m14 * rhs.m44,
 
                     //Row2, Column1
                     lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21 + lhs.m23 * rhs.m31 + lhs.m24 * rhs.m41,
