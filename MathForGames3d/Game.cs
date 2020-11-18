@@ -44,10 +44,10 @@ namespace MathForGames3D
             _camera.type = CameraType.CAMERA_PERSPECTIVE;
             Scene SolarSystem = new Scene();
             Actor sun = new Actor(0, 0, 0, Color.YELLOW);
-            Actor mercury = new Actor(1, 0, 0, Color.DARKGRAY);
-            Actor venus = new Actor(2, 0, 0,Color.GRAY);
-            Actor earth = new Actor(3, 0, 0, Color.GREEN);
-            Actor moon = new Actor(1,0,0, Color.GRAY);
+            Actor mercury = new Actor(0, 0, 0, Color.DARKGRAY);
+            Actor venus = new Actor(0, 0, 0,Color.GRAY);
+            Actor earth = new Actor(0, 0, 0, Color.GREEN);
+            Actor moon = new Actor(0,0,0, Color.GRAY);
             SolarSystem.AddActor(sun);
             SolarSystem.AddActor(mercury);
             SolarSystem.AddActor(venus);
@@ -57,12 +57,16 @@ namespace MathForGames3D
             sun.AddChild(venus);
             sun.AddChild(earth);
             earth.AddChild(moon);
-            sun.SetScale(1.5f, 1.5f, 1.5f);
-            mercury.SetScale(0.3f, 0.3f, 0.3f);
-            venus.SetScale(0.4f, 0.4f, 0.4f);
-            earth.SetScale(0.5f, 0.5f, 0.5f);
-            moon.SetScale(0.2f, 0.2f, 0.2f);
-            moon.SetTranslation(new Vector3(2, 0, 0));
+            sun.SetScale(1f);
+            mercury.SetScale(0.3f);
+            venus.SetScale(0.4f);
+            earth.SetScale(0.5f);
+            moon.SetScale(0.2f);
+            sun.SetPosition(0, 0, 0);
+            mercury.SetTranslation(1.5f, 0, 1.5f);
+            venus.SetTranslation(2.5f, 0, 2.5f);
+            earth.SetTranslation(3.5f, 0, 3.5f);
+            moon.SetTranslation(1, 0, 1);
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(SolarSystem);
             SetCurrentScene(startingSceneIndex);
@@ -70,6 +74,9 @@ namespace MathForGames3D
 
         public void Update(float deltaTime)
         {
+            _camera.position = new System.Numerics.Vector3((Convert.ToInt32(_camera.position.X + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)))),
+                (Convert.ToInt32(_camera.position.Y + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S)))),
+                _camera.position.Z);
             if (!_scenes[_currentSceneIndex].Started)
                 _scenes[_currentSceneIndex].Start();
 

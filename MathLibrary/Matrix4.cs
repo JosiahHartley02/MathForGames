@@ -55,9 +55,19 @@ namespace MathLibrary
         {
             return new Matrix4
                 (
-                   1, 0, Position.X, 0,
-                   0, 1, Position.Y, 0,
-                   0, 0, Position.Z, 0,
+                   1, 0, 0, Position.X,
+                   0, 1, 0, Position.Y,
+                   0, 0, 1, Position.Z,
+                   0, 0, 0, 1
+                );
+        }
+        public static Matrix4 CreateTranslation(float x, float y, float z)
+        {
+            return new Matrix4
+                (
+                   1, 0, 0, x,
+                   0, 1, 0, y,
+                   0, 0, 1, z,
                    0, 0, 0, 1
                 );
         }

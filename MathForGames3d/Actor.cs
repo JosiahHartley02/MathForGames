@@ -13,12 +13,13 @@ namespace MathForGames3D
         protected Matrix4 _translation = new Matrix4();
         protected Matrix4 _rotation = new Matrix4();
         protected Matrix4 _scale = new Matrix4();
+        protected float Scale { get; set; }
         protected Vector3 _velocity = new Vector3(0, 0, 0);
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         protected bool isChild = false;
         protected float _currentRadianRotation;
-        protected float _rotationspeed = 0;
+        protected float _rotationspeedX = 0;
         protected Color defaultColor = Color.WHITE;
         public bool Started { get; private set; }
         public Actor(float x, float y, float z, Color color)
@@ -34,7 +35,7 @@ namespace MathForGames3D
         }
         public Vector3 WorldPosition
         {
-            get { return new Vector3(_globalTransform.m13, _globalTransform.m23, _globalTransform.m33); }
+            get { return new Vector3(_globalTransform.m14, _globalTransform.m24, _globalTransform.m34); }
         }
         public Matrix4 GlobalTransform
         {
@@ -44,13 +45,13 @@ namespace MathForGames3D
         {
             get
             {
-                return new Vector3(_localTransform.m13, _localTransform.m23, _localTransform.m33);
+                return new Vector3(_localTransform.m14, _localTransform.m24, _localTransform.m34);
             }
             set
             {
-                _translation.m13 = value.X;
-                _translation.m23 = value.Y;
-                _translation.m33 = value.Z;
+                _translation.m14 = value.X;
+                _translation.m24 = value.Y;
+                _translation.m34 = value.Z;
             }
         }
 
@@ -110,6 +111,16 @@ namespace MathForGames3D
         {
             _translation = Matrix4.CreateTranslation(position);
         }
+        public void SetTranslation(float x,float y,float z)
+        {
+            _translation.m14 = x; _translation.m24 = y; _translation.m34 = z;
+        }
+        public void SetPosition(float x, float y,float z)
+        {
+            _localTransform.m14 = x;
+            _localTransform.m24 = y;
+            _localTransform.m34 = z;
+        }
         public void SetRotation(float radians)
         {
             _rotation = Matrix4.CreateRotationX(radians);
@@ -117,20 +128,25 @@ namespace MathForGames3D
         }
         public void SetRotationSpeed(float speed)
         {
-            _rotationspeed = speed;
+            _rotationspeedX = speed;
         }
         public void SetScale(float x, float y, float z)
         {
             _scale = Matrix4.CreateScale(x, y, z);
         }
+        public void SetScale(float scale)
+        {
+            _scale = Matrix4.CreateScale(scale, scale, scale);
+            Scale = scale;
+        }
         private void UpdateTransform()
         {
-            SetRotation(_rotationspeed + _currentRadianRotation);
+            _rotation = Matrix4.CreateRotationY(_rotationspeedX += _currentRadianRotation);
             _localTransform = _translation * _rotation * _scale;
             if (_parent != null)
-                _globalTransform = _parent._globalTransform * _localTransform;
+            { _globalTransform = _parent._globalTransform * _localTransform; }
             else
-                _globalTransform = Game.GetCurrentScene().World * _localTransform;
+            { _globalTransform = Game.GetCurrentScene().World * _localTransform; }
         }
         public virtual void Start()
         {
@@ -139,11 +155,13 @@ namespace MathForGames3D
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
+            _rotationspeedX = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_R)) * 0.02f;
+            _currentRadianRotation += _rotationspeedX;
             LocalPosition += _velocity * deltaTime;
         }
         public virtual void Draw()
         {
-            Raylib.DrawSphere(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), 1, defaultColor);
+            Raylib.DrawSphere(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), Scale, defaultColor);
         }
         public virtual void End()
         {
