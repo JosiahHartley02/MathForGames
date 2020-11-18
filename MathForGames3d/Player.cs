@@ -20,14 +20,16 @@ namespace MathForGames3D
         }
         public override void Draw()
         {
-           /* Raylib.DrawCylinder(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), Scale * .3f, Scale * .3f, 1, 100, defaultColor);*/
-            Raylib.DrawCube(new System.Numerics.Vector3(WorldPosition.X - .4f, WorldPosition.Y, WorldPosition.Z), .3f, .3f, 1f, defaultColor);
-            Raylib.DrawCube(new System.Numerics.Vector3(WorldPosition.X + .4f, WorldPosition.Y, WorldPosition.Z), .3f, .3f, 1f, defaultColor);
-            Raylib.DrawCube(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y + .3f, WorldPosition.Z), .7f, .3f, 1f, defaultColor);
-            Raylib.DrawCube(new System.Numerics.Vector3(WorldPosition.X , WorldPosition.Y + .6f, WorldPosition.Z), .3f, .3f, 2f, Color.BLACK);
+            Raylib.DrawSphere(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), .3f, Color.BLUE);
         }
         public override void Update(float deltaTime)
         {
+            int xDirection = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) - (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D))));
+            int zDirection = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) - (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S))));
+            int yRotation = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q)) - (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E))));
+            _translation.m14 += (xDirection * 1f) * deltaTime;
+            _translation.m34 += (zDirection * 1f) * deltaTime;
+            RotateY(yRotation);
             base.Update(deltaTime);
         }
         public override void End()

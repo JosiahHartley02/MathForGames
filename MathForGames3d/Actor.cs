@@ -20,7 +20,6 @@ namespace MathForGames3D
         protected bool isChild = false;
         protected float _currentRadianRotationY;
         public float RadianRotationY = 0;
-        protected float _rotationspeedX = 0;
         protected Color defaultColor = Color.WHITE;
         private float _heatlh;
         public float Health { get; set; }
@@ -41,9 +40,6 @@ namespace MathForGames3D
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
-            _rotationspeedX = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_R)) * 0.02f;
-            _currentRadianRotationY += _rotationspeedX;
-            LocalPosition += _velocity * deltaTime;
         }
         public virtual void Draw()
         {
@@ -127,11 +123,7 @@ namespace MathForGames3D
             this.isChild = false;
             return childRemoved;
         }
-        public void Rotate(float angle)
-        {
-            _currentRadianRotationY += angle;
-            SetRotation(_currentRadianRotationY);
-        }
+        
         public void SetTranslation(Vector3 position)
         {
             _translation = Matrix4.CreateTranslation(position);
@@ -146,14 +138,14 @@ namespace MathForGames3D
             _localTransform.m24 = y;
             _localTransform.m34 = z;
         }
-        public void SetRotation(float radians)
+        public void RotateY(float angle)
         {
-            _rotation = Matrix4.CreateRotationX(radians);
-            _currentRadianRotationY = radians;
+            _currentRadianRotationY += angle;
+            SetRotationY(_currentRadianRotationY);
         }
-        public void SetRotationSpeed(float speed)
+        public void SetRotationY(float radians)
         {
-            _rotationspeedX = speed;
+            _rotation = Matrix4.CreateRotationY(radians);
         }
         public void SetScale(float x, float y, float z)
         {
@@ -166,7 +158,6 @@ namespace MathForGames3D
         }
         private void UpdateTransform()
         {
-            _rotation = Matrix4.CreateRotationY(_rotationspeedX += _currentRadianRotationY);
             _localTransform = _translation * _rotation * _scale;
             if (_parent != null)
             { _globalTransform = _parent._globalTransform * _localTransform; }

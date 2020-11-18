@@ -90,10 +90,8 @@ namespace MathForGames3D
 
         public virtual void Draw()
         {
-            Raylib.DrawPlane(new System.Numerics.Vector3(5, 0, 5), new System.Numerics.Vector2(10, 10), Color.YELLOW);
-            Raylib.DrawPlane(new System.Numerics.Vector3(-5, 0, 5), new System.Numerics.Vector2(10, 10), Color.BLUE);
-            Raylib.DrawPlane(new System.Numerics.Vector3(5, 0, -5), new System.Numerics.Vector2(10, 10), Color.GOLD);
-            Raylib.DrawPlane(new System.Numerics.Vector3(-5, 0, -5), new System.Numerics.Vector2(10, 10), Color.DARKBLUE);
+            Raylib.DrawLine3D(new System.Numerics.Vector3(0, 0, 0), new System.Numerics.Vector3(-5, 0, 0),Color.RED);
+            Raylib.DrawLine3D(new System.Numerics.Vector3(0, 0, 0), new System.Numerics.Vector3(0, 0, 5), Color.BLUE);
             for (int i = 0; i < _actors.Length; i++)
             {
                 _actors[i].Draw();

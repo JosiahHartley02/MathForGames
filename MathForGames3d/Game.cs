@@ -39,7 +39,7 @@ namespace MathForGames3D
         {
             Raylib.InitWindow(1024, 760, "Math For Games");
             Raylib.SetTargetFPS(60);
-            _camera.position = new System.Numerics.Vector3(-10, 10.0f, 0);
+            _camera.position = new System.Numerics.Vector3(0, 10.0f, -10);
             _camera.target = new System.Numerics.Vector3(0, 0, 0);
             _camera.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
             _camera.fovy = 45.0f;
@@ -53,7 +53,9 @@ namespace MathForGames3D
             Actor venus = new Actor(0, 0, 0,Color.GRAY);
             Actor earth = new Actor(0, 0, 0, Color.GREEN);
             Actor moon = new Actor(0,0,0, Color.GRAY);*/
-            Actor Player = new Player(0, 0, 0, Color.RED);/*
+            PlayerCosmetic Player = new PlayerCosmetic(0, 0, 0, Color.RED);
+            Player _player = new Player(0, 0, 0, Color.BLUE);
+            /*
             CameraOrigin = new Actor(0, 0, 0, Color.WHITE);
             Camera = new Actor(_camera.position.X, _camera.position.Y, _camera.position.Z, Color.GOLD);*//*
 
@@ -63,7 +65,9 @@ namespace MathForGames3D
             SolarSystem.AddActor(earth);
             SolarSystem.AddActor(moon);
             */
-            TankFight.AddActor(Player);/*
+            TankFight.AddActor(Player);
+            TankFight.AddActor(_player);
+            _player.AddChild(Player);/*
             TankFight.AddActor(CameraOrigin);
             TankFight.AddActor(Camera);
             CameraOrigin.AddChild(Camera);*/
