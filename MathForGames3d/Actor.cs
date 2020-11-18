@@ -18,15 +18,41 @@ namespace MathForGames3D
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         protected bool isChild = false;
-        protected float _currentRadianRotation;
+        protected float _currentRadianRotationY;
+        public float RadianRotationY = 0;
         protected float _rotationspeedX = 0;
         protected Color defaultColor = Color.WHITE;
+        private float _heatlh;
+        public float Health { get; set; }
+        private float speed;
+
         public bool Started { get; private set; }
         public Actor(float x, float y, float z, Color color)
         {
             _localTransform = new Matrix4();
             LocalPosition = new Vector3(x, y, z);
             defaultColor = color;
+
+        }
+        public virtual void Start()
+        {
+            Started = true;
+        }
+        public virtual void Update(float deltaTime)
+        {
+            UpdateTransform();
+            _rotationspeedX = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_R)) * 0.02f;
+            _currentRadianRotationY += _rotationspeedX;
+            LocalPosition += _velocity * deltaTime;
+        }
+        public virtual void Draw()
+        {
+
+        }
+
+        public virtual void End()
+        {
+            Started = false;
         }
         public Vector3 Forward
         {
@@ -54,7 +80,6 @@ namespace MathForGames3D
                 _translation.m34 = value.Z;
             }
         }
-
         public Vector3 Velocity
         {
             get
@@ -104,18 +129,18 @@ namespace MathForGames3D
         }
         public void Rotate(float angle)
         {
-            _currentRadianRotation += angle;
-            SetRotation(_currentRadianRotation);
+            _currentRadianRotationY += angle;
+            SetRotation(_currentRadianRotationY);
         }
         public void SetTranslation(Vector3 position)
         {
             _translation = Matrix4.CreateTranslation(position);
         }
-        public void SetTranslation(float x,float y,float z)
+        public void SetTranslation(float x, float y, float z)
         {
             _translation.m14 = x; _translation.m24 = y; _translation.m34 = z;
         }
-        public void SetPosition(float x, float y,float z)
+        public void SetPosition(float x, float y, float z)
         {
             _localTransform.m14 = x;
             _localTransform.m24 = y;
@@ -124,7 +149,7 @@ namespace MathForGames3D
         public void SetRotation(float radians)
         {
             _rotation = Matrix4.CreateRotationX(radians);
-            _currentRadianRotation = radians;
+            _currentRadianRotationY = radians;
         }
         public void SetRotationSpeed(float speed)
         {
@@ -141,31 +166,13 @@ namespace MathForGames3D
         }
         private void UpdateTransform()
         {
-            _rotation = Matrix4.CreateRotationY(_rotationspeedX += _currentRadianRotation);
+            _rotation = Matrix4.CreateRotationY(_rotationspeedX += _currentRadianRotationY);
             _localTransform = _translation * _rotation * _scale;
             if (_parent != null)
             { _globalTransform = _parent._globalTransform * _localTransform; }
             else
             { _globalTransform = Game.GetCurrentScene().World * _localTransform; }
         }
-        public virtual void Start()
-        {
-            Started = true;
-        }
-        public virtual void Update(float deltaTime)
-        {
-            UpdateTransform();
-            _rotationspeedX = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_R)) * 0.02f;
-            _currentRadianRotation += _rotationspeedX;
-            LocalPosition += _velocity * deltaTime;
-        }
-        public virtual void Draw()
-        {
-            Raylib.DrawSphere(new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z), Scale, defaultColor);
-        }
-        public virtual void End()
-        {
-            Started = false;
-        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames3D
 {
@@ -89,6 +90,10 @@ namespace MathForGames3D
 
         public virtual void Draw()
         {
+            Raylib.DrawPlane(new System.Numerics.Vector3(5, 0, 5), new System.Numerics.Vector2(10, 10), Color.YELLOW);
+            Raylib.DrawPlane(new System.Numerics.Vector3(-5, 0, 5), new System.Numerics.Vector2(10, 10), Color.BLUE);
+            Raylib.DrawPlane(new System.Numerics.Vector3(5, 0, -5), new System.Numerics.Vector2(10, 10), Color.GOLD);
+            Raylib.DrawPlane(new System.Numerics.Vector3(-5, 0, -5), new System.Numerics.Vector2(10, 10), Color.DARKBLUE);
             for (int i = 0; i < _actors.Length; i++)
             {
                 _actors[i].Draw();

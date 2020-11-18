@@ -12,7 +12,9 @@ namespace MathForGames3D
         private static bool _gameOver;
         private static Scene[] _scenes = new Scene[0];
         private Camera3D _camera = new Camera3D();
-        private static int _currentSceneIndex;
+        private static int _currentSceneIndex;/*
+        Actor CameraOrigin;
+        Actor Camera;*/
         public static bool GameOver
         {
             get { return _gameOver; } set { _gameOver = value; }
@@ -37,49 +39,76 @@ namespace MathForGames3D
         {
             Raylib.InitWindow(1024, 760, "Math For Games");
             Raylib.SetTargetFPS(60);
-            _camera.position = new System.Numerics.Vector3(0.0f, 10.0f, 10.0f);
-            _camera.target = new System.Numerics.Vector3(0.0f, 0.0f, 0.0f);
+            _camera.position = new System.Numerics.Vector3(-10, 10.0f, 0);
+            _camera.target = new System.Numerics.Vector3(0, 0, 0);
             _camera.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
             _camera.fovy = 45.0f;
             _camera.type = CameraType.CAMERA_PERSPECTIVE;
+
             Scene SolarSystem = new Scene();
-            Actor sun = new Actor(0, 0, 0, Color.YELLOW);
+            Scene TankFight = new Scene();
+
+            /*Actor sun = new Actor(0, 0, 0, Color.YELLOW);
             Actor mercury = new Actor(0, 0, 0, Color.DARKGRAY);
             Actor venus = new Actor(0, 0, 0,Color.GRAY);
             Actor earth = new Actor(0, 0, 0, Color.GREEN);
-            Actor moon = new Actor(0,0,0, Color.GRAY);
+            Actor moon = new Actor(0,0,0, Color.GRAY);*/
+            Actor Player = new Player(0, 0, 0, Color.RED);/*
+            CameraOrigin = new Actor(0, 0, 0, Color.WHITE);
+            Camera = new Actor(_camera.position.X, _camera.position.Y, _camera.position.Z, Color.GOLD);*//*
+
             SolarSystem.AddActor(sun);
             SolarSystem.AddActor(mercury);
             SolarSystem.AddActor(venus);
             SolarSystem.AddActor(earth);
             SolarSystem.AddActor(moon);
+            */
+            TankFight.AddActor(Player);/*
+            TankFight.AddActor(CameraOrigin);
+            TankFight.AddActor(Camera);
+            CameraOrigin.AddChild(Camera);*/
+            /*
             sun.AddChild(mercury);
             sun.AddChild(venus);
             sun.AddChild(earth);
             earth.AddChild(moon);
+
             sun.SetScale(1f);
             mercury.SetScale(0.3f);
             venus.SetScale(0.4f);
             earth.SetScale(0.5f);
             moon.SetScale(0.2f);
-            sun.SetPosition(0, 0, 0);
+*/
+            Player.SetScale(1);/*
+            CameraOrigin.SetScale(1f);
+            Camera.SetScale(1);*/
+
+            /*sun.SetTranslation(0, 0, 0);
             mercury.SetTranslation(1.5f, 0, 1.5f);
             venus.SetTranslation(2.5f, 0, 2.5f);
             earth.SetTranslation(3.5f, 0, 3.5f);
             moon.SetTranslation(1, 0, 1);
+*/
+            Player.SetTranslation(0, 0, 0);/*
+            CameraOrigin.SetTranslation(0, 0, 0);*/
+
             int startingSceneIndex = 0;
-            startingSceneIndex = AddScene(SolarSystem);
+            AddScene(SolarSystem);
+            startingSceneIndex = AddScene(TankFight);
             SetCurrentScene(startingSceneIndex);
         }
 
         public void Update(float deltaTime)
         {
-            _camera.position = new System.Numerics.Vector3((Convert.ToInt32(_camera.position.X + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)))),
-                (Convert.ToInt32(_camera.position.Y + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S)))),
-                _camera.position.Z);
-            if (!_scenes[_currentSceneIndex].Started)
-                _scenes[_currentSceneIndex].Start();
-
+            /*_camera.position = new System.Numerics.Vector3(Camera.WorldPosition.X, Camera.WorldPosition.Y, Camera.WorldPosition.Z);
+            Camera.LocalPosition = new Vector3(
+                Camera.LocalPosition.X + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S)),
+                Camera.LocalPosition.Y + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E)),
+                Camera.LocalPosition.Z + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D))
+                );
+            int rotation = Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_COMMA)) - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_PERIOD));
+            CameraOrigin.Rotate(rotation * .05f);*/
+            _scenes[_currentSceneIndex].Start();
             _scenes[_currentSceneIndex].Update(deltaTime);
         }
 
