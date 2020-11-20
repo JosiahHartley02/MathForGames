@@ -29,7 +29,7 @@ namespace MathForGames
         public Enemy(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, icon, color)
         {
-            _sprite = new Sprite("sprites/enemy.png");
+            _sprite = new Sprite("sprites/Tanks/tankBlue.png");
         }
 
         /// <param name="x">Position on the x axis</param>
@@ -42,10 +42,10 @@ namespace MathForGames
         {
             if (color == ConsoleColor.Black) 
             {
-                _sprite = new Sprite("sprites/bullet.png");
+                _sprite = new Sprite("sprites/Bullets/bulletRed.png");
                 return;
             }
-            _sprite = new Sprite("sprites/enemy.png");
+            _sprite = new Sprite("sprites/Tanks/tankBlue.png");
         }
 
         /// <summary>
@@ -79,16 +79,6 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
-            //If the target can be seen change the color to red
-            //If the target can't be seen change the color to blue
-            /*if(CheckTargetInSight(1.5f, 5))
-            {
-                _rayColor = Color.RED;
-            }
-            else
-            {
-                _rayColor = Color.BLUE;
-            }*/
             base.Update(deltaTime);
         }
         public override void Draw()

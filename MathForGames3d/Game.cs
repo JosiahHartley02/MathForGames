@@ -37,7 +37,7 @@ namespace MathForGames3D
         {
             Raylib.InitWindow(1024, 760, "Math For Games");
             Raylib.SetTargetFPS(60);
-            _camera.position = new System.Numerics.Vector3(0.0f, 10.0f, 10.0f);
+            _camera.position = new System.Numerics.Vector3(0.0f, 13.0f, 10f);
             _camera.target = new System.Numerics.Vector3(0.0f, 0.0f, 0.0f);
             _camera.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
             _camera.fovy = 45.0f;

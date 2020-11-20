@@ -192,7 +192,7 @@ namespace MathForGames
             Scene scene2 = new Scene();
 
             //Create the actors to add to our scene
-            
+            /*
             Enemy orbiter = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
             Player player = new Player(0, 1,Color.BLUE, ' ', ConsoleColor.Red);
             Enemy orbitersmoon = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Black);
@@ -216,12 +216,24 @@ namespace MathForGames
             scene1.AddActor(player);
             scene1.AddActor(orbiter);
             scene1.AddActor(orbitersmoon);
-            /*scene1.AddActor(collisionTest);*/
+            *//*scene1.AddActor(collisionTest);*//*
             player.AddChild(orbiter);
             orbiter.AddChild(orbitersmoon);
             orbitersmoon.AddChild(collisionTest);
             scene2.AddActor(player);
-            
+            */
+            Player player = new Player(0, 10, Color.RED, ' ', ConsoleColor.Red);
+            Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
+            PlayersTurret gun = new PlayersTurret(0, 0, Color.RED, ' ', ConsoleColor.Red);
+            player.Speed = 5;
+            gun.SetScale(1, 1);
+            player.AddChild(gun);
+
+            enemy.Target = player;
+
+            scene1.AddActor(player);
+            scene1.AddActor(enemy);
+            scene1.AddActor(gun);
             //Sets the starting scene index and adds the scenes to the scenes array
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(scene1);

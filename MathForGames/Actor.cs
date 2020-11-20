@@ -160,35 +160,7 @@ namespace MathForGames
         {
             SetRotation(_rotationspeed + _currentRadianRotation);
             _localTransform = _translation *_rotation * _scale;
-            if (_parent != null)
-                _globalTransform = _parent._globalTransform * _localTransform;
-            else
-                _globalTransform = Game.GetCurrentScene().World * _localTransform;
         }
-       /* protected Vector2 Scale
-        {
-            get { return new Vector2(_scale.m11, _scale.m22); }
-            set { _scale.m11 = value.X; _scale.m22 = value.Y; }
-        }
-        protected float Rotation
-        {
-            get { return _rotation.m11; }
-            set { 
-                _rotation.m11 = (float)Math.Cos(value); _rotation.m12 = -(float)Math.Sin(value);
-                _rotation.m21 = (float)Math.Sin(value); _rotation.m22 = (float)Math.Cos(value); 
-                }
-        }
-        protected Vector2 Translate
-        {
-            get { return new Vector2(_translation.m13, _translation.m23); }
-            set { _translation.m13 = value.X; _translation.m23 = value.Y; }
-        }*/
-
-
-        /// <param name="x">Position on the x axis</param>
-        /// <param name="y">Position on the y axis</param>
-        /// <param name="icon">The symbol that will appear when drawn</param>
-        /// <param name="color">The color of the symbol that will appear when drawn</param>
         public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
         {
             _rayColor = Color.WHITE;
@@ -209,7 +181,12 @@ namespace MathForGames
         public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : this(x,y,icon,color)
         {
-            _rayColor = rayColor;
+            _rayColor = Color.WHITE;
+            _icon = icon;
+            _localTransform = new Matrix3();
+            LocalPosition = new Vector2(x, y);
+            _velocity = new Vector2();
+            _color = color;/*
         }
 
         /// <summary>
@@ -238,7 +215,11 @@ namespace MathForGames
             /* UpdateFacing();*/
 
             //Increase position by the current velocity
-            LocalPosition += _velocity * deltaTime;           
+            LocalPosition += _velocity * deltaTime;
+            if (_parent != null)
+                _globalTransform = _parent._globalTransform * _localTransform;
+            else
+                _globalTransform = Game.GetCurrentScene().World * _localTransform;
         }
 
         public virtual void Draw()
