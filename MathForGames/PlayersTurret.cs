@@ -39,7 +39,7 @@ namespace MathForGames
                 - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E))) * .1f;
             bool fire = Game.GetKeyDown((int)KeyboardKey.KEY_SPACE);
             if (fire == true)
-            { LaunchProjectile(); }
+            { LaunchProjectile(_projectiles[0]); }
             base.Update(deltaTime);
 
         }

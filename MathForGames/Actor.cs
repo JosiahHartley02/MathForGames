@@ -31,6 +31,10 @@ namespace MathForGames
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         protected bool isChild = false;
+        protected Actor _Tank;
+        protected Projectile[] _projectiles = new Projectile[0];
+        protected bool isBullet = false;
+        protected bool isVisible = true;
         protected bool _isColliding = false;
         protected float _collisionRadius = 1;
         protected Sprite _sprite;
@@ -137,6 +141,42 @@ namespace MathForGames
             this.isChild = false;
             return childRemoved;
         }
+        public void AddAmmo(Projectile bullet)
+        {
+            Projectile[] tempArray = new Projectile[_projectiles.Length + 1];
+            for (int i = 0; i < _projectiles.Length; i++)
+            {
+                tempArray[i] = _projectiles[i];
+            }
+            tempArray[_projectiles.Length] = bullet;
+            _projectiles = tempArray;
+            bullet._Tank = this;
+            this.isBullet = true;
+        }
+        public bool RemoveAmmo(Projectile bullet)
+        {
+            if (bullet == null)
+                return false; ;
+            bool bulletRemoved = false;
+            Projectile[] tempArray = new Projectile[_projectiles.Length - 1];
+            int j = 0;
+            for (int i = 0; i < _projectiles.Length; i++)
+            {
+                if (bullet != _projectiles[i])
+                {
+                    tempArray[j] = _projectiles[i];
+                    j++;
+                }
+                else
+                {
+                    bulletRemoved = true;
+                }
+            }
+            _projectiles = tempArray;
+            bullet._parent = null;
+            this.isBullet = false;
+            return bulletRemoved;
+        }
         public void SetTranslation(Vector2 position)
         {
             _translation = Matrix3.CreateTranslation(position);
@@ -163,7 +203,8 @@ namespace MathForGames
         //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
         protected void LaunchProjectile(Projectile bullet)
         {
-            bullet = new Projectile(_globalTransform, "sprites/Bullets/bulletRed.png");
+            if(bullet.isVisible == false)
+            { bullet._localTransform = bullet._Tank.GlobalTransform; }                      
         }
 
         public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)

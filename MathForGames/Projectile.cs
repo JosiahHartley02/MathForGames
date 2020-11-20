@@ -9,7 +9,6 @@ namespace MathForGames
     class Projectile : Actor
     {
         Sprite _sprite;
-        bool inUse;
         public Projectile(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
@@ -27,12 +26,13 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            Matrix3.CreateTranslation(new Vector2(_globalTransform.m11, _globalTransform.m21));
+            Matrix3.CreateTranslation(new Vector2(_localTransform.m11, _localTransform.m21));
             base.Update(deltaTime);
+            _globalTransform = _localTransform;
         }
         public override void Draw()
         {
-            if(inUse == true) { _sprite.Draw(_globalTransform); }            
+            if(isVisible == true) { _sprite.Draw(_globalTransform); }            
             base.Draw();
         }
         public override void End()

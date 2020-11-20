@@ -206,6 +206,8 @@ namespace MathForGames
             scene1.AddActor(gun);
             scene1.AddActor(playersBullet);
             scene1.AddActor(enemysBullet);
+            gun.AddAmmo(playersBullet);
+            enemy.AddAmmo(enemysBullet);
             //Sets the starting scene index and adds the scenes to the scenes array
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(scene1);
