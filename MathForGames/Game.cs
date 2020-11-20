@@ -74,7 +74,7 @@ namespace MathForGames
             Scene[] tempArray = new Scene[_scenes.Length + 1];
 
             //Copy values from old array into new array
-            for(int i = 0; i < _scenes.Length; i++)
+            for (int i = 0; i < _scenes.Length; i++)
             {
                 tempArray[i] = _scenes[i];
             }
@@ -110,7 +110,7 @@ namespace MathForGames
 
             //Copy all scenes except the scene we don't want into the new array
             int j = 0;
-            for(int i = 0; i < _scenes.Length; i++)
+            for (int i = 0; i < _scenes.Length; i++)
             {
                 if (tempArray[i] != scene)
                 {
@@ -124,7 +124,7 @@ namespace MathForGames
             }
 
             //If the scene was successfully removed set the old array to be the new array
-            if(sceneRemoved)
+            if (sceneRemoved)
                 _scenes = tempArray;
 
             return sceneRemoved;
@@ -191,39 +191,10 @@ namespace MathForGames
             Scene scene1 = new Scene();
             Scene scene2 = new Scene();
 
-            //Create the actors to add to our scene
-            /*
-            Enemy orbiter = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
-            Player player = new Player(0, 1,Color.BLUE, ' ', ConsoleColor.Red);
-            Enemy orbitersmoon = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Black);
-            Enemy collisionTest = new Enemy(10, 10, Color.GREEN, ' ', ConsoleColor.Black);
-            orbiter.Target = player;
-            player.Speed = 5;
-            player.SetTranslation(new Vector2(10, 10));
-            player.SetRotation(0);
-            player.SetScale(1, 1);
-            orbiter.SetTranslation(new Vector2(0, 5));
-            orbiter.SetScale(1, 1);
-            orbiter.SetRotation(0);
-            orbiter.SetRotationSpeed(-.1f);
-            orbitersmoon.SetTranslation(new Vector2(0, 5));
-            orbitersmoon.SetScale(1, 1);
-            orbitersmoon.SetRotation(0);
-            collisionTest.SetTranslation(new Vector2(2, 0));
-            collisionTest.SetRotation(0);
-            collisionTest.SetScale(1,1);
-            //Add actors to the scenes
-            scene1.AddActor(player);
-            scene1.AddActor(orbiter);
-            scene1.AddActor(orbitersmoon);
-            *//*scene1.AddActor(collisionTest);*//*
-            player.AddChild(orbiter);
-            orbiter.AddChild(orbitersmoon);
-            orbitersmoon.AddChild(collisionTest);
-            scene2.AddActor(player);
-            */
             Player player = new Player(0, 10, Color.RED, ' ', ConsoleColor.Red);
             Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
+            Projectile playersBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletRed.png");
+            Projectile enemysBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletGreen.png");
             PlayersTurret gun = new PlayersTurret(0, 0, Color.RED, ' ', ConsoleColor.Red);
             player.Speed = 5;
             player.AddChild(gun);
@@ -233,6 +204,8 @@ namespace MathForGames
             scene1.AddActor(player);
             scene1.AddActor(enemy);
             scene1.AddActor(gun);
+            scene1.AddActor(playersBullet);
+            scene1.AddActor(enemysBullet);
             //Sets the starting scene index and adds the scenes to the scenes array
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(scene1);
@@ -285,7 +258,7 @@ namespace MathForGames
 
 
             //Loops the game until either the game is set to be over or the window closes
-            while(!_gameOver && !Raylib.WindowShouldClose())
+            while (!_gameOver && !Raylib.WindowShouldClose())
             {
                 //Stores the current time between frames
                 float deltaTime = Raylib.GetFrameTime();

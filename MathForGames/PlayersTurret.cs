@@ -37,6 +37,9 @@ namespace MathForGames
         {
             _rotationspeed = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q))
                 - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E))) * .1f;
+            bool fire = Game.GetKeyDown((int)KeyboardKey.KEY_SPACE);
+            if (fire == true)
+            { LaunchProjectile(); }
             base.Update(deltaTime);
 
         }
@@ -44,7 +47,7 @@ namespace MathForGames
         {
             if (_sprite != null && isColliding == false)
             {
-                _sprite.Draw(_globalTransform * Matrix3.CreateRotation(1.5708f));
+                _sprite.Draw(_globalTransform * Matrix3.CreateRotation(-1.5708f));
             }
 
             base.Draw();

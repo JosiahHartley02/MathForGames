@@ -72,13 +72,13 @@ namespace MathForGames
         }
         public override void Draw()
         {
-            if(_sprite != null && isColliding == false)
+            if (_sprite != null && isColliding == false)
             {
                 _sprite.Draw(_localTransform * Matrix3.CreateRotation(1.5708f));
-                if (_trail != null)                    
-                if(delayedFrameCounter == 24)
-                { _trail.Draw(lastLocation * Matrix3.CreateRotation(1.5708f)); delayedFrameCounter = 0; }
-                    
+                if (_trail != null)
+                    if (delayedFrameCounter == 24)
+                    { _trail.Draw(lastLocation * Matrix3.CreateRotation(1.5708f)); delayedFrameCounter = 0; }
+
             }
 
             base.Draw();

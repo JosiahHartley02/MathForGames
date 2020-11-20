@@ -33,6 +33,7 @@ namespace MathForGames
         protected bool isChild = false;
         protected bool _isColliding = false;
         protected float _collisionRadius = 1;
+        protected Sprite _sprite;
         public bool Started { get; private set; }
 
         public float CollisionRadius
@@ -158,6 +159,13 @@ namespace MathForGames
             SetRotation(_rotationspeed + _currentRadianRotation);
             _localTransform = _translation *_rotation * _scale;
         }
+
+        //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
+        protected void LaunchProjectile(Projectile bullet)
+        {
+            bullet = new Projectile(_globalTransform, "sprites/Bullets/bulletRed.png");
+        }
+
         public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
         {
             _rayColor = Color.WHITE;
@@ -168,7 +176,13 @@ namespace MathForGames
             _color = color;/*
             Forward = new Vector2(1, 0);*/
         }
+        public Actor()
+        {
+        }
+        public Actor(Matrix3 globalTransform, string path)
+        {
 
+        }
 
         /// <param name="x">Position on the x axis</param>
         /// <param name="y">Position on the y axis</param>
@@ -183,19 +197,7 @@ namespace MathForGames
             _localTransform = new Matrix3();
             LocalPosition = new Vector2(x, y);
             _velocity = new Vector2();
-            _color = color;/*
-        }
-
-        /// <summary>
-        /// Updates the actors forward vector to be
-        /// the last direction it moved in
-        /// </summary>
-        private void UpdateFacing()
-        {
-            if (_velocity.Magnitude <= 0)
-                return;
-/*
-            Forward = Velocity.Normalized;*/
+            _color = color;
         }
 
         public virtual void Start()
