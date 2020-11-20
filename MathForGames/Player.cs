@@ -16,6 +16,7 @@ namespace MathForGames
         Sprite _sprite;
         Sprite _trail;
         Matrix3 lastLocation;
+        int delayedFrameCounter = 0;
         public float Speed
         {
             get
@@ -60,8 +61,7 @@ namespace MathForGames
                 - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D)));
 
             //Set the actors current velocity to be the a vector with the direction found scaled by the speed 
-            Velocity = new Vector2(_localTransform.m11 * Throttle, _localTransform.m21 * Throttle);
-            Velocity = Velocity.Normalized * Speed; 
+            Acceleration = new Vector2(_localTransform.m11 * Throttle, _localTransform.m21 * Throttle);
             /*Translate += _velocity * deltaTime;
             Rotation += counterclockwiseRotation * deltaTime;
             Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
@@ -75,8 +75,10 @@ namespace MathForGames
             if(_sprite != null && isColliding == false)
             {
                 _sprite.Draw(_localTransform * Matrix3.CreateRotation(1.5708f));
-                if (_trail != null)
-                    _trail.Draw(lastLocation * Matrix3.CreateRotation(1.5708f));
+                if (_trail != null)                    
+                if(delayedFrameCounter == 24)
+                { _trail.Draw(lastLocation * Matrix3.CreateRotation(1.5708f)); delayedFrameCounter = 0; }
+                    
             }
 
             base.Draw();

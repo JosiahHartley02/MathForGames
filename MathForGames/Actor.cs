@@ -16,9 +16,11 @@ namespace MathForGames
     class Actor
     {
         protected char _icon = ' ';
-        protected Vector2 _velocity;
+        private Vector2 _velocity = new Vector2();
+        private Vector2 acceleration = new Vector2();
+        private float _maxSpeed = 5;
         protected Matrix3 _globalTransform = new Matrix3();
-        protected Matrix3 _localTransform;
+        protected Matrix3 _localTransform = new Matrix3();
         protected Matrix3 _translation = new Matrix3();
         protected Matrix3 _rotation = new Matrix3();
         protected Matrix3 _scale = new Matrix3();
@@ -75,16 +77,11 @@ namespace MathForGames
         }
 
         public Vector2 Velocity
-        {
-            get
-            {
-                return _velocity;
-            }
-            set
-            {
-                _velocity = value;
-            }
-        }
+        { get{return _velocity;} set{_velocity = value;} }
+
+        protected Vector2 Acceleration { get => acceleration; set => acceleration = value; }
+        public float MaxSpeed { get => _maxSpeed; set => _maxSpeed = value; }
+
         public void Rotate(float angle)
         {
             _currentRadianRotation += angle;
@@ -215,7 +212,13 @@ namespace MathForGames
             /* UpdateFacing();*/
 
             //Increase position by the current velocity
+            Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
+            Velocity += Acceleration;
+
+            if (Velocity.Magnitude > MaxSpeed)
+                Velocity = Velocity.Normalized * MaxSpeed;
             LocalPosition += _velocity * deltaTime;
+
             if (_parent != null)
                 _globalTransform = _parent._globalTransform * _localTransform;
             else

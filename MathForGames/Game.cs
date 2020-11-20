@@ -226,7 +226,6 @@ namespace MathForGames
             Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
             PlayersTurret gun = new PlayersTurret(0, 0, Color.RED, ' ', ConsoleColor.Red);
             player.Speed = 5;
-            gun.SetScale(1, 1);
             player.AddChild(gun);
 
             enemy.Target = player;
