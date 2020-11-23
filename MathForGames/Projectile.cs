@@ -8,17 +8,18 @@ namespace MathForGames
 {
     class Projectile : Actor
     {
-        Sprite _sprite;
         public Projectile(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
-            _sprite = new Sprite("sprites/Bullet/bulletRed.png");
+            _sprite = new Sprite("sprites/Tanks/tankBlue.png");
+            isVisible = false;
         }
         public Projectile(Matrix3 globalTransform, string path)
             : base(globalTransform, path)
         {
             _sprite = new Sprite(path);
             _globalTransform = globalTransform;
+            isVisible = false;
         }
         public override void Start()
         {
@@ -26,9 +27,7 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            Matrix3.CreateTranslation(new Vector2(_localTransform.m11, _localTransform.m21));
             base.Update(deltaTime);
-            _globalTransform = _localTransform;
         }
         public override void Draw()
         {

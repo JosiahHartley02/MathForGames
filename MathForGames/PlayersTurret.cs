@@ -9,7 +9,6 @@ namespace MathForGames
     class PlayersTurret : Actor
     {
         private float _speed = 1;
-        Sprite _sprite;
         public float Speed
         {
             get

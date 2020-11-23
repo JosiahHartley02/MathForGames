@@ -203,8 +203,14 @@ namespace MathForGames
         //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
         protected void LaunchProjectile(Projectile bullet)
         {
-            if(bullet.isVisible == false)
-            { bullet._localTransform = bullet._Tank.GlobalTransform; }                      
+            if (bullet.isVisible == false)
+            {
+                bullet.SetRotation(bullet._Tank._currentRadianRotation);
+                bullet._translation = Matrix3.CreateTranslation(bullet._Tank.WorldPosition);
+                bullet.Velocity = new Vector2(1, 0);
+                bullet.isVisible = true;
+            }
+
         }
 
         public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
@@ -255,7 +261,8 @@ namespace MathForGames
             /* UpdateFacing();*/
 
             //Increase position by the current velocity
-            Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
+            if(!isBullet)
+                Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
             Velocity += Acceleration;
 
             if (Velocity.Magnitude > MaxSpeed)
@@ -264,6 +271,8 @@ namespace MathForGames
 
             if (_parent != null)
                 _globalTransform = _parent._globalTransform * _localTransform;
+            else if (isBullet == true && isVisible == false)
+                _globalTransform = _Tank._globalTransform * Matrix3.CreateRotation(-1.5708f);
             else
                 _globalTransform = Game.GetCurrentScene().World * _localTransform;
         }

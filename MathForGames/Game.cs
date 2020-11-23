@@ -197,7 +197,10 @@ namespace MathForGames
             Projectile enemysBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletGreen.png");
             PlayersTurret gun = new PlayersTurret(0, 0, Color.RED, ' ', ConsoleColor.Red);
             player.Speed = 5;
+            playersBullet.SetScale(1, 1);
+            gun.SetScale(2, 1);
             player.AddChild(gun);
+            gun.AddAmmo(playersBullet);
 
             enemy.Target = player;
 
@@ -206,8 +209,8 @@ namespace MathForGames
             scene1.AddActor(gun);
             scene1.AddActor(playersBullet);
             scene1.AddActor(enemysBullet);
-            gun.AddAmmo(playersBullet);
-            enemy.AddAmmo(enemysBullet);
+            
+
             //Sets the starting scene index and adds the scenes to the scenes array
             int startingSceneIndex = 0;
             startingSceneIndex = AddScene(scene1);

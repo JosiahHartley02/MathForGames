@@ -14,8 +14,6 @@ namespace MathForGames
     class Enemy : Actor
     {
         private Actor _target;
-        private Color _alertColor;
-        private Sprite _sprite;
         public Actor Target
         {
             get { return _target; }

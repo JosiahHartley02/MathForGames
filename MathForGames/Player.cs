@@ -13,7 +13,6 @@ namespace MathForGames
 
     {
         private float _speed = 1;
-        Sprite _sprite;
         Sprite _trail;
         Matrix3 lastLocation;
         int delayedFrameCounter = 0;
