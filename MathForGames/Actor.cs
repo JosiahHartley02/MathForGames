@@ -207,7 +207,7 @@ namespace MathForGames
             {
                 bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
                 bullet.SetTranslation(bullet._Tank.WorldPosition);
-                bullet.Velocity = new Vector2(1, 0);
+                bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
                 bullet.isVisible = true;
             }
 
