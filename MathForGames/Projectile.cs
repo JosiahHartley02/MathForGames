@@ -27,7 +27,10 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            base.Update(deltaTime);
+            UpdateTransform();
+            if (isVisible)
+            { LocalPosition += Velocity.Normalized * deltaTime; }
+            _globalTransform = _localTransform;
         }
         public override void Draw()
         {
@@ -37,6 +40,10 @@ namespace MathForGames
         public override void End()
         {
             base.End();
+        }
+        private void UpdateTransform()
+        {
+            _localTransform = _translation * _rotation * _scale;
         }
     }
 }

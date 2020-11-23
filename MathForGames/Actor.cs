@@ -205,8 +205,8 @@ namespace MathForGames
         {
             if (bullet.isVisible == false)
             {
-                bullet.SetRotation(bullet._Tank._currentRadianRotation);
-                bullet._translation = Matrix3.CreateTranslation(bullet._Tank.WorldPosition);
+                bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
+                bullet.SetTranslation(bullet._Tank.WorldPosition);
                 bullet.Velocity = new Vector2(1, 0);
                 bullet.isVisible = true;
             }
@@ -261,18 +261,17 @@ namespace MathForGames
             /* UpdateFacing();*/
 
             //Increase position by the current velocity
-            if(!isBullet)
-                Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
+            Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
+
             Velocity += Acceleration;
 
             if (Velocity.Magnitude > MaxSpeed)
                 Velocity = Velocity.Normalized * MaxSpeed;
+
             LocalPosition += _velocity * deltaTime;
 
             if (_parent != null)
                 _globalTransform = _parent._globalTransform * _localTransform;
-            else if (isBullet == true && isVisible == false)
-                _globalTransform = _Tank._globalTransform * Matrix3.CreateRotation(-1.5708f);
             else
                 _globalTransform = Game.GetCurrentScene().World * _localTransform;
         }
