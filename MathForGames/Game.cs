@@ -201,6 +201,7 @@ namespace MathForGames
             gun.SetScale(2, 1);
             player.AddChild(gun);
             gun.AddAmmo(playersBullet);
+            enemy.LocalPosition = new Vector2(5, 5);
 
             enemy.Target = player;
 

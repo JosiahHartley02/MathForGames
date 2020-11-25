@@ -26,6 +26,7 @@ namespace MathForGames
         protected Matrix3 _scale = new Matrix3();
         protected float _currentRadianRotation;
         protected float _rotationspeed = 0;
+        protected float _collisionRadius = 1;
         protected ConsoleColor _color;
         protected Color _rayColor;
         protected Actor _parent;
@@ -33,20 +34,23 @@ namespace MathForGames
         protected bool isChild = false;
         protected Actor _Tank;
         protected Projectile[] _projectiles = new Projectile[0];
-        protected bool isBullet = false;
-        protected bool isVisible = true;
+        protected bool _isBullet = false;
+        protected bool _isVisible = true;
         protected bool _isColliding = false;
-        protected float _collisionRadius = 1;
         protected Sprite _sprite;
         public bool Started { get; private set; }
 
         public float CollisionRadius
         { get { return _collisionRadius; } set { _collisionRadius = value; } }
+        public bool IsBullet
+        { get { return _isBullet; } }
+        public bool IsVisible { get { return _isVisible; } }
         public bool isColliding
         {
             get { return _isColliding; }
             set { _isColliding = value; }
         }
+
         public Vector2 Forward
         {
             get 
@@ -151,7 +155,7 @@ namespace MathForGames
             tempArray[_projectiles.Length] = bullet;
             _projectiles = tempArray;
             bullet._Tank = this;
-            this.isBullet = true;
+            this._isBullet = true;
         }
         public bool RemoveAmmo(Projectile bullet)
         {
@@ -174,7 +178,7 @@ namespace MathForGames
             }
             _projectiles = tempArray;
             bullet._parent = null;
-            this.isBullet = false;
+            this._isBullet = false;
             return bulletRemoved;
         }
         public void SetTranslation(Vector2 position)
@@ -203,12 +207,12 @@ namespace MathForGames
         //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
         protected void LaunchProjectile(Projectile bullet)
         {
-            if (bullet.isVisible == false)
+            if (bullet._isVisible == false)
             {
                 bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
                 bullet.SetTranslation(bullet._Tank.WorldPosition);
                 bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
-                bullet.isVisible = true;
+                bullet._isVisible = true;
             }
 
         }
@@ -295,6 +299,7 @@ namespace MathForGames
                 (int)((WorldPosition.Y - _globalTransform.m22) * 32),
                 Color.RED
                 );
+            Raylib.DrawCircleV(new System.Numerics.Vector2(WorldPosition.X * 32,WorldPosition.Y * 32), 2, Color.GREEN);
 
             //Changes the color of the console text to be this actors color
             Console.ForegroundColor = _color;
@@ -308,7 +313,7 @@ namespace MathForGames
             }
             //Sets visibility to false if not in bounds
             if(WorldPosition.X < 0 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
-            { isVisible = false; }
+            { _isVisible = false; }
             
             //Reset console text color to be default color
             Console.ForegroundColor = Game.DefaultColor;
@@ -318,6 +323,9 @@ namespace MathForGames
         {
             Started = false;
         }
+        public void CollisionTest(Actor referenceEntity)
+        {
 
+        }
     }
 }

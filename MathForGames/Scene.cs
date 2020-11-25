@@ -23,6 +23,21 @@ namespace MathForGames
                 return _transform;
             }
         }
+        public void TestForCollision(Actor referenceEntity)
+        {
+            for (int i = 0; i < _actors.Length; i ++)
+            {
+                if (referenceEntity != _actors[i])
+                {
+                    float distance = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X), 2)
+                        + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y), 2));
+
+                    if (distance < (referenceEntity.CollisionRadius + _actors[i].CollisionRadius))
+                    { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
+
+                }                
+            }
+        }
 
         public void AddActor(Actor actor)
         {
@@ -110,32 +125,7 @@ namespace MathForGames
             //Return whether or not the removal was successful
             return actorRemoved;
         }
-        private void CheckCollision()
-        {
-            for (int i = 0; i < _actors.Length; i++)
-            {
-                _actors[i].isColliding = false;
-                for (int j = 0; j < _actors.Length; j++)
-                {
-                    float distance = (float)Math.Sqrt(Math.Pow((_actors[i].WorldPosition.X - _actors[j].WorldPosition.X), 2) + Math.Pow((_actors[i].WorldPosition.Y - _actors[j].WorldPosition.Y), 2));
-                    if (distance <= _actors[i].CollisionRadius)
-                    {
-                        _actors[i].isColliding = false;
-                        _actors[j].isColliding = false;
-                    }
-                    /*if(_actors[i].WorldPosition == _actors[j].WorldPosition)
-                    {
-                        _actors[i].isColliding = true;
-                        _actors[j].isColliding = true;
-                    }
-                    else
-                    {
-                        _actors[i].isColliding = false;
-                    }*/
-                }
-            }
-
-        }
+        
         public virtual void Start()
         {
             Started = true;
@@ -150,7 +140,6 @@ namespace MathForGames
 
                 _actors[i].Update(deltaTime);
             }
-            CheckCollision();
         }
 
         public virtual void Draw()

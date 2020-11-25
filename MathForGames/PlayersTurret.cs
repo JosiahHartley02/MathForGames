@@ -29,6 +29,7 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/Tanks/barrelRed.png");
+            _collisionRadius = -10;
 
         }
 

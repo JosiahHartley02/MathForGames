@@ -12,14 +12,16 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/Tanks/tankBlue.png");
-            isVisible = false;
+            _isVisible = false;
+            _collisionRadius = 5;
         }
         public Projectile(Matrix3 globalTransform, string path)
             : base(globalTransform, path)
         {
             _sprite = new Sprite(path);
             _globalTransform = globalTransform;
-            isVisible = false;
+            _isVisible = false;
+            _collisionRadius = 5;
         }
         public override void Start()
         {
@@ -28,13 +30,17 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             UpdateTransform();
-            if (isVisible)
+            if (_isVisible)
             { LocalPosition += Velocity.Normalized * deltaTime * 7; }
             _globalTransform = _localTransform;
+
+            Game.GetCurrentScene().TestForCollision(this);
+            if (isColliding)
+            { _isVisible = false;} 
         }
         public override void Draw()
         {
-            if (isVisible == true) { _sprite.Draw(_globalTransform); }            
+            if (_isVisible == true) { _sprite.Draw(_globalTransform); }            
             base.Draw();
         }
         public override void End()

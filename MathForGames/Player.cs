@@ -48,6 +48,7 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/tankRed.png");
             _trail = new Sprite("sprites/Tanks/tracksLarge.png");
+            _collisionRadius = 18;
         }
 
         public override void Update(float deltaTime)
