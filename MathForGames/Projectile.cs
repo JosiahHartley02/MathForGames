@@ -29,12 +29,12 @@ namespace MathForGames
         {
             UpdateTransform();
             if (isVisible)
-            { LocalPosition += Velocity.Normalized * deltaTime; }
+            { LocalPosition += Velocity.Normalized * deltaTime * 7; }
             _globalTransform = _localTransform;
         }
         public override void Draw()
         {
-            if(isVisible == true) { _sprite.Draw(_globalTransform); }            
+            if (isVisible == true) { _sprite.Draw(_globalTransform); }            
             base.Draw();
         }
         public override void End()

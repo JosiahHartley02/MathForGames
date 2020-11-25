@@ -306,6 +306,9 @@ namespace MathForGames
                 Console.SetCursorPosition((int)WorldPosition.X, (int)WorldPosition.Y);
                 Console.Write(_icon);
             }
+            //Sets visibility to false if not in bounds
+            if(WorldPosition.X < 0 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
+            { isVisible = false; }
             
             //Reset console text color to be default color
             Console.ForegroundColor = Game.DefaultColor;
