@@ -27,7 +27,7 @@ namespace MathForGames
         {
             for (int i = 0; i < _actors.Length; i ++)
             {
-                if (referenceEntity != _actors[i])
+                if (referenceEntity != _actors[i] && _actors[i])
                 {
                     float distance = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X), 2)
                         + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y), 2));
