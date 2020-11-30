@@ -25,6 +25,7 @@ namespace MathForGames
         }
         public override void Start()
         {
+            _canCollide = true;
             base.Start();
         }
         public override void Update(float deltaTime)
@@ -33,10 +34,7 @@ namespace MathForGames
             if (_isVisible)
             { LocalPosition += Velocity.Normalized * deltaTime * 7; }
             _globalTransform = _localTransform;
-
-            Game.GetCurrentScene().TestForCollision(this);
-            if (isColliding)
-            { _isVisible = false;} 
+            
         }
         public override void Draw()
         {

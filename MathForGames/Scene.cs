@@ -27,15 +27,11 @@ namespace MathForGames
         {
             for (int i = 0; i < _actors.Length; i ++)
             {
-                if (referenceEntity != _actors[i] && _actors[i])
-                {
-                    float distance = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X), 2)
-                        + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y), 2));
+                float displacement = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X), 2)
+                 + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y), 2));
 
-                    if (distance < (referenceEntity.CollisionRadius + _actors[i].CollisionRadius))
-                    { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
-
-                }                
+                if (displacement < (referenceEntity.CollisionRadius + _actors[i].CollisionRadius) && referenceEntity != _actors[i] && _actors[i].CanCollide == true)
+                { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
             }
         }
 

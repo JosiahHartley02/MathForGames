@@ -269,7 +269,7 @@ namespace MathForGames
                 //Stores the current time between frames
                 float deltaTime = Raylib.GetFrameTime();
                 //Call update for all objects in game
-                Update(deltaTime);
+                Update(deltaTime); 
                 //Call draw for all objects in game
                 Draw();
                 //Clear the input stream for the console window

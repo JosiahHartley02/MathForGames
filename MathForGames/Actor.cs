@@ -30,9 +30,15 @@ namespace MathForGames
         protected ConsoleColor _color;
         protected Color _rayColor;
         protected Actor _parent;
+        public Actor Parent { get { return _parent; } }
         protected Actor[] _children = new Actor[0];
+        public Actor[] Children { get { return _children; } }
         protected bool isChild = false;
+        public bool IsChild { get { return isChild; } }
+        protected bool _canCollide = false;
+        public bool CanCollide { get { return _canCollide; } set { _canCollide = value; } }
         protected Actor _Tank;
+        public Actor Tank { get { return _Tank; } }
         protected Projectile[] _projectiles = new Projectile[0];
         protected bool _isBullet = false;
         protected bool _isVisible = true;
@@ -210,7 +216,7 @@ namespace MathForGames
             if (bullet._isVisible == false)
             {
                 bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
-                bullet.SetTranslation(bullet._Tank.WorldPosition);
+                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m23 + bullet._Tank._globalTransform.m21));
                 bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
                 bullet._isVisible = true;
             }
@@ -224,8 +230,7 @@ namespace MathForGames
             _localTransform = new Matrix3();
             LocalPosition = new Vector2(x, y);
             _velocity = new Vector2();
-            _color = color;/*
-            Forward = new Vector2(1, 0);*/
+            _color = color;
         }
         public Actor()
         {
@@ -278,12 +283,23 @@ namespace MathForGames
                 _globalTransform = _parent._globalTransform * _localTransform;
             else
                 _globalTransform = Game.GetCurrentScene().World * _localTransform;
+            Game.GetCurrentScene().TestForCollision(this);
         }
 
         public virtual void Draw()
         {
             //Draws the actor and a line indicating it facing to the raylib window.
             //Scaled to match console movement
+            if (isColliding == true)
+            {
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RAYWHITE);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.BLACK);
+            }
+            else
+            {
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RAYWHITE);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.RED);
+            }
             Raylib.DrawText(_icon.ToString(), (int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), 32, _rayColor);
             Raylib.DrawLine(
                 (int)(WorldPosition.X * 32),
@@ -299,8 +315,6 @@ namespace MathForGames
                 (int)((WorldPosition.Y - _globalTransform.m22) * 32),
                 Color.RED
                 );
-            Raylib.DrawCircleV(new System.Numerics.Vector2(WorldPosition.X * 32,WorldPosition.Y * 32), 2, Color.GREEN);
-
             //Changes the color of the console text to be this actors color
             Console.ForegroundColor = _color;
 
@@ -322,10 +336,6 @@ namespace MathForGames
         public virtual void End()
         {
             Started = false;
-        }
-        public void CollisionTest(Actor referenceEntity)
-        {
-
         }
     }
 }

@@ -78,11 +78,11 @@ namespace MathForGames
         }
         public override void Draw()
         {
-            if (_sprite != null && isColliding == false)
+            if (_sprite != null && IsVisible != false)
             {
                 _sprite.Draw(_globalTransform);
             }
-            if (_parent != null && isColliding == false)
+            if (_parent != null && IsVisible != false)
             {
                 Raylib.DrawLine(
                 (int)(WorldPosition.X * 32),

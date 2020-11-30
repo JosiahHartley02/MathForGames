@@ -49,6 +49,7 @@ namespace MathForGames
             _sprite = new Sprite("sprites/Tanks/tankRed.png");
             _trail = new Sprite("sprites/Tanks/tracksLarge.png");
             _collisionRadius = 18;
+            _canCollide = true;
         }
 
         public override void Update(float deltaTime)
@@ -72,7 +73,7 @@ namespace MathForGames
         }
         public override void Draw()
         {
-            if (_sprite != null && isColliding == false)
+            if (_sprite != null && IsVisible != false)
             {
                 _sprite.Draw(_localTransform * Matrix3.CreateRotation(1.5708f));
                 if (_trail != null)

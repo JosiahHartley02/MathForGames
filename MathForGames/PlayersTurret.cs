@@ -30,6 +30,7 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/barrelRed.png");
             _collisionRadius = -10;
+            CanCollide = false;
 
         }
 
@@ -45,7 +46,7 @@ namespace MathForGames
         }
         public override void Draw()
         {
-            if (_sprite != null && isColliding == false)
+            if (_sprite != null && IsVisible != false)
             {
                 _sprite.Draw(_globalTransform * Matrix3.CreateRotation(-1.5708f));
             }
