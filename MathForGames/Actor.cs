@@ -297,8 +297,8 @@ namespace MathForGames
             }
             else
             {
-                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RAYWHITE);
-                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.RED);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RED);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.BLACK);
             }
             Raylib.DrawText(_icon.ToString(), (int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), 32, _rayColor);
             Raylib.DrawLine(
