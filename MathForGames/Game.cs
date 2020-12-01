@@ -193,7 +193,7 @@ namespace MathForGames
             Scene scene1 = new Scene();
             Scene scene2 = new Scene();
 
-            Player player = new Player(0, 10, Color.RED, ' ', ConsoleColor.Red);
+            Player player = new Player(2, 10, Color.RED, ' ', ConsoleColor.Red);
             Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
             Projectile playersBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletRed.png");
             Projectile enemysBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletGreen.png");

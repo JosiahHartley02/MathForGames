@@ -268,10 +268,6 @@ namespace MathForGames
         {
             UpdateTransform();
 
-            //Before the actor is moved, update the direction it's facing
-            /* UpdateFacing();*/
-
-            //Increase position by the current velocity
             Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
 
             Velocity += Acceleration;
@@ -287,12 +283,13 @@ namespace MathForGames
                 _globalTransform = Game.GetCurrentScene().World * _localTransform;
             _isColliding = false;
             Game.GetCurrentScene().TestForCollision(this);
+
         }
 
         public virtual void Draw()
         {
             //Sets visibility to false if not in bounds
-            if (WorldPosition.X < 0 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
+            if (WorldPosition.X < -1 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
             { _isVisible = false; }
 
             if (Game.DebugVisual == false)
