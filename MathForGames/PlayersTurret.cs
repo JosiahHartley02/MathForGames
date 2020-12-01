@@ -30,12 +30,13 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/barrelRed.png");
             _collisionRadius = -10;
-            CanCollide = false;
+            _canCollide = false;
 
         }
 
         public override void Update(float deltaTime)
         {
+            if(isColliding) { _isVisible = false; }
             _rotationspeed = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q))
                 - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E))) * .1f;
             bool fire = Game.GetKeyDown((int)KeyboardKey.KEY_SPACE);

@@ -11,8 +11,10 @@ namespace MathForGames
     class Game
     {
         private static bool _gameOver = false;
+        private static bool _debugVisual = false;
         private static Scene[] _scenes;
         private static int _currentSceneIndex;
+        public static bool DebugVisual { get { return _debugVisual; } set { _debugVisual = value; } }
         public static int CurrentSceneIndex
         {
             get
@@ -233,6 +235,8 @@ namespace MathForGames
                 _scenes[_currentSceneIndex].Start();
 
             _scenes[_currentSceneIndex].Update(deltaTime);
+            bool debugMode = GetKeyDown((int)KeyboardKey.KEY_F1);
+            Game.DebugVisual = debugMode;
         }
 
         //Used to display objects and other info on the screen.

@@ -43,6 +43,8 @@ namespace MathForGames
         protected bool _isBullet = false;
         protected bool _isVisible = true;
         protected bool _isColliding = false;
+        protected bool _collidable = false;
+        public bool Collidable { get { return _collidable; } set { _collidable = value; } }
         protected Sprite _sprite;
         public bool Started { get; private set; }
 
@@ -50,7 +52,7 @@ namespace MathForGames
         { get { return _collisionRadius; } set { _collisionRadius = value; } }
         public bool IsBullet
         { get { return _isBullet; } }
-        public bool IsVisible { get { return _isVisible; } }
+        public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
         public bool isColliding
         {
             get { return _isColliding; }
@@ -213,12 +215,12 @@ namespace MathForGames
         //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
         protected void LaunchProjectile(Projectile bullet)
         {
-            if (bullet._isVisible == false)
+            if (bullet.IsVisible == false)
             {
-                bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
-                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m23 + bullet._Tank._globalTransform.m21));
-                bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
                 bullet._isVisible = true;
+                bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
+                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + (bullet._Tank._globalTransform.m11 * 0.5f), bullet._Tank._globalTransform.m23 + (bullet._Tank._globalTransform.m21 * 0.5f)));
+                bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
             }
 
         }
@@ -283,21 +285,28 @@ namespace MathForGames
                 _globalTransform = _parent._globalTransform * _localTransform;
             else
                 _globalTransform = Game.GetCurrentScene().World * _localTransform;
+            _isColliding = false;
             Game.GetCurrentScene().TestForCollision(this);
         }
 
         public virtual void Draw()
         {
+            //Sets visibility to false if not in bounds
+            if (WorldPosition.X < 0 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
+            { _isVisible = false; }
+
+            if (Game.DebugVisual == false)
+            { return; }
             //Draws the actor and a line indicating it facing to the raylib window.
             //Scaled to match console movement
             if (isColliding == true)
             {
-                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RAYWHITE);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RED);
                 Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.BLACK);
             }
             else
             {
-                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.RED);
+                Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius, Color.WHITE);
                 Raylib.DrawCircle((int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), CollisionRadius - 2, Color.BLACK);
             }
             Raylib.DrawText(_icon.ToString(), (int)(WorldPosition.X * 32), (int)(WorldPosition.Y * 32), 32, _rayColor);
@@ -325,9 +334,7 @@ namespace MathForGames
                 Console.SetCursorPosition((int)WorldPosition.X, (int)WorldPosition.Y);
                 Console.Write(_icon);
             }
-            //Sets visibility to false if not in bounds
-            if(WorldPosition.X < 0 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
-            { _isVisible = false; }
+            
             
             //Reset console text color to be default color
             Console.ForegroundColor = Game.DefaultColor;

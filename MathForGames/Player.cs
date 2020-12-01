@@ -50,6 +50,7 @@ namespace MathForGames
             _trail = new Sprite("sprites/Tanks/tracksLarge.png");
             _collisionRadius = 18;
             _canCollide = true;
+            _collidable = true;
         }
 
         public override void Update(float deltaTime)
@@ -70,6 +71,8 @@ namespace MathForGames
             base.Update(deltaTime);
             _globalTransform = _localTransform;
             lastLocation = _globalTransform;
+
+            //Prevent OutOfBounds of Raylib Window
         }
         public override void Draw()
         {

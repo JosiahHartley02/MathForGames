@@ -25,14 +25,15 @@ namespace MathForGames
         }
         public void TestForCollision(Actor referenceEntity)
         {
-            for (int i = 0; i < _actors.Length; i ++)
-            {
-                float displacement = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X), 2)
-                 + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y), 2));
+            if (referenceEntity.Collidable == true)
+                for (int i = 0; i < _actors.Length; i++)
+                {
+                    float displacement = (float)Math.Sqrt((float)Math.Pow((referenceEntity.WorldPosition.X - _actors[i].WorldPosition.X) * 32, 2)
+                     + (float)Math.Pow((referenceEntity.WorldPosition.Y - _actors[i].WorldPosition.Y) * 32, 2));
 
-                if (displacement < (referenceEntity.CollisionRadius + _actors[i].CollisionRadius))
-                { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
-            }
+                    if (displacement < (referenceEntity.CollisionRadius + _actors[i].CollisionRadius) && _actors[i].Collidable == true && referenceEntity != _actors[i])
+                    { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
+                }
         }
 
         public void AddActor(Actor actor)
@@ -121,7 +122,7 @@ namespace MathForGames
             //Return whether or not the removal was successful
             return actorRemoved;
         }
-        
+
         public virtual void Start()
         {
             Started = true;

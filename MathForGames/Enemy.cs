@@ -29,6 +29,7 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/tankBlue.png");
             _collisionRadius = 18;
+            _collidable = true;
         }
 
         /// <param name="x">Position on the x axis</param>
@@ -41,6 +42,7 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/tankBlue.png");
             _collisionRadius = 18;
+            _collidable = true;
         }
 
         /// <summary>

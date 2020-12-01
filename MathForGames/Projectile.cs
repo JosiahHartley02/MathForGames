@@ -14,6 +14,7 @@ namespace MathForGames
             _sprite = new Sprite("sprites/Tanks/tankBlue.png");
             _isVisible = false;
             _collisionRadius = 5;
+            _collidable = true;
         }
         public Projectile(Matrix3 globalTransform, string path)
             : base(globalTransform, path)
@@ -22,6 +23,7 @@ namespace MathForGames
             _globalTransform = globalTransform;
             _isVisible = false;
             _collisionRadius = 5;
+            _collidable = true;
         }
         public override void Start()
         {
@@ -30,10 +32,15 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
+            _collidable = false;
             UpdateTransform();
             if (_isVisible)
-            { LocalPosition += Velocity.Normalized * deltaTime * 7; }
+            { LocalPosition += Velocity.Normalized * deltaTime * 7; _collidable = true; }
+            else { _isColliding = false; }
             _globalTransform = _localTransform;
+            Game.GetCurrentScene().TestForCollision(this);
+            if (isColliding)
+            { _isVisible = false; }
             
         }
         public override void Draw()
