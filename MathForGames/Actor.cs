@@ -43,6 +43,7 @@ namespace MathForGames
         protected Actor _Tank;
         public Actor Tank { get { return _Tank; } }
         protected Projectile[] _projectiles = new Projectile[0];
+        public Projectile[] Projectiles { get { return _projectiles; } }
         protected bool _isBullet = false;
         protected bool _isVisible = true;
         protected bool _isColliding = false;
@@ -298,7 +299,7 @@ namespace MathForGames
             UpdateTransform();
 
             //Modifys Acceleration To Constantly Be Subtracting Velocity To Replicate Friction
-            Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
+            Velocity += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime * 1f;
             //Adds Acceleration To Velocity After The Friction Has Been Applied
             Velocity += Acceleration;
             //Tests For Velocity Value, If > MaxSpeed Then = MaxSpeed
@@ -323,8 +324,6 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            
-
             if (Game.DebugVisual == false)
             { return; }
             //Draws the actor and a line indicating it facing to the raylib window.

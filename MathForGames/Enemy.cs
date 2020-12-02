@@ -71,6 +71,8 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
+            if(Game.GetCurrentScene().TestForCollisionWith(this,this.Target.Children[0].Projectiles[0]))
+            { _translation.m13 = 10; _translation.m23 = 10; }
         }
         public override void Draw()
         {
