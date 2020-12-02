@@ -20,6 +20,26 @@ namespace MathForGames
         protected char _icon = ' ';
         protected ConsoleColor _color;
         protected Color _rayColor;
+        public bool Started { get; private set; }
+        public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
+        {
+            _rayColor = Color.WHITE;
+            _icon = icon;
+            _localTransform = new Matrix3();
+            LocalPosition = new Vector2(x, y);
+            _velocity = new Vector2();
+            _color = color;
+        }
+        public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
+            : this(x, y, icon, color)
+        {
+            _rayColor = Color.WHITE;
+            _icon = icon;
+            _localTransform = new Matrix3();
+            LocalPosition = new Vector2(x, y);
+            _velocity = new Vector2();
+            _color = color;
+        }
 
         //Movement Assets Related To Moving
         private Vector2 _velocity = new Vector2();
@@ -44,6 +64,10 @@ namespace MathForGames
         public Vector2 LocalPosition
         { get { return new Vector2(_localTransform.m13, _localTransform.m23); }
             set { _translation.m13 = value.X; _translation.m23 = value.Y; } }
+        public void SetTranslation(Vector2 position) { _translation = Matrix3.CreateTranslation(position); }
+        public void SetRotation(float radians) { _rotation = Matrix3.CreateRotation(radians); _currentRadianRotation = radians;}
+        public void SetRotationSpeed(float speed) {  _rotationspeed = speed;}
+        public void SetScale(float x, float y) { _scale = Matrix3.CreateScale(x, y); }
 
         //Assets Relating To Physical Characteristics of Actor
         protected bool _isVisible = true;
@@ -61,57 +85,10 @@ namespace MathForGames
         public Actor[] Children { get { return _children; } }
         protected bool isChild = false;
         public bool IsChild { get { return isChild; } }
-
-        //Assets Relating To The Tank Bullet RelationShip
-        protected Actor _Tank;
-        public Actor Tank { get { return _Tank; } }
-        protected Projectile[] _projectiles = new Projectile[0];
-        public Projectile[] Projectiles { get { return _projectiles; } }
-        protected bool _isBullet = false;
-        public bool IsBullet { get { return _isBullet; } }
-
-        //Assets Relating To The Target RelationShip Between This and an Actor
-        private Actor _target;
-        public Actor Target { get { return _target; } }
-
-       //Assets Relating To Accesing Assets Above
-        public bool Started { get; private set; }
-
-        //Gets Rotation of X-axis, Forward Vectors Applied This Way
-        public Vector2 Forward
-        {  get { return new Vector2(_globalTransform.m11, _globalTransform.m21);}
-            set { Vector2 lookPosition = LocalPosition + value.Normalized;               
-                LookAt(lookPosition); } }
-
-
-
-        public void LookAt(Vector2 position)
-        {
-            //Find the direction that the actor should look in
-            Vector2 direction = (position - WorldPosition).Normalized;
-
-            //Use the dotproduct to find the angle the actor needs to rotate
-            float dotProd = Vector2.DotProduct(Forward, direction);
-            if (Math.Abs(dotProd) > 1)
-                return;
-            float angle = (float)Math.Acos(dotProd);
-
-            //Find a perpindicular vector to the direction
-            Vector2 perp = new Vector2(direction.Y, -direction.X);
-
-            //Find the dot product of the perpindicular vector and the current forward
-            float perpDot = Vector2.DotProduct(perp, Forward);
-
-            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
-            if (perpDot != 0)
-                angle *= -perpDot / Math.Abs(perpDot);
-
-            Rotate(angle);
-        }
         public void AddChild(Actor child)
         {
             Actor[] tempArray = new Actor[_children.Length + 1];
-            for(int i = 0; i < _children.Length; i++)
+            for (int i = 0; i < _children.Length; i++)
             {
                 tempArray[i] = _children[i];
             }
@@ -127,9 +104,9 @@ namespace MathForGames
             bool childRemoved = false;
             Actor[] tempArray = new Actor[_children.Length - 1];
             int j = 0;
-            for(int i = 0;i < _children.Length; i++)
+            for (int i = 0; i < _children.Length; i++)
             {
-                if(child != _children[i])
+                if (child != _children[i])
                 {
                     tempArray[j] = _children[i];
                     j++;
@@ -144,6 +121,14 @@ namespace MathForGames
             this.isChild = false;
             return childRemoved;
         }
+
+        //Assets Relating To The Tank Bullet RelationShip
+        protected Actor _Tank;
+        public Actor Tank { get { return _Tank; } }
+        protected Projectile[] _projectiles = new Projectile[0];
+        public Projectile[] Projectiles { get { return _projectiles; } }
+        protected bool _isBullet = false;
+        public bool IsBullet { get { return _isBullet; } }
         public void AddAmmo(Projectile bullet)
         {
             Projectile[] tempArray = new Projectile[_projectiles.Length + 1];
@@ -181,40 +166,49 @@ namespace MathForGames
             return bulletRemoved;
         }
 
+        //Assets Relating To The Target RelationShip Between This and an Actor
+        private Actor _target;
+        public Actor Target { get { return _target; } }
         public void AddTarget(Actor target)
         {
             if (_target == null)
                 _target = target;
         }
-        public void RemoveTarget()
-        {
-            _target = null;
+        public void RemoveTarget() { _target = null; }
+
+        
+        public Vector2 Forward   //Used To Find The Direction Of The X Axis Rotation
+        {  
+            get 
+            { 
+                return new Vector2(_globalTransform.m11, _globalTransform.m21);
+            }
+            set 
+            { 
+                Vector2 lookPosition = LocalPosition + value.Normalized;               
+                LookAt(lookPosition); 
+            } 
         }
 
-        public void SetTranslation(Vector2 position)
+        public void LookAt(Vector2 position)
         {
-            _translation = Matrix3.CreateTranslation(position);
+            Vector2 direction = (position - WorldPosition).Normalized;   //Find the direction that the actor should look in            
+            float dotProd = Vector2.DotProduct(Forward, direction);      //Use the dotproduct to find the angle the actor needs to rotate
+            if (Math.Abs(dotProd) > 1)
+                return;
+            float angle = (float)Math.Acos(dotProd);            
+            Vector2 perp = new Vector2(direction.Y, -direction.X);       //Find a perpindicular vector to the direction            
+            float perpDot = Vector2.DotProduct(perp, Forward);           //Find the dot product of the perpindicular vector and the current forward            
+            if (perpDot != 0)                                            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+                angle *= -perpDot / Math.Abs(perpDot);
+            Rotate(angle);
         }
-        public void SetRotation(float radians)
-        {
-            _rotation = Matrix3.CreateRotation(radians);
-            _currentRadianRotation = radians;
-        }
-        public void SetRotationSpeed(float speed)
-        {
-            _rotationspeed = speed;
-        }
-        public void SetScale(float x, float y)
-        {
-            _scale = Matrix3.CreateScale(x,y);
-        }
+
+
         private void UpdateTransform()
         {
-            SetRotation(_rotationspeed + _currentRadianRotation);
             _localTransform = _translation *_rotation * _scale;
         }
-
-        //to make this easier and more balanced, player and other only get one bullet bullet is "destroyed" when collision is true
         protected void LaunchProjectile(Projectile bullet)
         {
             if (bullet.IsVisible == false)
@@ -225,39 +219,6 @@ namespace MathForGames
                 bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
             }
 
-        }
-
-        public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-        {
-            _rayColor = Color.WHITE;
-            _icon = icon;
-            _localTransform = new Matrix3();
-            LocalPosition = new Vector2(x, y);
-            _velocity = new Vector2();
-            _color = color;
-        }
-        public Actor()
-        {
-        }
-        public Actor(Matrix3 globalTransform, string path)
-        {
-
-        }
-
-        /// <param name="x">Position on the x axis</param>
-        /// <param name="y">Position on the y axis</param>
-        /// <param name="rayColor">The color of the symbol that will appear when drawn to raylib</param>
-        /// <param name="icon">The symbol that will appear when drawn</param>
-        /// <param name="color">The color of the symbol that will appear when drawn to the console</param>
-        public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-            : this(x,y,icon,color)
-        {
-            _rayColor = Color.WHITE;
-            _icon = icon;
-            _localTransform = new Matrix3();
-            LocalPosition = new Vector2(x, y);
-            _velocity = new Vector2();
-            _color = color;
         }
 
         public virtual void Start()
@@ -294,7 +255,7 @@ namespace MathForGames
             if (WorldPosition.Y > 23.25f) { Velocity.Y = -Math.Abs(Velocity.Y); }
         }
 
-        public virtual void Draw()
+        public virtual void Draw() //This Draw Function is only for Debug Purposeses, Press F1 in game to see effects
         {
             if (Game.DebugVisual == false)
             { return; }
