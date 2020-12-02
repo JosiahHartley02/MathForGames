@@ -25,6 +25,7 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
+            
             base.Update(deltaTime);
             if(Game.GetCurrentScene().TestForCollisionWith(this,this.Target.Children[0].Projectiles[0]))  //When Targets Bullet Collides With This, Reset Position
             { _translation.m13 = 10; _translation.m23 = 10; }

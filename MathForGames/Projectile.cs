@@ -8,6 +8,9 @@ namespace MathForGames
 {
     class Projectile : Actor
     {
+        private float _existence;
+        private float _lifespan = 3;
+        public float Existence { get { return _existence; } set { _existence = value; } }
         public Projectile(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
@@ -24,10 +27,13 @@ namespace MathForGames
         public override void Start()
         {
             Collidable = true;
+            _isVisible = false;
             base.Start();
         }
         public override void Update(float deltaTime)
         {
+            if(_existence > _lifespan)
+            { _isVisible = false; }
             UpdateTransform();
             
             //Toggles Between Visible Physical Characteristics And Invisible Numerical Characteristics
@@ -43,10 +49,12 @@ namespace MathForGames
             if (WorldPosition.X > 32f) { Velocity.X = -Math.Abs(Velocity.X);}
             if (WorldPosition.Y < 0) { Velocity.Y = Math.Abs(Velocity.Y);}
             if (WorldPosition.Y > 24) { Velocity.Y = -Math.Abs(Velocity.Y);}
-            LookAt(WorldPosition + Velocity);
+            LookAt(WorldPosition - Velocity);
             //Tests For Collision
             Game.GetCurrentScene().TestForCollision(this);
             if (isColliding) { _isVisible = false; }
+            if(IsVisible)
+            { _existence += deltaTime; }
         }
         public override void Draw()
         {

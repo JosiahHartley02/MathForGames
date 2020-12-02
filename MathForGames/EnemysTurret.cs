@@ -23,6 +23,7 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
+            LookAt(Target.WorldPosition);
             base.Update(deltaTime);
         }
         public override void Draw()
@@ -32,13 +33,6 @@ namespace MathForGames
                 _sprite.Draw(_globalTransform * Matrix3.CreateRotation(-1.5708f));
             }
             base.Draw();
-            Raylib.DrawLine(
-(int)(WorldPosition.X * 32),
-(int)(WorldPosition.Y * 32),
-(int)((WorldPosition.X + Forward.X) * 32),
-(int)((WorldPosition.Y + Forward.Y) * 32),
-Color.DARKGREEN
-);
         }
         public override void End()
         {

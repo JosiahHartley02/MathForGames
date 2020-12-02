@@ -65,6 +65,13 @@ namespace MathForGames
             set { _translation.m13 = value.X; _translation.m23 = value.Y; } }
         public void SetTranslation(Vector2 position) { _translation = Matrix3.CreateTranslation(position); }
         public void SetRotation(float radians) { _rotation = Matrix3.CreateRotation(radians); _currentRadianRotation = radians;}
+        public void SetRotationSpecific(Vector2 xRotation,Vector2 yRotation)
+        {
+            _rotation.m11 = xRotation.X;
+            _rotation.m21 = xRotation.Y;
+            _rotation.m12 = yRotation.X;
+            _rotation.m22 = yRotation.Y;
+        }
         public void SetRotationSpeed(float speed) {  _rotationspeed = speed;}
         public void SetScale(float x, float y) { _scale = Matrix3.CreateScale(x, y); }
 
@@ -175,43 +182,93 @@ namespace MathForGames
         }
         public void RemoveTarget() { _target = null; }
 
-        
-        public Vector2 Forward   //Used To Find The Direction Of The X Axis Rotation
-        {  
-            get 
-            { 
+
+        public Vector2 Forward
+        {
+            get
+            {
                 return new Vector2(_globalTransform.m11, _globalTransform.m21);
             }
-            set 
-            { 
-                Vector2 lookPosition = LocalPosition + value.Normalized;               
-                LookAt(lookPosition); 
-            } 
+            set
+            {
+                Vector2 lookPosition = LocalPosition + value.Normalized;
+                LookAt(lookPosition);
+            }
         }
 
         public void LookAt(Vector2 position)
         {
-            Vector2 direction = (position - WorldPosition).Normalized;   //Find the direction that the actor should look in            
-            float dotProd = Vector2.DotProduct(Forward, direction);      //Use the dotproduct to find the angle the actor needs to rotate
+                //Find the direction that the actor should look in
+                Vector2 direction = (position - WorldPosition).Normalized;
+
+                //Use the dotproduct to find the angle the actor needs to rotate
+                float dotProd = Vector2.DotProduct(Forward, direction);
+                if (Math.Abs(dotProd) > 1)
+                    return;
+                float angle = (float)Math.Acos(dotProd);
+
+                //Find a perpindicular vector to the direction
+                Vector2 perp = new Vector2(direction.Y, -direction.X);
+
+                //Find the dot product of the perpindicular vector and the current forward
+                float perpDot = Vector2.DotProduct(perp, Forward);
+
+                //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+                if (perpDot != 0)
+                    angle *= -perpDot / Math.Abs(perpDot);
+
+                Rotate(angle + 1.5708f / 2);
+        }
+        public void LookAt(Actor Actor)
+        {
+
+            Raylib.DrawLine(
+            (int)(WorldPosition.X * 32),
+            (int)(WorldPosition.Y * 32),
+            (int)(Actor.WorldPosition.X * 32),
+            (int)(Actor.WorldPosition.Y * 32),
+            Color.BLUE);
+
+            //Find the direction that the actor should look in
+            Vector2 direction = (Actor.WorldPosition - WorldPosition).Normalized;
+
+            //Use the dotproduct to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(Forward, direction);
             if (Math.Abs(dotProd) > 1)
                 return;
-            float angle = (float)Math.Acos(dotProd);            
-            Vector2 perp = new Vector2(direction.Y, -direction.X);       //Find a perpindicular vector to the direction            
-            float perpDot = Vector2.DotProduct(perp, Forward);           //Find the dot product of the perpindicular vector and the current forward            
-            if (perpDot != 0)                                            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find a perpindicular vector to the direction
+            Vector2 perp = new Vector2(direction.Y, -direction.X);
+
+            //Find the dot product of the perpindicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perp, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
                 angle *= -perpDot / Math.Abs(perpDot);
+
             Rotate(angle);
+
+            Raylib.DrawLine(
+            (int)(WorldPosition.X * 32),
+            (int)(WorldPosition.Y * 32),
+            (int)(Actor.WorldPosition.X * 32),
+            (int)(Actor.WorldPosition.Y * 32),
+            Color.RED);
         }
 
 
         private void UpdateTransform()
         {
+            Rotate(_rotationspeed);
             _localTransform = _translation *_rotation * _scale;
         }
         protected void LaunchProjectile(Projectile bullet)
         {
             if (bullet.IsVisible == false)
             {
+                bullet.Existence = 0;
                 bullet._isVisible = true;
                 bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
                 bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + (bullet._Tank._globalTransform.m11 * 0.65f), bullet._Tank._globalTransform.m23 + (bullet._Tank._globalTransform.m21 * 0.65f)));
