@@ -15,12 +15,22 @@ namespace MathForGames
     /// </summary>
     class Actor
     {
+        //Basic Assests All Actors Should Have
+        protected Sprite _sprite;
         protected char _icon = ' ';
+        protected ConsoleColor _color;
+        protected Color _rayColor;
 
+        //Movement Assets Related To Moving
         private Vector2 _velocity = new Vector2();
         private Vector2 acceleration = new Vector2();
         private float _maxSpeed = 5;
+        public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+        protected Vector2 Acceleration { get => acceleration; set => acceleration = value; }
+        public float MaxSpeed { get => _maxSpeed; set => _maxSpeed = value; }
+        public void Rotate(float angle) { _currentRadianRotation += angle; SetRotation(_currentRadianRotation); }
 
+        //Placement Assets Relating To Placement
         protected Matrix3 _globalTransform = new Matrix3();
         protected Matrix3 _localTransform = new Matrix3();
         protected Matrix3 _translation = new Matrix3();
@@ -29,97 +39,52 @@ namespace MathForGames
         protected float _currentRadianRotation;
         protected float _rotationspeed = 0;
         protected float _collisionRadius = 1;
+        public Vector2 WorldPosition { get { return new Vector2(_globalTransform.m13, _globalTransform.m23); } }
+        public Matrix3 GlobalTransform { get { return _globalTransform; } }
+        public Vector2 LocalPosition
+        { get { return new Vector2(_localTransform.m13, _localTransform.m23); }
+            set { _translation.m13 = value.X; _translation.m23 = value.Y; } }
 
-        protected ConsoleColor _color;
-        protected Color _rayColor;
+        //Assets Relating To Physical Characteristics of Actor
+        protected bool _isVisible = true;
+        public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
+        protected bool _isColliding = false;
+        protected bool _collidable = false;
+        public bool Collidable { get { return _collidable; } set { _collidable = value; } }
+        public float CollisionRadius { get { return _collisionRadius; } set { _collisionRadius = value; } }
+        public bool isColliding { get { return _isColliding; } set { _isColliding = value; } }
+
+        //Assets Relating To The Parent Child RelationShip
         protected Actor _parent;
         public Actor Parent { get { return _parent; } }
         protected Actor[] _children = new Actor[0];
         public Actor[] Children { get { return _children; } }
         protected bool isChild = false;
         public bool IsChild { get { return isChild; } }
-        protected bool _canCollide = false;
-        public bool CanCollide { get { return _canCollide; } set { _canCollide = value; } }
+
+        //Assets Relating To The Tank Bullet RelationShip
         protected Actor _Tank;
         public Actor Tank { get { return _Tank; } }
         protected Projectile[] _projectiles = new Projectile[0];
         public Projectile[] Projectiles { get { return _projectiles; } }
         protected bool _isBullet = false;
-        protected bool _isVisible = true;
-        protected bool _isColliding = false;
-        protected bool _collidable = false;
-        public bool Collidable { get { return _collidable; } set { _collidable = value; } }
-        protected Sprite _sprite;
-        public bool Started { get; private set; }
+        public bool IsBullet { get { return _isBullet; } }
 
-        public float CollisionRadius
-        { get { return _collisionRadius; } set { _collisionRadius = value; } }
-        public bool IsBullet
-        { get { return _isBullet; } }
-        public bool IsVisible { get { return _isVisible; } set { _isVisible = value; } }
-        public bool isColliding
-        {
-            get { return _isColliding; }
-            set { _isColliding = value; }
-        }
-
+        //Assets Relating To The Target RelationShip Between This and an Actor
         private Actor _target;
         public Actor Target { get { return _target; } }
-        public void AddTarget(Actor target)
-        {
-            if (_target == null)
-                _target = target;
-        }
-        public void RemoveTarget()
-        {
-            _target = null;
-        }
 
+       //Assets Relating To Accesing Assets Above
+        public bool Started { get; private set; }
+
+        //Gets Rotation of X-axis, Forward Vectors Applied This Way
         public Vector2 Forward
-        {
-            get 
-            {
-                return new Vector2(_globalTransform.m11, _globalTransform.m21);
-            }
-            set
-            {
-                Vector2 lookPosition = LocalPosition + value.Normalized;
-                LookAt(lookPosition);
-            }
-        }
+        {  get { return new Vector2(_globalTransform.m11, _globalTransform.m21);}
+            set { Vector2 lookPosition = LocalPosition + value.Normalized;               
+                LookAt(lookPosition); } }
 
-        public Vector2 WorldPosition
-        {
-            get { return new Vector2(_globalTransform.m13, _globalTransform.m23); }
-        }
-        public Matrix3 GlobalTransform
-        {
-            get { return _globalTransform; }
-        }
-        public Vector2 LocalPosition
-        {
-            get
-            {
-                return new Vector2(_localTransform.m13, _localTransform.m23);
-            }
-            set
-            {
-                _translation.m13 = value.X;
-                _translation.m23 = value.Y;
-            }
-        }
 
-        public Vector2 Velocity
-        { get{return _velocity;} set{_velocity = value;} }
 
-        protected Vector2 Acceleration { get => acceleration; set => acceleration = value; }
-        public float MaxSpeed { get => _maxSpeed; set => _maxSpeed = value; }
-
-        public void Rotate(float angle)
-        {
-            _currentRadianRotation += angle;
-            SetRotation(_currentRadianRotation);
-        }
         public void LookAt(Vector2 position)
         {
             //Find the direction that the actor should look in
@@ -142,10 +107,6 @@ namespace MathForGames
                 angle *= -perpDot / Math.Abs(perpDot);
 
             Rotate(angle);
-        }
-        public void LookAt(Actor Target)
-        {
-            
         }
         public void AddChild(Actor child)
         {
@@ -219,6 +180,17 @@ namespace MathForGames
             this._isBullet = false;
             return bulletRemoved;
         }
+
+        public void AddTarget(Actor target)
+        {
+            if (_target == null)
+                _target = target;
+        }
+        public void RemoveTarget()
+        {
+            _target = null;
+        }
+
         public void SetTranslation(Vector2 position)
         {
             _translation = Matrix3.CreateTranslation(position);
