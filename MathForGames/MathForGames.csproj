@@ -25,6 +25,9 @@
     <None Update="sprites\Bullets\bulletRed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="sprites\Tanks\barrelBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="sprites\Tanks\barrelRed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

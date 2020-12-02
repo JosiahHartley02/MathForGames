@@ -192,26 +192,31 @@ namespace MathForGames
             //Create a new scene for our actors to exist in
             Scene scene1 = new Scene();
             Scene scene2 = new Scene();
-
-            Player player = new Player(2, 10, Color.RED, ' ', ConsoleColor.Red);
-            Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
-            Projectile playersBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletRed.png");
-            Projectile enemysBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletGreen.png");
+             
+            Player player = new Player(2, 10, Color.RED, ' ', ConsoleColor.Red);                        
             PlayersTurret gun = new PlayersTurret(0, 0, Color.RED, ' ', ConsoleColor.Red);
+            Projectile playersBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletRed.png");
+
+            Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
+            EnemysTurret Egun = new EnemysTurret(0, 0, Color.BLUE, ' ', ConsoleColor.Blue);
+
+            Egun.AddTarget(player);
             player.Speed = 5;
             playersBullet.SetScale(1, 1);
             gun.SetScale(2, 1);
+            Egun.SetScale(2, 1);
             player.AddChild(gun);
+            player.AddTarget(enemy);
             gun.AddAmmo(playersBullet);
             enemy.LocalPosition = new Vector2(5, 5);
-
-            enemy.Target = player;
+            enemy.AddChild(Egun);
+            enemy.AddTarget(player);
 
             scene1.AddActor(player);
             scene1.AddActor(enemy);
             scene1.AddActor(gun);
             scene1.AddActor(playersBullet);
-            scene1.AddActor(enemysBullet);
+            scene1.AddActor(Egun);
             
 
             //Sets the starting scene index and adds the scenes to the scenes array

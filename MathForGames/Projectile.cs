@@ -43,11 +43,11 @@ namespace MathForGames
             _globalTransform = _localTransform;
 
             //Creates Boucing Off Walls Effect By Testing Global Position
-            if (WorldPosition.X < 0f) { Velocity.X = Math.Abs(Velocity.X); _rotation *= Matrix3.CreateRotation(1.5708f); }
-            if (WorldPosition.X > 32f) { Velocity.X = -Math.Abs(Velocity.X); _rotation *= Matrix3.CreateRotation(1.5708f); }
-            if (WorldPosition.Y < 0) { Velocity.Y = Math.Abs(Velocity.Y); _rotation *= Matrix3.CreateRotation(1.5708f); }
-            if (WorldPosition.Y > 24) { Velocity.Y = -Math.Abs(Velocity.Y); _rotation *= Matrix3.CreateRotation(1.5708f); }
-
+            if (WorldPosition.X < 0f) { Velocity.X = Math.Abs(Velocity.X);}
+            if (WorldPosition.X > 32f) { Velocity.X = -Math.Abs(Velocity.X);}
+            if (WorldPosition.Y < 0) { Velocity.Y = Math.Abs(Velocity.Y);}
+            if (WorldPosition.Y > 24) { Velocity.Y = -Math.Abs(Velocity.Y);}
+            LookAt(WorldPosition + Velocity);
             //Tests For Collision
             Game.GetCurrentScene().TestForCollision(this);
             if (isColliding) { _isVisible = false; }

@@ -16,9 +16,11 @@ namespace MathForGames
     class Actor
     {
         protected char _icon = ' ';
+
         private Vector2 _velocity = new Vector2();
         private Vector2 acceleration = new Vector2();
         private float _maxSpeed = 5;
+
         protected Matrix3 _globalTransform = new Matrix3();
         protected Matrix3 _localTransform = new Matrix3();
         protected Matrix3 _translation = new Matrix3();
@@ -27,6 +29,7 @@ namespace MathForGames
         protected float _currentRadianRotation;
         protected float _rotationspeed = 0;
         protected float _collisionRadius = 1;
+
         protected ConsoleColor _color;
         protected Color _rayColor;
         protected Actor _parent;
@@ -59,11 +62,23 @@ namespace MathForGames
             set { _isColliding = value; }
         }
 
+        private Actor _target;
+        public Actor Target { get { return _target; } }
+        public void AddTarget(Actor target)
+        {
+            if (_target == null)
+                _target = target;
+        }
+        public void RemoveTarget()
+        {
+            _target = null;
+        }
+
         public Vector2 Forward
         {
             get 
             {
-                return new Vector2(_localTransform.m11, _localTransform.m21);
+                return new Vector2(_globalTransform.m11, _globalTransform.m21);
             }
             set
             {
@@ -106,16 +121,30 @@ namespace MathForGames
         }
         public void LookAt(Vector2 position)
         {
-            Vector2 direction = (position - LocalPosition).Normalized; // finds the vector facing towards point we want to look at
-            float dotProd = Vector2.DotProduct(Forward, direction);    //gets  Forward•Direction 
-            if (Math.Abs(dotProd) > 1)                             //sometimes dotprod math is bad due to double
+            //Find the direction that the actor should look in
+            Vector2 direction = (position - WorldPosition).Normalized;
+
+            //Use the dotproduct to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(Forward, direction);
+            if (Math.Abs(dotProd) > 1)
                 return;
-            float angle = (float)Math.Acos(dotProd);               //gets the angle of the dotproduct
-            Vector2 perp = new Vector2(direction.Y, -direction.X);  //creats a vector perpendicular to direction we want to look
-            float perpDot = Vector2.DotProduct(perp, Forward);      // gets Perp•Forward
-            if (perpDot != 0)                                       //if 0 then already facing
-                angle *= -perpDot / Math.Abs(perpDot);              // multiply angle by the negative inverse of perpdot
-            Rotate(angle);                                          //Rotates by the angle needed to look at the target
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find a perpindicular vector to the direction
+            Vector2 perp = new Vector2(direction.Y, -direction.X);
+
+            //Find the dot product of the perpindicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perp, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
+                angle *= -perpDot / Math.Abs(perpDot);
+
+            Rotate(angle);
+        }
+        public void LookAt(Actor Target)
+        {
+            
         }
         public void AddChild(Actor child)
         {
@@ -325,6 +354,20 @@ namespace MathForGames
                 (int)((WorldPosition.Y - _globalTransform.m22) * 32),
                 Color.RED
                 );
+            Raylib.DrawLine(
+    (int)(WorldPosition.X * 32),
+    (int)(WorldPosition.Y * 32),
+    (int)((WorldPosition.X + Velocity.X) * 32),
+    (int)((WorldPosition.Y + Velocity.Y) * 32),
+    Color.DARKGREEN
+    );
+            Raylib.DrawLine(
+(int)(WorldPosition.X * 32),
+(int)(WorldPosition.Y * 32),
+(int)((WorldPosition.X + Forward.X) * 32),
+(int)((WorldPosition.Y + Forward.Y) * 32),
+Color.DARKPURPLE
+);
             //Changes the color of the console text to be this actors color
             Console.ForegroundColor = _color;
 

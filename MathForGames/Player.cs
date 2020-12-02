@@ -72,6 +72,11 @@ namespace MathForGames
             
 
             base.Update(deltaTime);
+            if (Target != null)
+            {
+                if (Game.GetCurrentScene().TestForCollisionWith(this, Target))
+                { Velocity = Forward * -3; Target.Velocity = Forward * 3; }
+            }
             _globalTransform = _localTransform;
             lastLocation = _globalTransform;
 

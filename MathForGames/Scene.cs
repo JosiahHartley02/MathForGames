@@ -35,6 +35,18 @@ namespace MathForGames
                     { referenceEntity.isColliding = true; _actors[i].isColliding = true; }
                 }
         }
+        public bool TestForCollisionWith(Actor reference, Actor entity)
+        {
+            if (entity.Collidable == true && reference.Collidable == true)
+            {
+                float displacement = (float)Math.Sqrt((float)Math.Pow((reference.WorldPosition.X - entity.WorldPosition.X) * 32, 2)
+                 + (float)Math.Pow((reference.WorldPosition.Y - entity.WorldPosition.Y) * 32, 2));
+
+                if (displacement < (reference.CollisionRadius + entity.CollisionRadius) && entity.Collidable == true && reference != entity)
+                { return true; }                
+            }
+            return false;
+        }
 
         public void AddActor(Actor actor)
         {
