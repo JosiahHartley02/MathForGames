@@ -9,29 +9,15 @@ namespace MathForGames
     class PlayersTurret : Actor
     {
         private float _speed = 1;
-        public float Speed
-        {
-            get
-            {
-                return _speed;
-            }
-            set
-            {
-                _speed = value;
-            }
-        }
-        /// <param name="x">Position on the x axis</param>
-        /// <param name="y">Position on the y axis</param>
-        /// <param name="rayColor">The color of the symbol that will appear when drawn to raylib</param>
-        /// <param name="icon">The symbol that will appear when drawn</param>
-        /// <param name="color">The color of the symbol that will appear when drawn to the console</param>
+        public float Speed { get { return _speed; }
+            set { _speed = value; } }
+
         public PlayersTurret(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/Tanks/barrelRed.png");
             _collisionRadius = -10;
-            _canCollide = false;
-
+            Collidable = false;
         }
 
         public override void Update(float deltaTime)

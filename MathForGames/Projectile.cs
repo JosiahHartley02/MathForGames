@@ -16,18 +16,9 @@ namespace MathForGames
             _collisionRadius = 5;
             _collidable = true;
         }
-        public Projectile(Matrix3 globalTransform, string path)
-            : base(globalTransform, path)
-        {
-            _sprite = new Sprite(path);
-            _globalTransform = globalTransform;
-            _isVisible = false;
-            _collisionRadius = 5;
-            _collidable = true;
-        }
         public override void Start()
         {
-            _canCollide = true;
+            Collidable = true;
             base.Start();
         }
         public override void Update(float deltaTime)

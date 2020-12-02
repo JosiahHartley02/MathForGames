@@ -13,8 +13,10 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/barrelBlue.png");
             _collisionRadius = 0;
-            _canCollide = false;
+            Collidable = false;
         }
+
+
         public override void Start()
         {
             base.Start();

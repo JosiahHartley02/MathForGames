@@ -9,20 +9,12 @@ namespace MathForGames
     {
         private Actor[] _actors;
         private Matrix3 _transform = new Matrix3();
-
         public bool Started { get; private set; }
+        public Scene() { _actors = new Actor[0]; }
+        public Matrix3 World { get { return _transform; } }
 
-        public Scene()
-        {
-            _actors = new Actor[0];
-        }
-        public Matrix3 World
-        {
-            get
-            {
-                return _transform;
-            }
-        }
+
+        //Collision Functions
         public void TestForCollision(Actor referenceEntity)
         {
             if (referenceEntity.Collidable == true)
@@ -47,7 +39,8 @@ namespace MathForGames
             }
             return false;
         }
-
+        
+        //Actor Position Functions
         public void AddActor(Actor actor)
         {
             //Create a new array with a size one greater than our old array
@@ -135,6 +128,7 @@ namespace MathForGames
             return actorRemoved;
         }
 
+        //Looping Functions
         public virtual void Start()
         {
             Started = true;

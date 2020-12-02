@@ -10,62 +10,29 @@ namespace MathForGames
 {
     class Game
     {
+        //Basic Game Engine Assets
         private static bool _gameOver = false;
+        public static void SetGameOver(bool value) { _gameOver = value; }
         private static bool _debugVisual = false;
+        public static bool DebugVisual { get { return _debugVisual; } set { _debugVisual = value; } }
+        public static bool GetKeyDown(int key) { return Raylib.IsKeyDown((KeyboardKey)key); }
+        public static bool GetKeyPressed(int key) { return Raylib.IsKeyPressed((KeyboardKey)key); }
+
+        //Scene Tools
         private static Scene[] _scenes;
         private static int _currentSceneIndex;
-        public static bool DebugVisual { get { return _debugVisual; } set { _debugVisual = value; } }
-        public static int CurrentSceneIndex
-        {
-            get
-            {
-                return _currentSceneIndex;
-            }
-        }
-
-        public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
-
-        /// <summary>
-        /// Used to set the value of game over.
-        /// </summary>
-        /// <param name="value">If this value is true, the game will end</param>
-        public static void SetGameOver(bool value)
-        {
-            _gameOver = value;
-        }
-
-
-        /// <summary>
-        /// Returns the scene at the index given.
-        /// Returns an empty scene if the index is out of bounds
-        /// </summary>
-        /// <param name="index">The index of the desired scene</param>
-        /// <returns></returns>
+        public static int CurrentSceneIndex { get { return _currentSceneIndex; } }
         public static Scene GetScene(int index)
         {
             if (index < 0 || index >= _scenes.Length)
                 return new Scene();
 
             return _scenes[index];
-        }
-
-
-        /// <summary>
-        /// Returns the scene that is at the index of the 
-        /// current scene index
-        /// </summary>
-        /// <returns></returns>
+        }        
         public static Scene GetCurrentScene()
         {
             return _scenes[_currentSceneIndex];
         }
-
-        /// <summary>
-        /// Adds the given scene to the array of scenes.
-        /// </summary>
-        /// <param name="scene">The scene that will be added to the array</param>
-        /// <returns>The index the scene was placed at. Returns -1 if
-        /// the scene is null</returns>
         public static int AddScene(Scene scene)
         {
             //If the scene is null then return before running any other logic
@@ -92,13 +59,6 @@ namespace MathForGames
 
             return index;
         }
-
-        /// <summary>
-        /// Finds the instance of the scene given that inside of the array
-        /// and removes it
-        /// </summary>
-        /// <param name="scene">The scene that will be removed</param>
-        /// <returns>If the scene was successfully removed</returns>
         public static bool RemoveScene(Scene scene)
         {
             //If the scene is null then return before running any other logic
@@ -132,11 +92,6 @@ namespace MathForGames
             return sceneRemoved;
         }
 
-
-        /// <summary>
-        /// Sets the current scene in the game to be the scene at the given index
-        /// </summary>
-        /// <param name="index">The index of the scene to switch to</param>
         public static void SetCurrentScene(int index)
         {
             //If the index is not within the range of the the array return
@@ -149,28 +104,6 @@ namespace MathForGames
 
             //Update the current scene index
             _currentSceneIndex = index;
-        }
-
-
-        /// <summary>
-        /// Returns true while a key is being pressed
-        /// </summary>
-        /// <param name="key">The ascii value of the key to check</param>
-        /// <returns></returns>
-        public static bool GetKeyDown(int key)
-        {
-            return Raylib.IsKeyDown((KeyboardKey)key);
-        }
-
-
-        /// <summary>
-        /// Returns true while if key was pressed once
-        /// </summary>
-        /// <param name="key">The ascii value of the key to check</param>
-        /// <returns></returns>
-        public static bool GetKeyPressed(int key)
-        {
-            return Raylib.IsKeyPressed((KeyboardKey)key);
         }
 
         public Game()
