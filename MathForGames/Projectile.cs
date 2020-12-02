@@ -16,6 +16,11 @@ namespace MathForGames
             _collisionRadius = 5;
             _collidable = true;
         }
+        public Projectile(Matrix3 localTransform, string path) : base(localTransform,path)
+        {
+            _localTransform = localTransform;
+            _sprite = new Sprite(path);
+        }
         public override void Start()
         {
             Collidable = true;

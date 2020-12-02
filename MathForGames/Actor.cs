@@ -7,12 +7,6 @@ using Raylib_cs;
 
 namespace MathForGames
 {
-    //child enemy to player, so enemy mimics player
-
-    /// <summary>
-    /// This is the base class for all objects that will 
-    /// be moved or interacted with in the game
-    /// </summary>
     class Actor
     {
         //Basic Assests All Actors Should Have
@@ -39,6 +33,11 @@ namespace MathForGames
             LocalPosition = new Vector2(x, y);
             _velocity = new Vector2();
             _color = color;
+        }
+        public Actor(Matrix3 LocalTransform, string path)
+        {
+            _localTransform = LocalTransform;
+            _sprite = new Sprite(path);
         }
 
         //Movement Assets Related To Moving
@@ -310,10 +309,6 @@ Color.DARKPURPLE
                 Console.SetCursorPosition((int)WorldPosition.X, (int)WorldPosition.Y);
                 Console.Write(_icon);
             }
-            
-            
-            //Reset console text color to be default color
-            Console.ForegroundColor = Game.DefaultColor;
         }
 
         public virtual void End()
