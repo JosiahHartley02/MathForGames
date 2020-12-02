@@ -41,7 +41,7 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/Tanks/tankBlue.png");
-            _collisionRadius = 18;
+            _collisionRadius = 15;
             _collidable = true;
         }
 

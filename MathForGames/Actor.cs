@@ -219,7 +219,7 @@ namespace MathForGames
             {
                 bullet._isVisible = true;
                 bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
-                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + (bullet._Tank._globalTransform.m11 * 0.5f), bullet._Tank._globalTransform.m23 + (bullet._Tank._globalTransform.m21 * 0.5f)));
+                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + (bullet._Tank._globalTransform.m11 * 0.65f), bullet._Tank._globalTransform.m23 + (bullet._Tank._globalTransform.m21 * 0.65f)));
                 bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
             }
 
@@ -268,10 +268,11 @@ namespace MathForGames
         {
             UpdateTransform();
 
+            //Modifys Acceleration To Constantly Be Subtracting Velocity To Replicate Friction
             Acceleration += new Vector2(-Velocity.X, -Velocity.Y) * deltaTime;
-
+            //Adds Acceleration To Velocity After The Friction Has Been Applied
             Velocity += Acceleration;
-
+            //Tests For Velocity Value, If > MaxSpeed Then = MaxSpeed
             if (Velocity.Magnitude > MaxSpeed)
                 Velocity = Velocity.Normalized * MaxSpeed;
 
@@ -284,13 +285,16 @@ namespace MathForGames
             _isColliding = false;
             Game.GetCurrentScene().TestForCollision(this);
 
+            //Creates Boucing Off Walls Effect By Testing Global Position
+            if (WorldPosition.X < 0.75f) { Velocity.X = Math.Abs(Velocity.X); }
+            if (WorldPosition.X > 31.25f) { Velocity.X = -Math.Abs(Velocity.X); }
+            if (WorldPosition.Y < 0.7f) { Velocity.Y = Math.Abs(Velocity.Y); }
+            if (WorldPosition.Y > 23.25f) { Velocity.Y = -Math.Abs(Velocity.Y); }
         }
 
         public virtual void Draw()
         {
-            //Sets visibility to false if not in bounds
-            if (WorldPosition.X < -1 || WorldPosition.Y < 0 || WorldPosition.X > 32 || WorldPosition.Y > 24)
-            { _isVisible = false; }
+            
 
             if (Game.DebugVisual == false)
             { return; }

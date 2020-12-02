@@ -32,16 +32,25 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            _collidable = false;
             UpdateTransform();
-            if (_isVisible)
-            { LocalPosition += Velocity.Normalized * deltaTime * 7; _collidable = true; }
-            else { _isColliding = false; }
-            _globalTransform = _localTransform;
-            Game.GetCurrentScene().TestForCollision(this);
-            if (isColliding)
-            { _isVisible = false; }
             
+            //Toggles Between Visible Physical Characteristics And Invisible Numerical Characteristics
+            if (_isVisible)
+            { LocalPosition += Velocity.Normalized * deltaTime * 10; _collidable = true; }
+            else { _collidable = false; _isColliding = false; }
+
+            //Applies Current Changes To Global Transform
+            _globalTransform = _localTransform;
+
+            //Creates Boucing Off Walls Effect By Testing Global Position
+            if (WorldPosition.X < 0f) { Velocity.X = Math.Abs(Velocity.X); _rotation *= Matrix3.CreateRotation(1.5708f); }
+            if (WorldPosition.X > 32f) { Velocity.X = -Math.Abs(Velocity.X); _rotation *= Matrix3.CreateRotation(1.5708f); }
+            if (WorldPosition.Y < 0) { Velocity.Y = Math.Abs(Velocity.Y); _rotation *= Matrix3.CreateRotation(1.5708f); }
+            if (WorldPosition.Y > 24) { Velocity.Y = -Math.Abs(Velocity.Y); _rotation *= Matrix3.CreateRotation(1.5708f); }
+
+            //Tests For Collision
+            Game.GetCurrentScene().TestForCollision(this);
+            if (isColliding) { _isVisible = false; }
         }
         public override void Draw()
         {

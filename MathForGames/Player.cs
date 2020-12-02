@@ -48,7 +48,7 @@ namespace MathForGames
         {
             _sprite = new Sprite("sprites/Tanks/tankRed.png");
             _trail = new Sprite("sprites/Tanks/tracksLarge.png");
-            _collisionRadius = 18;
+            _collisionRadius = 15;
             _canCollide = true;
             _collidable = true;
         }
@@ -69,10 +69,8 @@ namespace MathForGames
             Scale = new Vector2(Scale.X += scale, Scale.Y += scale);*/
             Rotate(rotation * deltaTime);
             //Prevent OutOfBounds of Raylib Window
-            if (WorldPosition.X <= 0.75f) { _localTransform.m13 = 0.75f; Velocity = new Vector2(2, 0); }
-            if (WorldPosition.X >= 32.25f) { _localTransform.m13 = 32.25f; Velocity = new Vector2(-2, 0); }
-            if (WorldPosition.Y <= 0.75f) { _localTransform.m13 = 0.75f; Velocity = new Vector2(0, 2); }
-            if (WorldPosition.Y >= 24.25f) { _localTransform.m13 = 24.25f; Velocity = new Vector2(0, -2); }
+            
+
             base.Update(deltaTime);
             _globalTransform = _localTransform;
             lastLocation = _globalTransform;
