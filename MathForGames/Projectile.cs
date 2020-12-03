@@ -50,6 +50,7 @@ namespace MathForGames
             if (WorldPosition.Y < 0) { Velocity.Y = Math.Abs(Velocity.Y);}
             if (WorldPosition.Y > 24) { Velocity.Y = -Math.Abs(Velocity.Y);}
             //Tests For Collision
+            LookAt(Forward);
             Game.GetCurrentScene().TestForCollision(this);
             if (isColliding) { _isVisible = false; }
             if(IsVisible)

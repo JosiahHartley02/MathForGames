@@ -194,6 +194,29 @@ namespace MathForGames
                 Vector2 lookPosition = LocalPosition + value.Normalized;
             }
         }
+        public void LookAt(Vector2 position)
+        {
+            //Find the direction that the actor should look in
+            Vector2 direction = (position - WorldPosition).Normalized;
+
+            //Use the dotproduct to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(Forward, direction);
+            if (Math.Abs(dotProd) > 1)
+                return;
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find a perpindicular vector to the direction
+            Vector2 perp = new Vector2(direction.Y, -direction.X);
+
+            //Find the dot product of the perpindicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perp, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
+                angle *= -perpDot / Math.Abs(perpDot);
+
+            Rotate(angle - 1.5708f);
+        }
         public void LookAt(Actor actor)
         {
             //Find the direction that the actor should look in
@@ -217,19 +240,29 @@ namespace MathForGames
 
             Rotate(angle - 1.5708f);
         }
-        /* public void LookAt(Actor actor)
-         {
-             Vector2 displacement = new Vector2(actor.WorldPosition.X - WorldPosition.X, actor.WorldPosition.Y - WorldPosition.Y).Normalized;
-             Vector2 currentFacingVector = new Vector2(_rotation.m11, _rotation.m21).Normalized;
-             float angleDifference = (float)Math.Acos((currentFacingVector.X * displacement.X) + (currentFacingVector.Y * displacement.Y));
-             float distanceAndyVectorDotProd = ((displacement.X * _rotation.m12) + (displacement.Y * _rotation.m22));
-             if(distanceAndyVectorDotProd != 0 && distanceAndyVectorDotProd < 1)
-             {
-                 if(distanceAndyVectorDotProd < 0)
-                 { angleDifference *= -1; }
-                 Rotate(angleDifference);
-            }
-         }*/
+        public void LookAt(Actor actor, float deltaTime)
+        {
+            //Find the direction that the actor should look in
+            Vector2 direction = (actor.WorldPosition - WorldPosition).Normalized;
+
+            //Use the dotproduct to find the angle the actor needs to rotate
+            float dotProd = Vector2.DotProduct(Forward, direction);
+            if (Math.Abs(dotProd) > 1)
+                return;
+            float angle = (float)Math.Acos(dotProd);
+
+            //Find a perpindicular vector to the direction
+            Vector2 perp = new Vector2(direction.Y, -direction.X);
+
+            //Find the dot product of the perpindicular vector and the current forward
+            float perpDot = Vector2.DotProduct(perp, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positive or negative
+            if (perpDot != 0)
+                angle *= -perpDot / Math.Abs(perpDot);
+
+            Rotate((angle - 1.5708f) * deltaTime);
+        }
 
 
 
