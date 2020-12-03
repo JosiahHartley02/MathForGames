@@ -137,7 +137,7 @@ namespace MathForGames
             player.Speed = 5;
             playersBullet.SetScale(1, 1);
             gun.SetScale(2, 1);
-            Egun.SetScale(2, 1);
+            Egun.SetScale(1, 2);
             player.AddChild(gun);
             player.AddTarget(enemy);
             gun.AddAmmo(playersBullet);

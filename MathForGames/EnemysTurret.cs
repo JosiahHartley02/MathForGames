@@ -23,14 +23,14 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            LookAt(Target.WorldPosition);
+            LookAt(Target);
             base.Update(deltaTime);
         }
         public override void Draw()
         {
             if (_sprite != null && IsVisible != false)
             {
-                _sprite.Draw(_globalTransform * Matrix3.CreateRotation(-1.5708f));
+                _sprite.Draw(_globalTransform);
             }
             base.Draw();
         }
