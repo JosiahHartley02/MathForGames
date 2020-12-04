@@ -215,7 +215,7 @@ namespace MathForGames
             if (perpDot != 0)
                 angle *= -perpDot / Math.Abs(perpDot);
 
-            Rotate(angle - 1.5708f);
+            Rotate((angle));
         }
         public void LookAt(Actor actor)
         {
@@ -264,8 +264,6 @@ namespace MathForGames
             Rotate((angle - 1.5708f) * deltaTime);
         }
 
-
-
         private void UpdateTransform()
         {
             Rotate(_rotationspeed);
@@ -277,9 +275,8 @@ namespace MathForGames
             {
                 bullet.Existence = 0;
                 bullet._isVisible = true;
-                bullet._rotation = bullet._Tank._rotation * bullet._Tank._parent._rotation;
-                bullet.SetTranslation(new Vector2(bullet._Tank._globalTransform.m13 + (bullet._Tank._globalTransform.m11 * 0.65f), bullet._Tank._globalTransform.m23 + (bullet._Tank._globalTransform.m21 * 0.65f)));
-                bullet.Velocity = new Vector2(bullet._Tank._globalTransform.m11, bullet._Tank._globalTransform.m21);
+                bullet.SetTranslation(new Vector2(this._globalTransform.m13 + (bullet._Tank._globalTransform.m21 * .5f), this._globalTransform.m23 - (bullet._Tank._globalTransform.m22 * .5f)));
+                bullet.Velocity = new Vector2(-bullet._Tank._globalTransform.m12, -bullet._Tank._globalTransform.m22);
             }
 
         }

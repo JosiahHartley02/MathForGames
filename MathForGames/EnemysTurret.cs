@@ -24,6 +24,9 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             LookAt(Target);
+            Vector2 displacement = new Vector2(Target.WorldPosition.X - WorldPosition.X, Target.WorldPosition.Y - WorldPosition.Y);
+            if (displacement.Magnitude > 7.5f)
+                LaunchProjectile(_projectiles[0]);
             base.Update(deltaTime);
         }
         public override void Draw()

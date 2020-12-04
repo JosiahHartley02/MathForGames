@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="MarkDownImages\Tank Game Display.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="sprites\Bullets\bulletBlue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -45,7 +45,7 @@ namespace MathForGames
 
             //Set the actors current velocity to be the a vector with the direction found scaled by the speed 
             Acceleration = new Vector2(_localTransform.m11 * Throttle, _localTransform.m21 * Throttle);            
-            Rotate(rotation * deltaTime);
+            Rotate(rotation * deltaTime * 2);
             base.Update(deltaTime);
             if (Target != null)
             {
@@ -54,8 +54,17 @@ namespace MathForGames
             }
             _globalTransform = _localTransform;
             lastLocation = _globalTransform;
+            if (Game.GetCurrentScene().TestForCollisionWith(this, this.Target.Children[0].Projectiles[0]))  //When Targets Bullet Collides With This, Reset Position
+            {
+                Random rnd = new Random();
+                int xSpawnPosition = rnd.Next(1, 31);
+                int ySpawnPosition = rnd.Next(1, 23);
+                _translation.m13 = xSpawnPosition;
+                _translation.m23 = ySpawnPosition;
+                Game.GetCurrentScene().Score.Y++;
+            }
 
-            
+
         }
         public override void Draw()
         {

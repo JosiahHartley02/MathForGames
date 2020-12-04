@@ -132,15 +132,20 @@ namespace MathForGames
 
             Enemy enemy = new Enemy(0, 0, Color.GREEN, ' ', ConsoleColor.Green);
             EnemysTurret Egun = new EnemysTurret(0, 0, Color.BLUE, ' ', ConsoleColor.Blue);
+            Projectile enemysBullet = new Projectile(new Matrix3(), "sprites/Bullets/bulletblue.png");
 
             Egun.AddTarget(player);
+            Egun.AddAmmo(enemysBullet);
             player.Speed = 5;
             playersBullet.SetScale(1, 1);
-            gun.SetScale(2, 1);
+            enemysBullet.SetScale(1, 1);
+            gun.SetScale(1, 2);
             Egun.SetScale(1, 2);
+
             player.AddChild(gun);
             player.AddTarget(enemy);
             gun.AddAmmo(playersBullet);
+
             enemy.LocalPosition = new Vector2(5, 5);
             enemy.AddChild(Egun);
             enemy.AddTarget(player);
@@ -150,6 +155,7 @@ namespace MathForGames
             scene1.AddActor(gun);
             scene1.AddActor(playersBullet);
             scene1.AddActor(Egun);
+            scene1.AddActor(enemysBullet);
             
 
             //Sets the starting scene index and adds the scenes to the scenes array

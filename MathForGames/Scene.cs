@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames
 {
@@ -12,7 +13,8 @@ namespace MathForGames
         public bool Started { get; private set; }
         public Scene() { _actors = new Actor[0]; }
         public Matrix3 World { get { return _transform; } }
-
+        private Vector2 _score = new Vector2(0, 0);
+        public Vector2 Score { get { return _score; } set { _score = value; } }
 
         //Collision Functions
         public void TestForCollision(Actor referenceEntity)
@@ -151,6 +153,10 @@ namespace MathForGames
             {
                 _actors[i].Draw();
             }
+            Raylib.DrawText("Points:", 16, 16, 16, Color.WHITE);
+            Raylib.DrawText(Score.X.ToString(), 72, 16, 16, Color.GOLD);
+            Raylib.DrawText("Deaths:", 928, 16, 16, Color.GRAY);
+            Raylib.DrawText(Score.Y.ToString(), 992, 16, 16, Color.RED);
         }
 
         public virtual void End()

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathForGames", "MathForGames\MathForGames.csproj", "{CB038BE2-FB93-4210-9924-6E8530444AEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Friday Assesment", "MathForGames\Friday Assesment.csproj", "{CB038BE2-FB93-4210-9924-6E8530444AEF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5AC9C938-F2F8-4FD7-B0D5-76175F10F21B} = {5AC9C938-F2F8-4FD7-B0D5-76175F10F21B}
 	EndProjectSection

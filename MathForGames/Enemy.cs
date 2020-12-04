@@ -25,11 +25,22 @@ namespace MathForGames
 
         public override void Update(float deltaTime)
         {
-            Acceleration = new Vector2(Target.WorldPosition.X - WorldPosition.X, Target.WorldPosition.Y - WorldPosition.Y).Normalized * .3f;
+            Vector2 displacement = new Vector2(Target.WorldPosition.X - WorldPosition.X, Target.WorldPosition.Y - WorldPosition.Y);
+            if (displacement.Magnitude > 7.5f)
+                Acceleration = new Vector2(Target.WorldPosition.X - WorldPosition.X, Target.WorldPosition.Y - WorldPosition.Y).Normalized * .3f;
+            if (displacement.Magnitude < 7.5f)
+                Acceleration -= Acceleration * deltaTime * 4;
             LookAt(Target,deltaTime);
             base.Update(deltaTime);
             if(Game.GetCurrentScene().TestForCollisionWith(this,this.Target.Children[0].Projectiles[0]))  //When Targets Bullet Collides With This, Reset Position
-            { _translation.m13 = 10; _translation.m23 = 10; }
+            {
+            Random rnd = new Random();
+            int xSpawnPosition = rnd.Next(1, 31);
+            int ySpawnPosition = rnd.Next(1, 23);
+                _translation.m13 = xSpawnPosition;
+                _translation.m23 = ySpawnPosition;
+                Game.GetCurrentScene().Score.X++;
+            }
         }
         public override void Draw()
         {

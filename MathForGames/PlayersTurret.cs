@@ -35,10 +35,11 @@ namespace MathForGames
         {
             if (_sprite != null && IsVisible != false)
             {
-                _sprite.Draw(_globalTransform * Matrix3.CreateRotation(-1.5708f));
+                _sprite.Draw(_globalTransform);
             }
 
             base.Draw();
         }
     }
 }
+
