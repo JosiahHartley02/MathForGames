@@ -42,10 +42,10 @@ namespace MathForGames
 
         //Movement Assets Related To Moving
         private Vector2 _velocity = new Vector2();
-        private Vector2 acceleration = new Vector2();
+        private Vector2 _acceleration = new Vector2();
         private float _maxSpeed = 5;
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
-        protected Vector2 Acceleration { get => acceleration; set => acceleration = value; }
+        protected Vector2 Acceleration { get => _acceleration; set => _acceleration = value; }
         public float MaxSpeed { get => _maxSpeed; set => _maxSpeed = value; }
         public void Rotate(float angle) { _currentRadianRotation += angle; SetRotation(_currentRadianRotation); }
 
@@ -56,7 +56,7 @@ namespace MathForGames
         protected Matrix3 _rotation = new Matrix3();
         protected Matrix3 _scale = new Matrix3();
         protected float _currentRadianRotation;
-        protected float _rotationspeed = 0;
+        protected float _rotationSpeed = 0;
         protected float _collisionRadius = 1;
         public Vector2 WorldPosition { get { return new Vector2(_globalTransform.m13, _globalTransform.m23); } }
         public Matrix3 GlobalTransform { get { return _globalTransform; } }
@@ -65,14 +65,7 @@ namespace MathForGames
             set { _translation.m13 = value.X; _translation.m23 = value.Y; } }
         public void SetTranslation(Vector2 position) { _translation = Matrix3.CreateTranslation(position); }
         public void SetRotation(float radians) { _rotation = Matrix3.CreateRotation(radians); _currentRadianRotation = radians;}
-        public void SetRotationSpecific(Vector2 xRotation,Vector2 yRotation)
-        {
-            _rotation.m11 = xRotation.X;
-            _rotation.m21 = xRotation.Y;
-            _rotation.m12 = yRotation.X;
-            _rotation.m22 = yRotation.Y;
-        }
-        public void SetRotationSpeed(float speed) {  _rotationspeed = speed;}
+        public void SetRotationSpeed(float speed) {  _rotationSpeed = speed;}
         public void SetScale(float x, float y) { _scale = Matrix3.CreateScale(x, y); }
 
         //Assets Relating To Physical Characteristics of Actor
@@ -89,8 +82,8 @@ namespace MathForGames
         public Actor Parent { get { return _parent; } }
         protected Actor[] _children = new Actor[0];
         public Actor[] Children { get { return _children; } }
-        protected bool isChild = false;
-        public bool IsChild { get { return isChild; } }
+        protected bool _isChild = false;
+        public bool IsChild { get { return _isChild; } }
         public void AddChild(Actor child)
         {
             Actor[] tempArray = new Actor[_children.Length + 1];
@@ -101,7 +94,7 @@ namespace MathForGames
             tempArray[_children.Length] = child;
             _children = tempArray;
             child._parent = this;
-            this.isChild = true;
+            this._isChild = true;
         }
         public bool RemoveChild(Actor child)
         {
@@ -124,7 +117,7 @@ namespace MathForGames
             }
             _children = tempArray;
             child._parent = null;
-            this.isChild = false;
+            this._isChild = false;
             return childRemoved;
         }
 
@@ -266,7 +259,7 @@ namespace MathForGames
 
         private void UpdateTransform()
         {
-            Rotate(_rotationspeed);
+            Rotate(_rotationSpeed);
             _localTransform = _translation *_rotation * _scale;
         }
         protected void LaunchProjectile(Projectile bullet)

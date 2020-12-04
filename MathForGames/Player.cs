@@ -10,9 +10,6 @@ namespace MathForGames
 
     {
         private float _speed = 1;
-        Sprite _trail;
-        Matrix3 lastLocation;
-        int delayedFrameCounter = 0;
         public float Speed
         {
             get
@@ -29,7 +26,6 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
             _sprite = new Sprite("sprites/Tanks/tankRed.png");
-            _trail = new Sprite("sprites/Tanks/tracksLarge.png");
             _collisionRadius = 15;
             _collidable = true;
         }
@@ -53,7 +49,6 @@ namespace MathForGames
                 { Velocity = Forward * -3; Target.Velocity = Forward * 3; }
             }
             _globalTransform = _localTransform;
-            lastLocation = _globalTransform;
             if (Game.GetCurrentScene().TestForCollisionWith(this, this.Target.Children[0].Projectiles[0]))  //When Targets Bullet Collides With This, Reset Position
             {
                 Random rnd = new Random();
@@ -71,9 +66,6 @@ namespace MathForGames
             if (_sprite != null && IsVisible != false)
             {
                 _sprite.Draw(_localTransform * Matrix3.CreateRotation(1.5708f));
-                if (_trail != null)
-                    if (delayedFrameCounter == 24)
-                    { _trail.Draw(lastLocation * Matrix3.CreateRotation(1.5708f)); delayedFrameCounter = 0; }
 
             }
 

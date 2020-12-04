@@ -9,7 +9,7 @@ namespace MathForGames
     class Projectile : Actor
     {
         private float _existence;
-        private float _lifespan = 3;
+        private float _lifeSpan = 3;
         public float Existence { get { return _existence; } set { _existence = value; } }
         public Projectile(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
@@ -32,7 +32,7 @@ namespace MathForGames
         }
         public override void Update(float deltaTime)
         {
-            if(_existence > _lifespan)
+            if(_existence > _lifeSpan)
             { _isVisible = false; }
             UpdateTransform();
             

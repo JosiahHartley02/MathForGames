@@ -8,10 +8,6 @@ namespace MathForGames
 {
     class PlayersTurret : Actor
     {
-        private float _speed = 1;
-        public float Speed { get { return _speed; }
-            set { _speed = value; } }
-
         public PlayersTurret(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
@@ -23,7 +19,7 @@ namespace MathForGames
         public override void Update(float deltaTime)
         {
             if(isColliding) { _isVisible = false; }
-            _rotationspeed = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q))
+            _rotationSpeed = (Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_Q))
                 - Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_E))) * .1f;
             bool fire = Game.GetKeyDown((int)KeyboardKey.KEY_SPACE);
             if (fire == true)
